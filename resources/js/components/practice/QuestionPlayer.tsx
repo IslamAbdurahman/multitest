@@ -1,0 +1,333 @@
+import { router } from '@inertiajs/react';
+import { Clock, CloudUpload, Info, Mic, Volume2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+export default function QuestionPlayer({ attempt_part }: any) {
+    const { t } = useTranslation();
+    const questions = attempt_part.part.questions;
+
+    const [index, setIndex] = useState(-1);
+    const [phase, setPhase] = useState<'introduction' | 'audio' | 'ready' | 'recording' | 'uploading'>('introduction');
+    const [timer, setTimer] = useState(0);
+
+    const recorderRef = useRef<MediaRecorder | null>(null);
+    const streamRef = useRef<MediaStream | null>(null);
+    const chunksRef = useRef<Blob[]>([]);
+    const answersRef = useRef<any[]>([]);
+    const recordingStartTimeRef = useRef<string>('');
+
+    useEffect(() => {
+        setIndex(-1);
+        setPhase('introduction');
+        answersRef.current = [];
+        return () => stopAllMedia();
+    }, [attempt_part.id]);
+
+    const stopAllMedia = () => {
+        if (recorderRef.current && recorderRef.current.state !== 'inactive') {
+            recorderRef.current.stop();
+        }
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current = null;
+        }
+    };
+
+    const question = index >= 0 ? questions[index] : null;
+
+    const formatTime = (seconds: number) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    /* Phase 0: Part Introduction */
+    useEffect(() => {
+        if (phase !== 'introduction') return;
+        const introAudio = new Audio(attempt_part.part.audio_path);
+        introAudio.play().catch(() => {
+            setIndex(0);
+            setPhase('audio');
+        });
+        introAudio.onended = () => {
+            setIndex(0);
+            setPhase('audio');
+        };
+        return () => {
+            introAudio.pause();
+            introAudio.src = '';
+        };
+    }, [phase, attempt_part.id]);
+
+    /* Phase 1: Question Audio */
+    useEffect(() => {
+        if (phase !== 'audio' || !question) return;
+        const audio = new Audio(question.audio_path);
+        audio.play().catch(() => {
+            setPhase('ready');
+            setTimer(question.ready_second);
+        });
+        audio.onended = () => {
+            setPhase('ready');
+            setTimer(question.ready_second);
+        };
+        return () => {
+            audio.pause();
+            audio.src = '';
+        };
+    }, [phase, index]);
+
+    /* Phase 2 & 3: Timer Logic */
+    useEffect(() => {
+        if ((phase !== 'ready' && phase !== 'recording') || !question) return;
+        if (timer <= 0) {
+            if (phase === 'ready') {
+                handleTransitionToRecording();
+            } else if (phase === 'recording') {
+                if (recorderRef.current && recorderRef.current.state === 'recording') {
+                    recorderRef.current.stop();
+                }
+            }
+            return;
+        }
+        const i = setInterval(() => setTimer((t) => t - 1), 1000);
+        return () => clearInterval(i);
+    }, [phase, timer]);
+
+    const handleTransitionToRecording = () => {
+        const startSound = new Audio('/audio/begin-audio.m4a');
+        startSound.play()
+            .then(() => { startSound.onended = () => startRecording(); })
+            .catch(() => startRecording());
+    };
+
+    const startRecording = async () => {
+        if (!question) return;
+        try {
+            stopAllMedia();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            streamRef.current = stream;
+
+            // Check supported types (Chrome prefers webm, Safari prefers mp4/ogg)
+            const mimeType = MediaRecorder.isTypeSupported('audio/webm')
+                ? 'audio/webm'
+                : 'audio/ogg';
+
+            const recorder = new MediaRecorder(stream, { mimeType });
+            recorderRef.current = recorder;
+            chunksRef.current = [];
+            recordingStartTimeRef.current = new Date().toISOString();
+
+            recorder.ondataavailable = (e) => {
+                if (e.data.size > 0) chunksRef.current.push(e.data);
+            };
+
+            recorder.onstop = () => {
+                const capturedBlob = new Blob(chunksRef.current, { type: recorder.mimeType });
+
+                // Extract extension for the filename
+                const extension = recorder.mimeType.includes('webm') ? 'webm' : 'ogg';
+
+                answersRef.current.push({
+                    question_id: question.id,
+                    started_at: recordingStartTimeRef.current,
+                    finished_at: new Date().toISOString(),
+                    audio: capturedBlob,
+                    ext: extension
+                });
+
+                chunksRef.current = [];
+                stopAllMedia();
+                goNext();
+            };
+
+            recorder.start();
+            setPhase('recording');
+            setTimer(question.answer_second);
+        } catch (err) {
+            alert(t('question_player.mic_error'));
+        }
+    };
+
+    const goNext = () => {
+        if (index + 1 < questions.length) {
+            setIndex((i) => i + 1);
+            setPhase('audio');
+        } else {
+            setPhase('uploading');
+            submit();
+        }
+    };
+
+    const submit = () => {
+        const form = new FormData();
+        answersRef.current.forEach((a, i) => {
+            form.append(`answers[${i}][question_id]`, a.question_id);
+            form.append(`answers[${i}][started_at]`, a.started_at);
+            form.append(`answers[${i}][finished_at]`, a.finished_at);
+            // Sending native format prevents duration issues
+            form.append(`answers[${i}][audio_path]`, a.audio, `q_${a.question_id}.${a.ext}`);
+        });
+
+        const next = attempt_part.attempt.attempt_parts.find((p: any) => p.id > attempt_part.id);
+        if (next) form.append('next_attempt_part_id', next.id);
+
+        router.post(route('practice.save_answers', attempt_part.id), form);
+    };
+
+    return (
+        <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-10 py-6">
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-3">
+                        <span className="rounded-md bg-indigo-600 px-2 py-0.5 text-[10px] font-bold text-white uppercase">
+                            {t('question_player.part_label')}
+                        </span>
+                        <h1 className="text-xl font-black tracking-tight text-slate-800">{attempt_part.part.title}</h1>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-6 py-3 shadow-lg">
+                    <Clock className="h-5 w-5 text-indigo-400" />
+                    <span className="font-mono text-2xl font-black text-white tabular-nums">
+                        {phase === 'uploading' ? '--:--' : formatTime(timer)}
+                    </span>
+                </div>
+            </div>
+
+            <div className="grid min-h-[450px] grid-cols-1 md:grid-cols-12">
+                <div className="border-r border-slate-100 p-10 md:col-span-8">
+                    <div className="mb-6 flex items-center justify-between">
+                        <span className="text-xs font-black tracking-widest text-slate-400 uppercase">
+                            {phase === 'introduction'
+                                ? t('question_player.introduction')
+                                : phase === 'uploading'
+                                    ? t('question_player.saving_results')
+                                    : t('question_player.question_counter', { current: index + 1, total: questions.length })}
+                        </span>
+                        <PhaseBadge phase={phase} />
+                    </div>
+                    <div className="prose prose-indigo prose-lg dark:prose-invert max-w-none">
+                        {phase === 'introduction' ? (
+                            <div className="space-y-4">
+                                <h2 className="text-2xl font-black text-slate-800">{attempt_part.part.name}</h2>
+                                <div
+                                    className="leading-relaxed font-medium text-slate-600"
+                                    dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
+                                />
+                            </div>
+                        ) : phase === 'uploading' ? (
+                            <div className="flex h-full flex-col items-center justify-center space-y-4 py-20 text-center">
+                                <h2 className="text-2xl font-black text-slate-800">{t('question_player.uploading_title')}</h2>
+                                <p className="text-slate-500">{t('question_player.uploading_desc')}</p>
+                            </div>
+                        ) : (
+                            <div className="leading-relaxed font-medium text-slate-700" dangerouslySetInnerHTML={{ __html: question?.textarea }} />
+                        )}
+                    </div>
+                </div>
+
+                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-10 text-center md:col-span-4">
+                    <RecordingPod phase={phase} />
+                    <div className="mt-8 w-full space-y-4">
+                        <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
+                            <p className="mb-1 text-[10px] font-black tracking-tighter text-slate-400 uppercase">{t('question_player.status')}</p>
+                            <p className="text-sm font-bold text-slate-700">
+                                {phase === 'introduction'
+                                    ? t('question_player.status_intro')
+                                    : phase === 'audio'
+                                        ? t('question_player.status_listening')
+                                        : phase === 'ready'
+                                            ? t('question_player.status_preparing')
+                                            : phase === 'uploading'
+                                                ? t('question_player.status_uploading')
+                                                : t('question_player.status_capturing')}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Sub-components (RecordingPod and PhaseBadge) stay the same as your original design
+function RecordingPod({ phase }: { phase: string }) {
+    const { t } = useTranslation();
+    if (phase === 'uploading') {
+        return (
+            <div className="flex flex-col items-center">
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 animate-pulse rounded-full bg-indigo-400 opacity-20"></div>
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
+                        <CloudUpload size={40} className="animate-bounce" strokeWidth={2.5} />
+                    </div>
+                </div>
+                <span className="animate-pulse text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">
+                    {t('question_player.uploading_live')}
+                </span>
+            </div>
+        );
+    }
+    if (phase === 'recording') {
+        return (
+            <div className="flex flex-col items-center">
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 animate-ping rounded-full bg-red-400 opacity-20"></div>
+                    <div className="absolute -inset-4 animate-pulse rounded-full bg-red-100 opacity-40"></div>
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-red-600 text-white shadow-xl">
+                        <Mic size={40} strokeWidth={2.5} />
+                    </div>
+                </div>
+                <span className="animate-pulse text-xs font-black tracking-[0.2em] text-red-600 uppercase">
+                    {t('question_player.recording_live')}
+                </span>
+            </div>
+        );
+    }
+    if (phase === 'ready') {
+        return (
+            <div className="flex flex-col items-center">
+                <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-amber-500 text-white shadow-xl">
+                    <Clock size={40} strokeWidth={2.5} />
+                </div>
+                <span className="text-xs font-black tracking-[0.2em] text-amber-600 uppercase">{t('question_player.get_ready')}</span>
+            </div>
+        );
+    }
+    if (phase === 'introduction') {
+        return (
+            <div className="flex flex-col items-center">
+                <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
+                    <Info size={40} strokeWidth={2.5} />
+                </div>
+                <span className="text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">{t('question_player.part_intro')}</span>
+            </div>
+        );
+    }
+    return (
+        <div className="flex flex-col items-center">
+            <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-2 border-slate-200 bg-white text-slate-400 shadow-sm">
+                <Volume2 size={40} />
+            </div>
+            <span className="text-xs font-black tracking-[0.2em] text-slate-400 uppercase">{t('question_player.playing_audio')}</span>
+        </div>
+    );
+}
+
+function PhaseBadge({ phase }: { phase: string }) {
+    const { t } = useTranslation();
+    const styles = {
+        introduction: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+        audio: 'bg-blue-50 text-blue-600 border-blue-100',
+        ready: 'bg-amber-50 text-amber-600 border-amber-100',
+        recording: 'bg-red-50 text-red-600 border-red-100',
+        uploading: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+    };
+    return (
+        <div className={`flex items-center gap-2 rounded-full border px-4 py-1.5 text-[10px] font-black tracking-widest uppercase ${styles[phase as keyof typeof styles]}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${phase === 'recording' ? 'animate-pulse bg-red-600' : phase === 'uploading' ? 'animate-bounce bg-indigo-600' : 'bg-current'}`} />
+            {phase === 'introduction' ? t('question_player.phase_intro') : phase === 'audio' ? t('question_player.phase_instruction') : phase === 'ready' ? t('question_player.phase_preparing') : phase === 'uploading' ? t('question_player.phase_saving') : t('question_player.phase_answering')}
+        </div>
+    );
+}

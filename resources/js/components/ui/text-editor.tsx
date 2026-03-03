@@ -1,0 +1,154 @@
+// resources/js/components/TextareaEditor.tsx
+import React, { useEffect, useRef, useState } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import InputError from "@/components/input-error";
+
+// self-hosted TinyMCE imports
+import 'tinymce/tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/anchor';
+import 'tinymce/plugins/autolink';
+import 'tinymce/plugins/charmap';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/codesample';
+import 'tinymce/plugins/directionality';
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/help';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/importcss';
+import 'tinymce/plugins/insertdatetime';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/searchreplace';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/visualblocks';
+import 'tinymce/plugins/visualchars';
+import 'tinymce/plugins/wordcount';
+import type { Editor as TinyMCEEditorInstance } from "tinymce";
+
+interface TextareaEditorProps {
+    value?: string;
+    onChange?: (content: string) => void;
+    error?: string | null;
+    height?: number;
+    className?: string;
+}
+
+export default function TextEditor({
+                                           value = "",
+                                           onChange = () => {},
+                                           error = null,
+                                           height = 600,
+                                           className,
+                                       }: TextareaEditorProps) {
+    const editorRef = useRef<TinyMCEEditorInstance | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
+
+        const POPUP_SELECTOR =
+            ".tox-tinymce-aux, .tox-dialog, .moxman-window, .tam-assetmanager-root";
+
+        function stopIfPopup(e: Event) {
+            const target = e.target as HTMLElement | null;
+            if (target?.closest && target.closest(POPUP_SELECTOR)) {
+                e.stopPropagation();
+            }
+        }
+
+        document.addEventListener("pointerdown", stopIfPopup, true);
+        document.addEventListener("mousedown", stopIfPopup, true);
+        document.addEventListener("touchstart", stopIfPopup, true);
+
+        return () => {
+            document.removeEventListener("pointerdown", stopIfPopup, true);
+            document.removeEventListener("mousedown", stopIfPopup, true);
+            document.removeEventListener("touchstart", stopIfPopup, true);
+        };
+    }, [mounted]);
+
+    if (!mounted) {
+        return (
+            <div className={className}>
+                <textarea
+                    defaultValue={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    style={{ minHeight: height }}
+                    className="w-full rounded border p-2"
+                />
+                {error && <InputError message={error} />}
+            </div>
+        );
+    }
+
+    return (
+        <div className={className}>
+            <style>{`
+                .tox-tinymce-aux, .tox-dialog, .moxman-window, .tam-assetmanager-root {
+                    z-index: 2147483646 !important;
+                    pointer-events: auto !important;
+                }
+                .tox.tox-fullscreen { z-index: 2147483645 !important; }
+            `}</style>
+
+            <Editor
+                apiKey="gpl"
+                tinymceScriptSrc="/vendor/tinymce/tinymce.min.js"
+                onInit={(_evt, editor) => (editorRef.current = editor)}
+                value={value}
+                onEditorChange={(content) => onChange(content)}
+                licenseKey="gpl"  // ✅ Type-safe
+                init={{
+                    base_url: '/vendor/tinymce',
+                    suffix: '.min',
+                    height,
+                    menubar: "file edit view insert format tools table help",
+                    plugins: [
+                        "advlist",
+                        "anchor",
+                        "autolink",
+                        "charmap",
+                        "code",
+                        "codesample",
+                        "directionality",
+                        "emoticons",
+                        "fullscreen",
+                        "help",
+                        "image",
+                        "importcss",
+                        "insertdatetime",
+                        "link",
+                        "lists",
+                        "media",
+                        "preview",
+                        "searchreplace",
+                        "table",
+                        "visualblocks",
+                        "visualchars",
+                        "wordcount",
+                    ],
+                    toolbar:
+                        "undo redo | blocks fontfamily fontsize | " +
+                        "bold italic underline strikethrough forecolor backcolor | " +
+                        "link image media table emoticons | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | code fullscreen preview | help",
+                    content_style: "body { font-family:Arial,sans-serif; line-height:1.5; }",
+                }}
+            />
+
+
+            {error && <InputError message={error} />}
+        </div>
+    );
+}
