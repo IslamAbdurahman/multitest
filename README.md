@@ -5,11 +5,11 @@
   <h3>The ultimate high-performance boilerplate to kickstart your next Modern Web App.</h3>
 
   <p>
-    <a href="https://github.com/islamabdurahman"><img src="https://img.shields.io/badge/Author-Islam_Abdurahman-2ea44f?style=for-the-badge&amp;logo=github" alt="Author" /></a>
-    <img src="https://img.shields.io/badge/Laravel-v12-FF2D20?style=for-the-badge&amp;logo=laravel" alt="Laravel" />
-    <img src="https://img.shields.io/badge/React-v19-%2320232a.svg?style=for-the-badge&amp;logo=react&amp;logoColor=%2361DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&amp;logo=php&amp;logoColor=white" alt="PHP" />
-    <img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=for-the-badge&amp;logo=tailwindcss" alt="TailwindCSS" />
+    <a href="https://github.com/islamabdurahman"><img src="https://img.shields.io/badge/Author-Islam_Abdurahman-2ea44f?style=for-the-badge&logo=github" alt="Author"></a>
+    <img src="https://img.shields.io/badge/Laravel-v12-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel">
+    <img src="https://img.shields.io/badge/React-v19-20232a?style=for-the-badge&logo=react&logoColor=61dafb" alt="React">
+    <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+    <img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss" alt="TailwindCSS">
   </p>
 </div>
 
