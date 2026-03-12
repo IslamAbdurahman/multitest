@@ -64,7 +64,7 @@ export default function AttemptPartAccordion({ attempt_parts }: PartAccordionPro
                                     <div className="mt-0.5 flex items-center gap-2">
                                         <CheckCircle2 className={`h-3 w-3 ${totalQuestions > 0 ? 'text-emerald-500' : 'text-slate-300'}`} />
                                         <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                                            {totalQuestions} {t('questions_answered')}
+                                            {totalQuestions} {t('attempt_details.questions_answered')}
                                         </p>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@ export default function AttemptPartAccordion({ attempt_parts }: PartAccordionPro
                                             <Info className="mt-0.5 h-5 w-5 shrink-0 text-indigo-500" />
                                             <div>
                                                 <p className="mb-1 text-[10px] font-black tracking-widest text-indigo-500 uppercase">
-                                                    {t('instructions')}
+                                                    {t('common.instructions')}
                                                 </p>
                                                 <p className="text-sm leading-relaxed font-medium text-slate-600 dark:text-slate-400">
                                                     {item.part.description}
@@ -121,7 +121,7 @@ export default function AttemptPartAccordion({ attempt_parts }: PartAccordionPro
                                     <div className="space-y-6">
                                         <div className="flex items-center gap-4">
                                             <span className="text-[10px] font-black tracking-[0.25em] whitespace-nowrap text-slate-400 uppercase">
-                                                {t('response_details')}
+                                                {t('attempt_details.response_details')}
                                             </span>
                                             <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
                                         </div>

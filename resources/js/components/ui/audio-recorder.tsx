@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Square, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import AudioEqualizer from '@/components/ui/audio-equalizer';
 
 interface AudioRecorderProps {
@@ -12,6 +13,7 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
     const [micAllowed, setMicAllowed] = useState<boolean | null>(null);
     const [recording, setRecording] = useState(false);
     const [hasRecorded, setHasRecorded] = useState(false);
+    const { t } = useTranslation();
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
@@ -22,11 +24,12 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             setMicAllowed(true);
+            setMicAllowed(true);
             stream.getTracks().forEach((t) => t.stop());
-            toast.success('Microphone found');
+            toast.success(t('audio_recorder.mic_found'));
         } catch {
             setMicAllowed(false);
-            toast.error('Microphone access denied');
+            toast.error(t('audio_recorder.mic_denied'));
         }
     };
 
@@ -58,7 +61,7 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
             mediaRecorder.start();
             setRecording(true);
         } catch (err) {
-            toast.error("Could not start recorder");
+            toast.error(t('audio_recorder.could_not_start'));
         }
     };
 
@@ -76,22 +79,22 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
                     className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold"
                 >
                     <Mic className="mr-2 h-4 w-4" />
-                    Verify Microphone
+                    {t('audio_recorder.verify_microphone')}
                 </Button>
             ) : !micAllowed ? (
                 <div className="flex items-center gap-3 text-red-600 bg-red-50 p-4 rounded-xl border border-red-100">
                     <MicOff className="h-5 w-5" />
-                    <p className="text-sm font-bold">Please enable microphone access in your browser.</p>
+                    <p className="text-sm font-bold">{t('audio_recorder.mic_access_denied_desc')}</p>
                 </div>
             ) : (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                            {recording ? 'Live Level' : 'Ready to Test'}
+                            {recording ? t('audio_recorder.live_level') : t('audio_recorder.ready_to_test')}
                         </span>
                         {hasRecorded && !recording && (
                             <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 uppercase">
-                                <CheckCircle2 className="h-3 w-3" /> Tested
+                                <CheckCircle2 className="h-3 w-3" /> {t('audio_recorder.tested')}
                             </div>
                         )}
                     </div>
@@ -101,7 +104,7 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
                         {recording ? (
                             <AudioEqualizer analyser={analyserRef.current} active={recording} />
                         ) : (
-                            <span className="text-xs font-medium text-slate-400 italic">Level monitor inactive</span>
+                            <span className="text-xs font-medium text-slate-400 italic">{t('audio_recorder.monitor_inactive')}</span>
                         )}
                     </div>
 
@@ -112,7 +115,7 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
                             className="w-full h-12 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-xl font-bold border border-indigo-100"
                         >
                             <Mic className="mr-2 h-4 w-4" />
-                            {hasRecorded ? 'Record Again' : 'Record Test Clip'}
+                            {hasRecorded ? t('audio_recorder.record_again') : t('audio_recorder.record_test_clip')}
                         </Button>
                     ) : (
                         <Button
@@ -121,7 +124,7 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
                             className="w-full h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold animate-pulse"
                         >
                             <Square className="mr-2 h-4 w-4 fill-white" />
-                            Stop Recording
+                            {t('audio_recorder.stop_recording')}
                         </Button>
                     )}
                 </div>

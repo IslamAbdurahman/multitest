@@ -77,7 +77,7 @@ export default function RegisterCard() {
                     {/* Phone */}
                     <div className="grid gap-1.5">
                         <Label htmlFor="phone" className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                            {t('phone')}
+                            {t('common.phone')}
                         </Label>
                         <Input
                             id="phone"
@@ -89,7 +89,7 @@ export default function RegisterCard() {
                             value={data.phone}
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
-                            placeholder="+998 00 000 00 00"
+                            placeholder={t('common.phone_placeholder')}
                         />
                         <InputError message={errors.phone} />
                     </div>

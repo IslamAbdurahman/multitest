@@ -4,7 +4,11 @@ namespace App\Services;
 
 use Gemini;
 use Gemini\Data\Blob;
+use Gemini\Data\GenerationConfig;
+use Gemini\Data\Schema;
 use Gemini\Enums\MimeType;
+use Gemini\Enums\DataType;
+use Gemini\Enums\ResponseMimeType;
 
 class GeminiAiService
 {
@@ -14,7 +18,11 @@ class GeminiAiService
 
     public function __construct()
     {
-        $this->client = Gemini::client(env('GEMINI_API_KEY'));
+        $apiKey = env('GEMINI_API_KEY');
+        if (empty($apiKey)) {
+            \Illuminate\Support\Facades\Log::error('GEMINI_API_KEY is not set in .env file');
+        }
+        $this->client = Gemini::client($apiKey ?? '');
     }
 
     public function evaluateEssay(string $taskPrompt, string $questionText, string $essayText): string
@@ -25,20 +33,33 @@ class GeminiAiService
         $promptText = "You are an IELTS examiner. Evaluate the following essay based on:
 1. Task Response, 2. Coherence & Cohesion, 3. Lexical Resource, 4. Grammatical Range & Accuracy.
 Give band scores (0–9) for each and overall, plus feedback 250 words.
-End with JSON: ```json {\"overall\": X} ```
 
 Task: {$taskPrompt}
 Question: {$questionText}
 Essay: {$essayText}";
 
         try {
-            // Using the newer generativeModel() method which is more stable across SDK updates
             $response = $this->client->generativeModel(model: $this->model)
+                ->withGenerationConfig(new GenerationConfig(
+                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                    responseSchema: new Schema(
+                        type: DataType::OBJECT,
+                        properties: [
+                            'task_response' => new Schema(type: DataType::NUMBER),
+                            'coherence_cohesion' => new Schema(type: DataType::NUMBER),
+                            'lexical_resource' => new Schema(type: DataType::NUMBER),
+                            'grammatical_accuracy' => new Schema(type: DataType::NUMBER),
+                            'overall' => new Schema(type: DataType::NUMBER),
+                            'feedback' => new Schema(type: DataType::STRING),
+                        ],
+                        required: ['overall', 'feedback']
+                    )
+                ))
                 ->generateContent($promptText);
 
             return $response->text();
         } catch (\Exception $e) {
-            return "Error: " . $e->getMessage();
+            return json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -46,7 +67,7 @@ Essay: {$essayText}";
     {
         try {
             $fullPath = $this->getPhysicalPath($relativePath);
-            if (!file_exists($fullPath)) return "File not found.";
+            if (!file_exists($fullPath)) return json_encode(['error' => "File not found."]);
 
             $mimeType = $this->getMimeType($fullPath);
 
@@ -61,7 +82,7 @@ Essay: {$essayText}";
 
             return $response->text();
         } catch (\Exception $e) {
-            return "Transcription Error: " . $e->getMessage();
+            return json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -69,17 +90,32 @@ Essay: {$essayText}";
     {
         $promptText = "You are an expert IELTS Speaking examiner. Evaluate:
 1. Fluency, 2. Lexical Resource, 3. Grammar, 4. Pronunciation.
-Provide scores (0–9) and JSON: ```json {\"overall\": X} ```
+Provide scores (0–9) and overall feedback.
 
 Question: {$questionText}
 Transcript: {$transcript}";
 
         try {
             $response = $this->client->generativeModel(model: $this->model)
+                ->withGenerationConfig(new GenerationConfig(
+                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                    responseSchema: new Schema(
+                        type: DataType::OBJECT,
+                        properties: [
+                            'fluency' => new Schema(type: DataType::NUMBER),
+                            'lexical_resource' => new Schema(type: DataType::NUMBER),
+                            'grammar' => new Schema(type: DataType::NUMBER),
+                            'pronunciation' => new Schema(type: DataType::NUMBER),
+                            'overall' => new Schema(type: DataType::NUMBER),
+                            'feedback' => new Schema(type: DataType::STRING),
+                        ],
+                        required: ['overall', 'feedback']
+                    )
+                ))
                 ->generateContent($promptText);
             return $response->text();
         } catch (\Exception $e) {
-            return "Evaluation Error: " . $e->getMessage();
+            return json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -87,7 +123,7 @@ Transcript: {$transcript}";
     {
         try {
             $fullPath = $this->getPhysicalPath($audioPath);
-            if (!file_exists($fullPath)) return "Error: File not found.";
+            if (!file_exists($fullPath)) return json_encode(['error' => "Error: File not found."]);
 
             $mimeType = $this->getMimeType($fullPath);
 
@@ -114,12 +150,6 @@ EVALUATION CRITERIA (Total: 0–75 points):
 - Grammar
 - Pronunciation
 
-SCORING GUIDELINES:
-- Fluency: smoothness, pauses, coherence
-- Vocabulary: range, accuracy, appropriateness
-- Grammar: correctness, complexity, sentence structure
-- Pronunciation: clarity, intelligibility, stress, intonation
-
 CEFR LEVEL MAPPING:
 - 0–15   → Below A1
 - 16–37  → A2
@@ -129,23 +159,23 @@ CEFR LEVEL MAPPING:
 
 QUESTION:
 {$question->textarea}
-
-FINAL OUTPUT RULES:
-1. First, return brief evaluations for:
-   - Fluency
-   - Vocabulary
-   - Grammar
-   - Pronunciation
-2. Then return ONLY the following JSON and nothing else:
-
-```json
-{
-  'score': X,
-  'level': 'Below A1/A2/B1/B2/C1'
-}
-
 ";
             $response = $this->client->generativeModel(model: $this->model)
+                ->withGenerationConfig(new GenerationConfig(
+                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                    responseSchema: new Schema(
+                        type: DataType::OBJECT,
+                        properties: [
+                            'fluency' => new Schema(type: DataType::STRING),
+                            'vocabulary' => new Schema(type: DataType::STRING),
+                            'grammar' => new Schema(type: DataType::STRING),
+                            'pronunciation' => new Schema(type: DataType::STRING),
+                            'score' => new Schema(type: DataType::NUMBER),
+                            'level' => new Schema(type: DataType::STRING),
+                        ],
+                        required: ['score', 'level']
+                    )
+                ))
                 ->generateContent([
                     $instruction,
                     new Blob(
@@ -156,7 +186,7 @@ FINAL OUTPUT RULES:
 
             return $response->text();
         } catch (\Exception $e) {
-            return "Evaluation Error: " . $e->getMessage();
+            return json_encode(['error' => $e->getMessage()]);
         }
     }
 

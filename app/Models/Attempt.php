@@ -35,6 +35,11 @@ class Attempt extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function scopeWithAiScoreAvg($query)
+    {
+        return $query->addSelect(\Illuminate\Support\Facades\DB::raw("aiScoreAvg(attempts.id, null) as ai_score_avg"));
+    }
+
     public function mock()
     {
         return $this->belongsTo(Mock::class, 'mock_id');

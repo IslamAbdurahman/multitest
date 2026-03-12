@@ -213,7 +213,7 @@ const MockTable = ({ searchData, ...mock }: MockTableProps) => {
             {/* Pagination */}
             <div className="flex flex-col items-center justify-between gap-4 rounded-[2.5rem] border border-slate-100 bg-white p-6 shadow-sm md:flex-row dark:border-slate-800 dark:bg-slate-900">
                 <div className="pl-4 text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">
-                    {t('showing', { from: mock.from, to: mock.to, total: mock.total })}
+                    {t('common.showing', { from: mock.from, to: mock.to, total: mock.total })}
                 </div>
                 <div className="flex items-center gap-2">
                     {mock.links.map((link, idx) => (

@@ -6,8 +6,10 @@ import React from "react";
 import Image from "next/image";
 import { MentorData } from "@/app/api/data";
 import { getImagePrefix } from "@/utils/util";
+import { useTranslation } from "react-i18next";
 
 const Mentor = () => {
+    const { t } = useTranslation();
 
     const settings = {
         dots: false,
@@ -42,7 +44,7 @@ const Mentor = () => {
     return (
         <section className="bg-deepSlate" id="mentor" >
             <div className='container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4 relative'>
-                <h2 className="text-midnight_text text-5xl font-semibold">Meet with our <br /> mentor.</h2>
+                <h2 className="text-midnight_text text-5xl font-semibold">{t('landing.mentor_title')}</h2>
 
                 <Slider {...settings}>
                     {MentorData.map((items, i) => (

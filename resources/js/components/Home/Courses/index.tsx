@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { Icon } from '@iconify/react';
@@ -6,6 +7,7 @@ import { Test } from '@/types';
 import CreateAttemptModal from '@/components/attempt/create-attempt-modal';
 
 const Courses: React.FC = () => {
+    const { t } = useTranslation();
     const [tests, setTests] = useState<Test[]>([]);
 
     const [sliderRef] = useKeenSlider<HTMLDivElement>({
@@ -72,19 +74,19 @@ const Courses: React.FC = () => {
                                 <div
                                     className="flex justify-between items-center py-6 border-b border-gray-200 dark:border-gray-700">
                                     <div className="flex items-center gap-4">{renderStars(5)}</div>
-                                    <h3 className="text-3xl font-medium text-gray-900 dark:text-white">Free</h3>
+                                    <h3 className="text-3xl font-medium text-gray-900 dark:text-white">{t('landing.free')}</h3>
                                 </div>
 
                                 <div className="flex justify-between pt-6">
                                     <div className="flex gap-2 items-center">
                                         <Icon icon="solar:notebook-minimalistic-outline"
                                               className="text-primary text-xl" />
-                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} steps</h3>
+                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} {t('landing.steps')}</h3>
                                     </div>
                                     <div className="flex gap-2 items-center">
                                         <Icon icon="solar:users-group-rounded-linear"
                                               className="text-primary text-xl" />
-                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} students</h3>
+                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} {t('landing.students')}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -120,17 +122,17 @@ const Courses: React.FC = () => {
 
                             <div className="flex justify-between items-center py-6 border-b border-gray-200 dark:border-gray-700">
                                 <div className="flex items-center gap-4">{renderStars(5)}</div>
-                                <h3 className="text-3xl font-medium text-gray-900 dark:text-white">Free</h3>
+                                <h3 className="text-3xl font-medium text-gray-900 dark:text-white">{t('landing.free')}</h3>
                             </div>
 
                             <div className="flex justify-between pt-6">
                                 <div className="flex gap-2 items-center">
                                     <Icon icon="solar:notebook-minimalistic-outline" className="text-primary text-xl" />
-                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} steps</h3>
+                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} {t('landing.steps')}</h3>
                                 </div>
                                 <div className="flex gap-2 items-center">
                                     <Icon icon="solar:users-group-rounded-linear" className="text-primary text-xl" />
-                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} students</h3>
+                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} {t('landing.students')}</h3>
                                 </div>
                             </div>
                         </div>

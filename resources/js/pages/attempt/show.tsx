@@ -30,26 +30,36 @@ export default function AttemptShow() {
                     <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-[100px]" />
                     <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/10 blur-[100px]" />
 
-                    <div className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-                        <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-indigo-300 uppercase backdrop-blur-md">
-                                <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
-                                {t('attempt_show.assessment_report')}
+                        <div className="flex flex-col gap-4 sm:flex-row lg:items-end">
+                            <div className="space-y-4">
+                                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-indigo-300 uppercase backdrop-blur-md">
+                                    <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
+                                    {t('attempt_show.assessment_report')}
+                                </div>
+                                <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+                                    {attempt?.mock?.name || attempt.test?.name}
+                                </h1>
+                                <p className="max-w-2xl text-lg font-medium text-slate-400 italic">
+                                    "{attempt.name}" — {t('attempt_show.performance_analysis')}.
+                                </p>
                             </div>
-                            <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
-                                {attempt?.mock?.name || attempt.test?.name}
-                            </h1>
-                            <p className="max-w-2xl text-lg font-medium text-slate-400 italic">
-                                "{attempt.name}" — {t('attempt_show.performance_analysis')}.
-                            </p>
-                        </div>
 
-                        {(isAdmin || isTeacher) && (
-                            <div className="shrink-0">
-                                <EvaluateAttemptModal attempt={attempt} />
+                            <div className="flex shrink-0 items-center gap-3">
+                                {attempt.score !== null && attempt.id && (
+                                    <a
+                                        href={route('attempt.certificate', { attempt: attempt.id })}
+                                        target="_blank"
+                                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-white/20"
+                                    >
+                                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        {t('attempt_show.download_pdf')}
+                                    </a>
+                                )}
+                                {(isAdmin || isTeacher) && <EvaluateAttemptModal attempt={attempt} />}
                             </div>
-                        )}
-                    </div>
+                        </div>
                 </div>
 
                 {/* 📊 SCORE & STATS GRID */}

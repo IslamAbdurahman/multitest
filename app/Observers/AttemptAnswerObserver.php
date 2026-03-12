@@ -21,9 +21,11 @@ class AttemptAnswerObserver
     /**
      * Handle the AttemptAnswer "updated" event.
      */
-    public function updating(AttemptAnswer $attemptAnswer): void
+    public function updated(AttemptAnswer $attemptAnswer): void
     {
-        //
+        if ($attemptAnswer->isDirty('audio_path') && $attemptAnswer->audio_path) {
+            EvaluateSpeakingJob::dispatch($attemptAnswer->id);
+        }
     }
 
     /**

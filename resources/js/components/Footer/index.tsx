@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
                         <Logo />
                         <p className="mt-6 max-w-sm text-base leading-relaxed text-slate-500 dark:text-slate-400">
                             <span className="font-bold text-slate-900 dark:text-white">{capitalizeDomain}</span> —{' '}
-                            {t('footer.description', 'The leading AI-powered platform for Multilevel Uzbekistan (CEFR) preparation.')}
+                            {t('footer.description')}
                         </p>
                         <div className="mt-8 flex items-center gap-5">
                             {socialLinks.map((social, idx) => (
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
                     {/* 🔗 Quick Links */}
                     <div className="col-span-1 lg:col-span-3">
                         <h3 className="mb-6 text-sm font-black tracking-widest text-slate-900 uppercase dark:text-white">
-                            {t('footer.quick_links', 'Quick Links')}
+                            {t('footer.quick_links')}
                         </h3>
                         <ul className="space-y-4">
                             {headerData.map((item, index) => (
@@ -70,14 +70,14 @@ const Footer: React.FC = () => {
                     {/* 📞 Contact Info */}
                     <div className="col-span-1 lg:col-span-4">
                         <h3 className="mb-6 text-sm font-black tracking-widest text-slate-900 uppercase dark:text-white">
-                            {t('footer.contact', 'Contact')}
+                            {t('footer.contact')}
                         </h3>
                         <div className="space-y-5">
                             <div className="flex items-start gap-4">
                                 <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400">
                                     <Icon icon="tabler:map-pin" className="text-xl" />
                                 </div>
-                                <span className="font-medium text-slate-600 dark:text-slate-400">{t('footer.location', 'Tashkent, Uzbekistan')}</span>
+                                <span className="font-medium text-slate-600 dark:text-slate-400">{t('footer.location')}</span>
                             </div>
 
                             <a href="tel:+998911157709" className="group flex items-center gap-4">
@@ -94,7 +94,7 @@ const Footer: React.FC = () => {
                                     <Icon icon="tabler:brand-telegram" className="text-xl" />
                                 </div>
                                 <span className="font-medium text-slate-600 transition-colors group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-white">
-                                    {t('footer.support_telegram', 'Support via Telegram')}
+                                    {t('footer.support_telegram')}
                                 </span>
                             </a>
                         </div>
@@ -105,14 +105,14 @@ const Footer: React.FC = () => {
                 <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-slate-100 pt-8 md:flex-row dark:border-slate-900">
                     <span className="text-center text-sm font-medium text-slate-400 dark:text-slate-500">
                         © {new Date().getFullYear()} <span className="font-bold text-slate-900 dark:text-slate-200">{capitalizeDomain}</span>.{' '}
-                        {t('footer.rights_reserved', 'All rights reserved.')}
+                        {t('footer.rights_reserved')}
                     </span>
                     <div className="flex gap-8 text-xs font-bold tracking-widest text-slate-400 uppercase">
                         <a href="#" className="transition-colors hover:text-indigo-600">
-                            {t('footer.privacy', 'Privacy Policy')}
+                            {t('footer.privacy')}
                         </a>
                         <a href="#" className="transition-colors hover:text-indigo-600">
-                            {t('footer.terms', 'Terms of Service')}
+                            {t('footer.terms')}
                         </a>
                     </div>
                 </div>

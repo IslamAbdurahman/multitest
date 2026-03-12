@@ -4,14 +4,31 @@ import StepTabs from '@/components/practice/StepTabs';
 import { AttemptPart } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { CloudUpload, Info, Mic, ShieldCheck } from 'lucide-react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast, Toaster } from 'sonner';
 
 export default function PracticeShow() {
     const { attempt_part } = usePage<{ attempt_part: AttemptPart }>().props;
     const { t } = useTranslation();
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                toast.warning(t('practice_show.anti_cheat_warning_title'), {
+                    description: t('practice_show.anti_cheat_warning_desc'),
+                    duration: 5000,
+                });
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, [t]);
+
     return (
         <AppShell>
+            <Toaster position="top-center" richColors />
             <Head title={`${attempt_part.part?.name || t('practice_show.part_label')} - CEFR Speaking`} />
 
             <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">

@@ -76,12 +76,12 @@ export default function Welcome() {
                                         <div className="flex gap-2">
                                             {mock.active && (
                                                 <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-emerald-700 uppercase dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                    Active
+                                                    {t('common.active')}
                                                 </span>
                                             )}
                                             {mock.open && (
                                                 <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:bg-blue-900/30 dark:text-blue-400">
-                                                    Open
+                                                    {t('common.open')}
                                                 </span>
                                             )}
                                         </div>
@@ -91,7 +91,7 @@ export default function Welcome() {
                                     <div className="mb-4">
                                         <h3 className="line-clamp-1 text-xl font-bold text-slate-900 dark:text-white">{mock.name}</h3>
                                         <p className="mt-2 line-clamp-2 min-h-[40px] text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                                            {mock.description || t('no_description')}
+                                            {mock.description || t('common.no_description')}
                                         </p>
                                     </div>
 

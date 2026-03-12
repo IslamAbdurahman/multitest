@@ -11,6 +11,76 @@
         "uz": "O'zbekcha",
         "ru": "Русский"
     },
+    "common": {
+        "active": "Active",
+        "open": "Open",
+        "no_description": "No description available",
+        "seconds_short": "s",
+        "actions": "Actions",
+        "email_placeholder": "email@example.com",
+        "phone_placeholder": "+998 00 000 00 00",
+        "name": "Name",
+        "phone": "Phone Number",
+        "email": "Email",
+        "address": "Address",
+        "comment": "Comment",
+        "status": "Status",
+        "date": "Date",
+        "amount": "Amount",
+        "hour": "Hour",
+        "minute": "Minute",
+        "create": "Create",
+        "save": "Save",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "clear": "Clear",
+        "search": "Search",
+        "filter": "Filter",
+        "action": "Action",
+        "excel": "Excel",
+        "all": "All",
+        "search_placeholder": "Search for records...",
+        "per_page": "Results per page",
+        "inactive": "Inactive",
+        "closed": "Closed",
+        "description": "Description",
+        "upload_audio": "Click or drag to upload audio",
+        "processing": "Processing...",
+        "ready": "Ready",
+        "preparing": "Preparing",
+        "yes": "Yes",
+        "no": "No",
+        "updating": "Updating...",
+        "replace_audio_optional": "Replace audio (optional)",
+        "instructions": "Instructions",
+        "saving": "Saving...",
+        "back_to_library": "Back to Library",
+        "save_changes": "Save Changes",
+        "items_total": "items total",
+        "user": "User",
+        "role": "Role",
+        "full_name": "Full Name",
+        "edit": "Edit",
+        "public": "Public",
+        "private": "Private",
+        "code": "Code",
+        "exam": "Exam",
+        "passive": "passive",
+        "showing": "Showing {{from}} to {{to}} of {{total}} results",
+        "student": "Student"
+    },
+    "landing": {
+        "trusted_companies": "Trusted by companies of all sizes",
+        "newsletter_title": "Newsletter.",
+        "newsletter_description": "Subscribe to our newsletter for discounts, promos, and much more.",
+        "newsletter_placeholder": "Enter your email address",
+        "mentor_title": "Meet with our mentor.",
+        "courses_title": "Courses",
+        "free": "Free",
+        "steps": "steps",
+        "students": "students"
+    },
     "nav": {
         "home": "Home",
         "tests": "Practice Tests",
@@ -21,7 +91,19 @@
         "users": "Users"
     },
     "navigation": {
-        "close": "Close"
+        "close": "Close",
+        "nav_menu": "Navigation Menu"
+    },
+    "hero": {
+        "badge": "Get your first Multilevel (CEFR) simulation",
+        "title": "Multilevel Speaking on a real simulator.",
+        "ai_title": "Speaking Evaluated by AI",
+        "ai_alt": "AI powered",
+        "description": "Experience the official DTM/UzBMB test format, master every section, and boost your CEFR level before the exam.",
+        "feature_levels": "B1 to C1 levels",
+        "feature_instant_score": "Instant score report",
+        "feature_environment": "Exam-like environment",
+        "hero_alt": "Multilevel preparation"
     },
     "auth": {
         "sign_in": "Sign In",
@@ -130,6 +212,14 @@
         "settings": "Settings",
         "logout": "Log out"
     },
+    "verify_email": {
+        "title": "Verify email",
+        "description": "Please verify your email address by clicking on the link we just emailed to you.",
+        "header": "Email verification",
+        "link_sent": "A new verification link has been sent to the email address you provided during registration.",
+        "resend": "Resend verification email",
+        "logout": "Log out"
+    },
     "sidebar": {
         "dashboard": "Dashboard",
         "profile": "Profile",
@@ -173,6 +263,7 @@
         "score": "Score",
         "date_started": "Date Started",
         "time_started": "Time Started",
+        "no_attempts_found": "No Attempts Found",
         "track_and_review_student_performance": "Visualizing band scores across different sections over time."
     },
     "question_details": {
@@ -212,62 +303,7 @@
         "assign_tests": "Assign Tests",
         "assign_tests_description": "Select practice tests to include in this mock exam bundle."
     },
-    "common": {
-        "name": "Name",
-        "phone": "Phone Number",
-        "email": "Email",
-        "address": "Address",
-        "comment": "Comment",
-        "status": "Status",
-        "date": "Date",
-        "amount": "Amount",
-        "hour": "Hour",
-        "minute": "Minute",
-        "create": "Create",
-        "save": "Save",
-        "update": "Update",
-        "delete": "Delete",
-        "cancel": "Cancel",
-        "clear": "Clear",
-        "search": "Search",
-        "filter": "Filter",
-        "action": "Action",
-        "excel": "Excel",
-        "all": "All",
-        "search_placeholder": "Search for records...",
-        "per_page": "Results per page",
-        "active": "Active",
-        "open": "Open",
-        "inactive": "Inactive",
-        "closed": "Closed",
-        "description": "Description",
-        "upload_audio": "Click or drag to upload audio",
-        "processing": "Processing...",
-        "ready": "Ready",
-        "preparing": "Preparing",
-        "yes": "Yes",
-        "no": "No",
-        "updating": "Updating...",
-        "replace_audio_optional": "Replace audio (optional)",
-        "instructions": "Instructions",
-        "saving": "Saving...",
-        "no_description": "No description provided.",
-        "showing": "Showing {{from}} to {{to}} of {{total}} results",
-        "back_to_library": "Back to Library",
-        "save_changes": "Save Changes",
-        "items_total": "items total",
-        "user": "User",
-        "role": "Role",
-        "actions": "Actions",
-        "pagination_info": "Showing {{from}} to {{to}} of {{total}} results",
-        "full_name": "Full Name",
-        "edit": "Edit",
-        "public": "Public",
-        "private": "Private",
-        "code": "Code",
-        "exam": "Exam",
-        "passive": "passive"
-    },
+
     "success": {
         "found": "Found successfully",
         "created": "Created successfully",
@@ -282,7 +318,6 @@
         "evaluation_failed": "Failed to submit evaluation. Please check your inputs.",
         "browser_audio_unsupported": "Your browser does not support the audio element."
     },
-    "showing": "Showing {{from}} to {{to}} of {{total}} results",
     "mock_table": {
         "title": "Mock Exams",
         "description": "Browse and manage the latest available IELTS mock tests.",
@@ -314,6 +349,41 @@
         "record_to_unlock": "Record a test audio to unlock the start button",
         "good_luck": "Good luck! Redirecting to your exam..."
     },
+    "audio_recorder": {
+        "verify_microphone": "Verify Microphone",
+        "mic_found": "Microphone found",
+        "mic_denied": "Microphone access denied",
+        "mic_access_denied_desc": "Please enable microphone access in your browser.",
+        "could_not_start": "Could not start recorder",
+        "live_level": "Live Level",
+        "ready_to_test": "Ready to Test",
+        "tested": "Tested",
+        "monitor_inactive": "Level monitor inactive",
+        "record_again": "Record Again",
+        "record_test_clip": "Record Test Clip",
+        "stop_recording": "Stop Recording"
+    },
+    "forgot_password": {
+        "title": "Forgot password",
+        "description": "Enter your email to receive a password reset link",
+        "email_label": "Email address",
+        "submit": "Email password reset link",
+        "return_to": "Or, return to",
+        "login": "log in"
+    },
+    "reset_password": {
+        "title": "Reset password",
+        "description": "Please enter your new password below",
+        "email": "Email",
+        "password": "Password",
+        "confirm_password": "Confirm password",
+        "submit": "Reset password"
+    },
+    "confirm_password": {
+        "title": "Confirm your password",
+        "description": "This is a secure area of the application. Please confirm your password before continuing.",
+        "submit": "Confirm password"
+    },
     "attempt_details": {
         "questions_answered": "Questions Answered",
         "part_score": "Part Score",
@@ -328,7 +398,13 @@
         "audio_not_supported": "Your browser does not support the audio element.",
         "no_audio": "No audio response recorded",
         "transcript": "Transcript",
-        "ai_analysis": "AI Analysis & Feedback"
+        "ai_analysis": "AI Analysis & Feedback",
+        "fluency": "Fluency",
+        "vocabulary": "Vocabulary",
+        "grammar": "Grammar",
+        "pronunciation": "Pronunciation",
+        "estimated_level": "Estimated Level",
+        "general_feedback": "General Feedback"
     },
     "evaluation": {
         "evaluate": "Evaluate",
@@ -407,7 +483,8 @@
         "final_score": "Final Score",
         "started_at": "Started At",
         "finished_at": "Finished At",
-        "not_available": "N/A"
+        "not_available": "N/A",
+        "download_pdf": "Download PDF"
     },
     "practice": {
         "speaking_session_active": "Speaking Session Active",
@@ -432,7 +509,9 @@
         "secure": "Secure",
         "pro_tip": "Pro Tip",
         "speaking_exam_hint_text": "Speak clearly and at a natural pace. If you make a mistake, don't worry—just correct yourself and keep going.",
-        "part_label": "Part"
+        "part_label": "Part",
+        "anti_cheat_warning_title": "Anti-Cheat Warning",
+        "anti_cheat_warning_desc": "Please stay on the exam page to ensure your progress is recorded correctly. Leaving or switching tabs may be flagged."
     },
     "question_player": {
         "part_label": "Part",
@@ -487,5 +566,13 @@
         "seo_title": "Multitest - IELTS & CEFR (Multilevel) Exam Simulator | UzBMB Prep with AI",
         "seo_description": "Master your IELTS & CEFR exams with Uzbekistan's premier computerized simulator. Experience the real UzBMB environment, get AI-powered scoring for Speaking, and track your progress online.",
         "seo_keywords": "multitest, ielts mock test, cefr simulator uzbekistan, uzbmb exam preparation, computer-based ielts, multilevel speaking practice, AI ielts feedback, online exam simulator, ielts uzbekistan"
+    },
+    "skills": {
+        "skills_analysis": "Skills Analysis",
+        "fluency": "Fluency",
+        "vocabulary": "Vocabulary",
+        "grammar": "Grammar",
+        "pronunciation": "Pronunciation",
+        "overall_level": "Overall Level"
     }
 }

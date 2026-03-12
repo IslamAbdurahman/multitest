@@ -1,4 +1,5 @@
 import AttemptsChart from '@/components/attempt/attempt-chart';
+import SkillsRadarChart from '@/components/dashboard/SkillsRadarChart';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, User } from '@/types';
@@ -86,7 +87,7 @@ export default function Dashboard() {
                                 <h3 className="truncate font-bold text-slate-900 dark:text-white">{user.name}</h3>
                                 <p className="truncate text-xs text-slate-500">{user.email}</p>
                                 <span className="mt-1 w-fit rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-600 uppercase dark:bg-slate-800 dark:text-slate-400">
-                                    Student
+                                    {t('common.student')}
                                 </span>
                             </div>
                         </CardContent>
@@ -94,8 +95,13 @@ export default function Dashboard() {
                 </div>
 
                 {/* 📈 Charts Section */}
-                <div className="mt-2 transition-all">
-                    <AttemptsChart attempts={user.attempts ?? []} />
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+                    <div className="lg:col-span-8">
+                        <AttemptsChart attempts={user.attempts ?? []} />
+                    </div>
+                    <div className="lg:col-span-4">
+                        <SkillsRadarChart />
+                    </div>
                 </div>
             </div>
         </AppLayout>

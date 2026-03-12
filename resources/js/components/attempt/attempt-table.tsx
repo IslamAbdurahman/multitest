@@ -1,7 +1,7 @@
 import EvaluateAttemptModal from '@/components/attempt/evaluate-attempt-modal';
 import DeleteItemModal from '@/components/delete-item-modal';
 import { type AttemptPaginate, Auth, SearchData } from '@/types';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { BookOpen, Calendar, ChevronLeft, ChevronRight, Clock, Info, Star, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -20,15 +20,15 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
     const { delete: deleteAttempt, reset, clearErrors } = useForm();
 
     const handleDelete = (id: number) => {
-        deleteAttempt(route('attempt.destroy', id), {
+        deleteAttempt(route('attempt.destroy', { attempt: id }), {
             preserveScroll: true,
             onSuccess: () => {
                 reset();
                 clearErrors();
-                toast.success(t('deleted_successfully'));
+                toast.success(t('success.deleted'));
             },
             onError: (err) => {
-                toast.error(err?.error || t('delete_failed'));
+                toast.error(err?.error || t('error.delete_failed'));
             },
         });
     };
@@ -42,11 +42,11 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                         <thead className="bg-slate-50/50 text-[10px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/50">
                             <tr>
                                 <th className="px-6 py-5">#</th>
-                                <th className="px-6 py-5">{t('student')}</th>
-                                <th className="px-6 py-5">{t('exam_details')}</th>
-                                <th className="px-6 py-5">{t('timeline')}</th>
-                                <th className="px-6 py-5 text-center">{t('performance')}</th>
-                                <th className="px-6 py-5 text-right">{t('actions')}</th>
+                                <th className="px-6 py-5">{t('exam_attempts.student')}</th>
+                                <th className="px-6 py-5">{t('exam_attempts.details')}</th>
+                                <th className="px-6 py-5">{t('exam_attempts.timeline')}</th>
+                                <th className="px-6 py-5 text-center">{t('exam_attempts.performance')}</th>
+                                <th className="px-6 py-5 text-right">{t('common.actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
@@ -55,7 +55,11 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                     const globalIndex = (attempt.current_page - 1) * attempt.per_page + index + 1;
 
                                     return (
-                                        <tr key={item.id} className="group transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                                        <tr 
+                                            key={item.id} 
+                                            className="group cursor-pointer transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30"
+                                            onClick={() => item.id && router.get(route('attempt.show', { attempt: item.id }))}
+                                        >
                                             <td className="px-6 py-4">
                                                 <span className="font-black text-slate-300 dark:text-slate-600">
                                                     {globalIndex.toString().padStart(2, '0')}
@@ -63,7 +67,11 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                             </td>
 
                                             <td className="px-6 py-4">
-                                                <Link href={route('attempt.show', item.id)} className="group/user flex items-center gap-3">
+                                                <Link 
+                                                    href={item.id ? route('attempt.show', { attempt: item.id }) : '#'} 
+                                                    className="group/user flex items-center gap-3"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
                                                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors group-hover/user:bg-indigo-100 group-hover/user:text-indigo-600 dark:bg-slate-800 dark:text-slate-400">
                                                         <User className="h-5 w-5" />
                                                     </div>
@@ -94,12 +102,12 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                 <div className="space-y-1 text-[11px] font-medium">
                                                     <div
                                                         className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"
-                                                        title={t('date_started')}
+                                                        title={t('exam_attempts.date_started')}
                                                     >
                                                         <Calendar className="h-3 w-3" />
                                                         {new Date(item.started_at).toLocaleDateString()}
                                                     </div>
-                                                    <div className="flex items-center gap-1.5 text-slate-400" title={t('time_started')}>
+                                                    <div className="flex items-center gap-1.5 text-slate-400" title={t('exam_attempts.time_started')}>
                                                         <Clock className="h-3 w-3" />
                                                         {new Date(item.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </div>
@@ -120,11 +128,11 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                             ? Number(item.score.toFixed(2))
                                                             : item?.ai_score_avg != null
                                                               ? Number(item.ai_score_avg.toFixed(2))
-                                                              : t('pending')}
+                                                              : t('exam_attempts.pending')}
                                                     </div>
                                                     {item.review && (
                                                         <span className="text-[9px] font-black tracking-tighter text-indigo-500/60 uppercase">
-                                                            {t('reviewed')}
+                                                            {t('exam_attempts.reviewed')}
                                                         </span>
                                                     )}
                                                 </div>
@@ -133,7 +141,10 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
                                                     {(isAdmin || isTeacher) && (
-                                                        <div className="flex items-center gap-2 rounded-2xl bg-slate-50 p-1.5 dark:bg-slate-800/50">
+                                                        <div 
+                                                            className="flex items-center gap-2 rounded-2xl bg-slate-50 p-1.5 dark:bg-slate-800/50"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                        >
                                                             <EvaluateAttemptModal attempt={item} />
                                                             <div className="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
                                                             <DeleteItemModal item={item} onDelete={handleDelete} />
@@ -149,7 +160,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                     <td colSpan={6} className="px-6 py-20 text-center">
                                         <div className="flex flex-col items-center justify-center text-slate-400">
                                             <Info className="mb-2 h-10 w-10 opacity-20" />
-                                            <p className="text-xs font-black tracking-widest uppercase">No Attempts Found</p>
+                                            <p className="text-xs font-black tracking-widest uppercase">{t('exam_attempts.no_attempts_found')}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -162,7 +173,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
             {/* 📟 PAGINATION */}
             <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-slate-50 p-4 md:flex-row dark:bg-slate-900/50">
                 <div className="pl-4 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                    {t('showing', {
+                    {t('common.showing', {
                         from: attempt.from || 0,
                         to: attempt.to || 0,
                         total: attempt.total,

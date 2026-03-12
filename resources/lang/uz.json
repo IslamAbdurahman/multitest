@@ -11,6 +11,74 @@
         "uz": "O'zbekcha",
         "ru": "Русский"
     },
+    "common": {
+        "active": "Faol",
+        "open": "Ochiq",
+        "no_description": "Tavsif mavjud emas",
+        "seconds_short": "s",
+        "actions": "Harakatlar",
+        "email_placeholder": "email@example.com",
+        "phone_placeholder": "+998 00 000 00 00",
+        "name": "Ism",
+        "phone": "Telefon raqami",
+        "email": "Email",
+        "address": "Manzil",
+        "comment": "Izoh",
+        "status": "Holat",
+        "date": "Sana",
+        "amount": "Miqdor",
+        "hour": "Soat",
+        "minute": "Daqiqa",
+        "create": "Yaratish",
+        "save": "Saqlash",
+        "update": "Yangilash",
+        "delete": "O'chirish",
+        "cancel": "Bekor qilish",
+        "clear": "Tozalash",
+        "search": "Qidiruv",
+        "filter": "Filtr",
+        "action": "Harakat",
+        "excel": "Excel",
+        "all": "Barchasi",
+        "search_placeholder": "Qidirish...",
+        "per_page": "Sahifadagi natijalar",
+        "inactive": "Nofaol",
+        "closed": "Yopiq",
+        "description": "Tavsif",
+        "upload_audio": "Audio yuklash uchun bosing yoki tortib keling",
+        "processing": "Ishlov berilmoqda...",
+        "ready": "Tayyor",
+        "preparing": "Tayyorlanmoqda",
+        "yes": "Ha",
+        "no": "Yo'q",
+        "updating": "Yangilanmoqda...",
+        "replace_audio_optional": "Audioni almashtirish (ixtiyoriy)",
+        "instructions": "Ko'rsatmalar",
+        "saving": "Saqlanmoqda...",
+        "back_to_library": "Kutubxonaga qaytish",
+        "save_changes": "O'zgarishlarni saqlash",
+        "items_total": "jami elementlar",
+        "user": "Foydalanuvchi",
+        "role": "Rol",
+        "full_name": "To'liq ism",
+        "edit": "Tahrirlash",
+        "public": "Ochiq",
+        "private": "Shaxsiy",
+        "exam": "Imtihon",
+        "passive": "passiv",
+        "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda"
+    },
+    "landing": {
+        "trusted_companies": "Barcha o'lchamdagi kompaniyalar tomonidan ishonch bildirilgan",
+        "newsletter_title": "Yangiliklar",
+        "newsletter_description": "Chegirmalar, promo-kodlar va boshqalar uchun yangiliklarimizga obuna bo'ling.",
+        "newsletter_placeholder": "Elektron pochta manzilingizni kiriting",
+        "mentor_title": "Bizning mentorlarimiz bilan tanishing.",
+        "courses_title": "Kurslar",
+        "free": "Bepul",
+        "steps": "qadam",
+        "students": "tarafdor"
+    },
     "nav": {
         "home": "Bosh sahifa",
         "tests": "Amaliyot testlari",
@@ -20,7 +88,19 @@
         "test_details": "Test tafsilotlari"
     },
     "navigation": {
-        "close": "Yopish"
+        "close": "Yopish",
+        "nav_menu": "Navigatsiya menyusi"
+    },
+    "hero": {
+        "badge": "Birinchi Multilevel (CEFR) simulyatsiyasini oling",
+        "title": "Haqiqiy simulyatorda Multilevel Speaking.",
+        "ai_title": "Speaking AI tomonidan baholanadi",
+        "ai_alt": "AI bilan ishlaydi",
+        "description": "Rasmiy DTM/UzBMB test formatini his qiling, har bir bo'limni o'zlashtiring va imtihondan oldin CEFR darajangizni oshiring.",
+        "feature_levels": "B1 dan C1 gacha bo'lgan darajalar",
+        "feature_instant_score": "Lahzali ball hisoboti",
+        "feature_environment": "Imtihondagi kabi muhit",
+        "hero_alt": "Multilevel tayyorgarligi"
     },
     "auth": {
         "sign_in": "Kirish",
@@ -128,6 +208,14 @@
         "settings": "Sozlamalar",
         "logout": "Chiqish"
     },
+    "verify_email": {
+        "title": "Elektron pochtani tasdiqlash",
+        "description": "Iltimos, biz sizga yuborgan havolani bosish orqali elektron pochta manzilingizni tasdiqlang.",
+        "header": "Elektron pochtani tasdiqlash",
+        "link_sent": "Ro'yxatdan o'tish paytida ko'rsatilgan elektron pochta manzilingizga yangi tasdiqlash havolasi yuborildi.",
+        "resend": "Tasdiqlash xatini qayta yuborish",
+        "logout": "Chiqish"
+    },
     "sidebar": {
         "dashboard": "Boshqaruv paneli",
         "profile": "Profil",
@@ -171,6 +259,7 @@
         "score": "Ball",
         "date_started": "Boshlangan sana",
         "time_started": "Boshlangan vaqt",
+        "no_attempts_found": "Urinishlar topilmadi",
         "track_and_review_student_performance": "Bo‘limlar bo‘yicha ballarni vaqt davomida kuzatish va tahlil qilish."
     },
     "question_details": {
@@ -210,59 +299,7 @@
         "assign_tests": "Testlarni biriktirish",
         "assign_tests_description": "Ushbu mock imtihon to'plamiga kiritiladigan testlarni tanlang."
     },
-    "common": {
-        "name": "Ism",
-        "phone": "Telefon raqami",
-        "email": "Email",
-        "address": "Manzil",
-        "comment": "Izoh",
-        "status": "Holat",
-        "date": "Sana",
-        "amount": "Miqdor",
-        "hour": "Soat",
-        "minute": "Daqiqa",
-        "create": "Yaratish",
-        "save": "Saqlash",
-        "update": "Yangilash",
-        "delete": "O'chirish",
-        "cancel": "Bekor qilish",
-        "clear": "Tozalash",
-        "search": "Qidiruv",
-        "filter": "Filtr",
-        "action": "Harakat",
-        "excel": "Excel",
-        "all": "Barchasi",
-        "search_placeholder": "Qidirish...",
-        "per_page": "Sahifadagi natijalar",
-        "active": "Faol",
-        "open": "Ochiq",
-        "inactive": "Nofaol",
-        "closed": "Yopiq",
-        "description": "Tavsif",
-        "upload_audio": "Audio yuklash uchun bosing yoki tortib keling",
-        "processing": "Ishlov berilmoqda...",
-        "ready": "Tayyor",
-        "preparing": "Tayyorlanmoqda",
-        "yes": "Ha",
-        "no": "Yo'q",
-        "updating": "Yangilanmoqda...",
-        "replace_audio_optional": "Audioni almashtirish (ixtiyoriy)",
-        "instructions": "Ko'rsatmalar",
-        "saving": "Saqlanmoqda...",
-        "no_description": "Tavsif berilmagan.",
-        "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
-        "back_to_library": "Kutubxonaga qaytish",
-        "save_changes": "O'zgarishlarni saqlash",
-        "items_total": "jami elementlar",
-        "user": "Foydalanuvchi",
-        "role": "Rol",
-        "actions": "Harakatlar",
-        "pagination_info": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
-        "full_name": "To'liq ism",
-        "edit": "Tahrirlash",
-        "public": "Ochiq",
-        "private": "Shaxsiy"
-    },
+
     "success": {
         "created": "Muvaffaqiyatli yaratildi",
         "updated": "Muvaffaqiyatli yangilandi",
@@ -276,7 +313,6 @@
         "evaluation_failed": "Baholashni yuborib bo'lmadi. Ma'lumotlarni tekshiring.",
         "browser_audio_unsupported": "Sizning brauzeringiz audio elementni qo'llab-quvvatlamaydi."
     },
-    "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
     "mock_table": {
         "title": "Mock imtihonlari",
         "description": "Mavjud so'nggi IELTS mock testlarini ko'ring va boshqaring.",
@@ -308,6 +344,41 @@
         "record_to_unlock": "Boshlash tugmasini ochish uchun sinov audiosini yozing",
         "good_luck": "Omad yor bo'lsin! Imtihonga yo'naltirilmoqda..."
     },
+    "audio_recorder": {
+        "verify_microphone": "Mikrofonni tekshirish",
+        "mic_found": "Mikrofon topildi",
+        "mic_denied": "Mikrofon ruxsati rad etildi",
+        "mic_access_denied_desc": "Iltimos, brauzeringizda mikrofondan foydalanishga ruxsat bering.",
+        "could_not_start": "Yozuvni boshlab bo'lmadi",
+        "live_level": "Jonli daraja",
+        "ready_to_test": "Tekshirishga tayyor",
+        "tested": "Tekshirildi",
+        "monitor_inactive": "Daraja monitori faol emas",
+        "record_again": "Qayta yozish",
+        "record_test_clip": "Sinov klipini yozish",
+        "stop_recording": "Yozishni to'xtatish"
+    },
+    "forgot_password": {
+        "title": "Parolni unutdingizmi?",
+        "description": "Parolni tiklash havolasini olish uchun email manzilingizni kiriting",
+        "email_label": "Email manzili",
+        "submit": "Parolni tiklash havolasini yuborish",
+        "return_to": "Yoki, qaytish:",
+        "login": "kirish"
+    },
+    "reset_password": {
+        "title": "Parolni yangilash",
+        "description": "Iltimos, quyida yangi parolingizni kiriting",
+        "email": "Email",
+        "password": "Parol",
+        "confirm_password": "Parolni tasdiqlang",
+        "submit": "Parolni yangilash"
+    },
+    "confirm_password": {
+        "title": "Parolni tasdiqlang",
+        "description": "Bu ilovaning xavfsiz qismi. Iltimos, davom etishdan oldin parolingizni tasdiqlang.",
+        "submit": "Parolni tasdiqlash"
+    },
     "attempt_details": {
         "questions_answered": "Javob berilgan savollar",
         "part_score": "Bo'lim balli",
@@ -322,7 +393,13 @@
         "audio_not_supported": "Brauzeringiz audioni qo'llab-quvvatlamaydi.",
         "no_audio": "Audio javob yozilmagan",
         "transcript": "Transkript",
-        "ai_analysis": "AI tahlili va fikr-mulohazasi"
+        "ai_analysis": "AI tahlili va fikr-mulohazasi",
+        "fluency": "Ravonlik (Fluency)",
+        "vocabulary": "Lug'at boyligi (Vocabulary)",
+        "grammar": "Grammatika (Grammar)",
+        "pronunciation": "Talaffuz (Pronunciation)",
+        "estimated_level": "Taxminiy daraja",
+        "general_feedback": "Umumiy fikr-mulohaza"
     },
     "evaluation": {
         "evaluate": "Baholash",
@@ -400,7 +477,8 @@
         "final_score": "Yakuniy ball",
         "started_at": "Boshlangan vaqt",
         "finished_at": "Tugallangan vaqt",
-        "not_available": "Mavjud emas"
+        "not_available": "Mavjud emas",
+        "download_pdf": "PDF yuklab olish"
     },
     "practice": {
         "speaking_session_active": "Speaking sessiyasi faol",
@@ -425,7 +503,9 @@
         "secure": "Xavfsiz",
         "pro_tip": "Foydali maslahat",
         "speaking_exam_hint_text": "Aniq va tabiiy tezlikda gapiring. Agar xato qilsangiz, xavotir olmang — shunchaki tuzating va davom eting.",
-        "part_label": "Qism"
+        "part_label": "Qism",
+        "anti_cheat_warning_title": "Anti-Cheat ogohlantirishi",
+        "anti_cheat_warning_desc": "Iltimos, natijangiz to'g'ri yozib olinishi uchun imtihon sahifasida qoling. Tabni almashtirish yoki sahifadan chiqish holatlari qayd etilishi mumkin."
     },
     "question_player": {
         "part_label": "Qism",
@@ -442,7 +522,14 @@
         "phase_preparing": "Tayyorgarlik",
         "phase_answering": "Javob berish",
         "processing": "Bo'limga ishlov berilmoqda...",
-        "mic_error": "Mikrofonga ruxsat talab qilinadi."
+        "mic_error": "Mikrofonga ruxsat talab qilinadi.",
+        "saving_results": "Yakunlanmoqda",
+        "phase_saving": "Jarayonni saqlash",
+        "uploading_title": "Javoblaringiz qayta ishlanmoqda",
+        "uploading_desc": "Iltimos, audio yozuvlar yuklanguncha kuting. Bu biroz vaqt olishi mumkin.",
+        "uploading_live": "Yuklanmoqda...",
+        "status_uploading": "Serverga saqlanmoqda",
+        "upload_active": "Ma'lumotlar uzatilmoqda"
     },
     "search_form": {
         "search": "Qidirish...",
@@ -468,5 +555,13 @@
         "seo_title": "Multitest - IELTS va CEFR (Multilevel) Simulyatori | UzBMB Imtihonlariga Tayyorgarlik",
         "seo_description": "O'zbekistondagi birinchi AI tizimli IELTS va CEFR (Multilevel) simulyatori. Haqiqiy UzBMB muhitida mock testlar topshiring, Speaking va Writing uchun sun'iy intellekt tahlilini oling.",
         "seo_keywords": "multitest, ielts mock test uzbekistan, cefr mock test, multilevel imtihon, uzbmb simulator, dtm mock test, ingliz tili imtihon, speaking practice, ielts online simulator, farg'ona o'quv markazlari, ielts tayyorgarlik"
+    },
+    "skills": {
+        "skills_analysis": "Ko'nikmalar tahlili",
+        "fluency": "Ravonlik",
+        "vocabulary": "Lug'at boyligi",
+        "grammar": "Grammatika",
+        "pronunciation": "Talaffuz",
+        "overall_level": "Umumiy daraja"
     }
 }

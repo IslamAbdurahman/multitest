@@ -30,7 +30,7 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
     ];
 
     const datasets = partConfig.map((config, c_index) => ({
-        label: config.key,
+        label: `${t('practice_show.part_label')} ${config.key.split(' ')[1]}`,
         data: attempts.map((a) => a.attempt_parts?.[c_index]?.ai_score_avg ?? 0),
         backgroundColor: `rgba(${config.color}, 0.8)`,
         borderRadius: 6,

@@ -1,3 +1,4 @@
+import AudioWaveform from '@/components/AudioWaveform';
 import { AttemptAnswer } from '@/types';
 import { AlertCircle, BrainCircuit, Clock, FileText, Mic, Sparkles, Volume2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -34,12 +35,12 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                                     <div className="flex gap-3">
                                         <Badge
                                             icon={<Clock className="h-3 w-3" />}
-                                            label={`${item.question?.ready_second}s`}
+                                            label={`${item.question?.ready_second}${t('common.seconds_short')}`}
                                             title={t('response_card.preparation_time')}
                                         />
                                         <Badge
                                             icon={<Mic className="h-3 w-3" />}
-                                            label={`${item.question?.answer_second}s`}
+                                            label={`${item.question?.answer_second}${t('common.seconds_short')}`}
                                             title={t('response_card.speaking_time')}
                                         />
                                     </div>
@@ -70,11 +71,8 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
 
                                 {/* Audio Player */}
                                 {item.audio_path ? (
-                                    <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-                                        <audio preload="none" controls className="h-10 w-full focus:outline-none">
-                                            <source src={item.audio_path} type="audio/mpeg" />
-                                            {t('response_card.audio_not_supported')}
-                                        </audio>
+                                    <div className="mb-6">
+                                        <AudioWaveform audioUrl={item.audio_path} />
                                     </div>
                                 ) : (
                                     <div className="mb-6 flex h-16 items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 bg-white/50 text-xs font-bold text-slate-400 dark:border-slate-800 dark:bg-slate-950/50">
@@ -103,10 +101,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                                                 <BrainCircuit className="h-3 w-3" />
                                                 {t('response_card.ai_analysis')}
                                             </div>
-                                            <div className="relative overflow-hidden rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50/50 to-white p-4 text-sm leading-relaxed text-purple-900/80 shadow-sm dark:border-purple-900/20 dark:from-purple-900/10 dark:to-slate-900 dark:text-purple-300">
-                                                <div className="relative z-10 italic">{item.review_ai}</div>
-                                                <Sparkles className="absolute -right-2 -bottom-2 h-12 w-12 rotate-12 text-purple-500/5" />
-                                            </div>
+                                            <AIReviewHelper review={item.review_ai} />
                                         </div>
                                     )}
                                 </div>
@@ -118,6 +113,83 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
         </div>
     );
 };
+
+/* --- AI Review Helper --- */
+function AIReviewHelper({ review }: { review: string }) {
+    const { t } = useTranslation();
+    
+    try {
+        const data = JSON.parse(review);
+        if (typeof data !== 'object' || data === null) throw new Error('Not an object');
+
+        const criteria = [
+            { key: 'fluency', label: t('response_card.fluency'), icon: '✨' },
+            { key: 'vocabulary', label: t('response_card.vocabulary'), icon: '📚' },
+            { key: 'grammar', label: t('response_card.grammar'), icon: '🛠️' },
+            { key: 'pronunciation', label: t('response_card.pronunciation'), icon: '🗣️' },
+        ];
+
+        return (
+            <div className="relative overflow-hidden rounded-2xl border border-purple-100 bg-white shadow-sm dark:border-purple-900/20 dark:bg-slate-900">
+                {/* Score & Level Header */}
+                {(data.score || data.level) && (
+                    <div className="flex items-center justify-between border-b border-purple-50 bg-purple-50/30 px-4 py-3 dark:border-purple-900/20 dark:bg-purple-900/10">
+                        <div className="flex items-center gap-3">
+                            {data.level && (
+                                <span className="rounded-lg bg-purple-600 px-2.5 py-1 text-xs font-black text-white">
+                                    {data.level}
+                                </span>
+                            )}
+                            <span className="text-xs font-bold text-purple-700 dark:text-purple-300">
+                                {t('response_card.estimated_level')}
+                            </span>
+                        </div>
+                        {data.score && (
+                            <span className="text-lg font-black text-purple-600 dark:text-purple-400">
+                                {data.score} / 75
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                {/* Criteria Details */}
+                <div className="divide-y divide-slate-50 dark:divide-slate-800">
+                    {criteria.map((c) => data[c.key] && (
+                        <div key={c.key} className="p-4 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
+                            <div className="mb-1 flex items-center gap-2">
+                                <span className="text-xs">{c.icon}</span>
+                                <span className="text-[10px] font-black tracking-wider text-slate-400 uppercase">{c.label}</span>
+                            </div>
+                            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                                {data[c.key]}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Fallback for general feedback if exists */}
+                {data.feedback && (
+                    <div className="border-t border-purple-50 bg-slate-50/30 p-4 dark:border-purple-900/20 dark:bg-slate-800/10">
+                        <div className="mb-1 text-[10px] font-black tracking-wider text-purple-400 uppercase">
+                            {t('response_card.general_feedback')}
+                        </div>
+                        <p className="text-sm italic leading-relaxed text-slate-600 dark:text-slate-400">
+                            {data.feedback}
+                        </p>
+                    </div>
+                )}
+            </div>
+        );
+    } catch (e) {
+        // Fallback for non-JSON content
+        return (
+            <div className="relative overflow-hidden rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50/50 to-white p-4 text-sm leading-relaxed text-purple-900/80 shadow-sm dark:border-purple-900/20 dark:from-purple-900/10 dark:to-slate-900 dark:text-purple-300">
+                <div className="relative z-10 italic">{review}</div>
+                <Sparkles className="absolute -right-2 -bottom-2 h-12 w-12 rotate-12 text-purple-500/5" />
+            </div>
+        );
+    }
+}
 
 /* --- UI Helper --- */
 function Badge({ icon, label, title }: { icon: React.ReactNode; label: string; title?: string }) {

@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('mock', \App\Http\Controllers\MockController::class);
     Route::resource('mock-test', \App\Http\Controllers\MockTestController::class);
     Route::resource('attempt', \App\Http\Controllers\AttemptController::class);
+    Route::get('attempt/{attempt}/certificate', [\App\Http\Controllers\CertificateController::class, 'download'])->name('attempt.certificate');
 
     Route::post('attempt/{attempt}/evaluate', [\App\Http\Controllers\AttemptController::class, 'evaluate'])->name('attempt.evaluate');
 

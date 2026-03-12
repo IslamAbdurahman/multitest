@@ -26,16 +26,14 @@ class AttemptController extends Controller
             }
 
             $attempt = Attempt::query()
-                ->select(
-                    'attempts.*',
-                    DB::raw("aiScoreAvg(attempts.id,null) as ai_score_avg")
-                )
+                ->select('attempts.*')
+                ->withAiScoreAvg()
                 ->with([
                     'user',
                     'mock',
                     'test',
                     'attempt_parts' => function ($query) {
-                        $query->addSelect(DB::raw("aiScoreAvg(null, attempt_parts.id) as ai_score_avg"));
+                        $query->addSelect(\Illuminate\Support\Facades\DB::raw("aiScoreAvg(null, attempt_parts.id) as ai_score_avg"));
                     },
                 ])
                 ->orderByDesc('created_at');
@@ -139,9 +137,9 @@ class AttemptController extends Controller
     {
         try {
             $resAttempt = Attempt::query()
-                ->where('id', '=', $attempt->id)
                 ->select('attempts.*')
-                ->addSelect(DB::raw("aiScoreAvg(attempts.id, null) as ai_score_avg"))
+                ->where('id', '=', $attempt->id)
+                ->withAiScoreAvg()
                 ->with([
                     'user',
                     'mock',

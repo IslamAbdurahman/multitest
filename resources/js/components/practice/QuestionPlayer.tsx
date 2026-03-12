@@ -150,13 +150,45 @@ export default function QuestionPlayer({ attempt_part }: any) {
         }
     };
 
+    const submitAnswerIncremental = (answer: any) => {
+        const form = new FormData();
+        form.append(`answers[0][question_id]`, answer.question_id);
+        form.append(`answers[0][started_at]`, answer.started_at);
+        form.append(`answers[0][finished_at]`, answer.finished_at);
+        form.append(`answers[0][audio_path]`, answer.audio, `q_${answer.question_id}.${answer.ext}`);
+        
+        // Use standard fetch for a silent "fire and forget" auto-save
+        fetch(route('practice.save_answers', attempt_part.id), {
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(async response => {
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Auto-save failed:', response.statusText, errorData.errors || errorData);
+            }
+        })
+        .catch(error => {
+            console.error('Auto-save network error:', error);
+        });
+    };
+
     const goNext = () => {
+        const lastAnswer = answersRef.current[answersRef.current.length - 1];
+        if (lastAnswer) {
+            submitAnswerIncremental(lastAnswer);
+        }
+
         if (index + 1 < questions.length) {
             setIndex((i) => i + 1);
             setPhase('audio');
         } else {
             setPhase('uploading');
-            submit();
+            submit(); // Final submit to handle navigation
         }
     };
 
@@ -166,7 +198,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
             form.append(`answers[${i}][question_id]`, a.question_id);
             form.append(`answers[${i}][started_at]`, a.started_at);
             form.append(`answers[${i}][finished_at]`, a.finished_at);
-            // Sending native format prevents duration issues
             form.append(`answers[${i}][audio_path]`, a.audio, `q_${a.question_id}.${a.ext}`);
         });
 

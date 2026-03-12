@@ -247,7 +247,7 @@ export interface AttemptAnswer {
 }
 
 export interface AttemptPaginate {
-    data: [Attempt];
+    data: Attempt[];
     search: string;
     per_page: number;
     from: number;

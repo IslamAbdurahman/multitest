@@ -50,16 +50,18 @@ class EvaluateSpeakingJob implements ShouldQueue
                 $answer->question
             );
 
-            // 4. Extract JSON score
-            if (preg_match('/```json\s*(\{.*?"score"\s*:\s*\d+.*?\})\s*```/s', $resultText, $matches)) {
-                $data = json_decode($matches[1], true);
+            // 4. Parse Result
+            $data = json_decode($resultText, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
                 $answer->score_ai = (int) ($data['score'] ?? 0);
-
-                // Remove JSON from feedback
-                $resultText = trim(str_replace($matches[0], '', $resultText));
+                $answer->review_ai = $resultText; // Store raw JSON for the frontend helper
+            } else {
+                // Fallback for non-JSON or weird output
+                if (preg_match('/"score"\s*:\s*(\d+)/', $resultText, $matches)) {
+                    $answer->score_ai = (int) $matches[1];
+                }
+                $answer->review_ai = $resultText;
             }
-
-            $answer->review_ai = trim($resultText);
             $answer->save();
 
         } catch (\Throwable $e) {

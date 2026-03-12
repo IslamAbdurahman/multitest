@@ -67,7 +67,7 @@ class PracticeController extends Controller
                 'answers.*.question_id' => ['required', 'integer', 'exists:questions,id'],
                 'answers.*.started_at' => ['nullable', 'date'],
                 'answers.*.finished_at' => ['nullable', 'date'],
-                'answers.*.audio_path' => ['nullable', 'file', 'max:200000'], // Validating inside the array
+                'answers.*.audio_path' => ['nullable', 'file', 'max:200000', 'mimetypes:audio/mpeg,audio/wav,audio/ogg,audio/x-wav,audio/webm,video/webm'], // Validating inside the array
                 'next_attempt_part_id' => ['nullable', 'integer', 'exists:attempt_parts,id'],
             ]);
 

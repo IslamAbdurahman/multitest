@@ -41,7 +41,7 @@ export default function EvaluateAttemptModal({ attempt }: UpdateAttemptModalProp
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('attempt.evaluate', attempt.id), {
+        post(route('attempt.evaluate', { attempt: attempt.id }), {
             preserveScroll: true,
             onSuccess: () => {
                 reset();
