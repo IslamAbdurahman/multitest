@@ -463,5 +463,10 @@
     "latest_result": "Последний результат",
     "totalAttempts": "Всего попыток",
     "completedTests": "Успешно завершённые тесты",
-    "lastAttempt": "Последний результат"
+    "lastAttempt": "Последний результат",
+    "welcome": {
+        "seo_title": "Multitest - Симулятор экзаменов IELTS и CEFR (UzBMB)",
+        "seo_description": "Первый в Узбекистане компьютеризированный симулятор Multilevel (CEFR) и IELTS. Практикуйтесь в реальной среде экзаменов UzBMB и улучшите свой балл IELTS с помощью AI.",
+        "seo_keywords": "multitest, пробный ielts узбекистан, симулятор cefr uzbmb, подготовка к ielts онлайн, тренажер multilevel, подготовка к экзаменам узбекистан, онлайн тест ielts"
+    }
 }

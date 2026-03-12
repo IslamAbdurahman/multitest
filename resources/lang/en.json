@@ -482,5 +482,10 @@
     "latest_result": "Latest Result",
     "totalAttempts": "Total Attempts",
     "completedTests": "Tests completed successfully",
-    "lastAttempt": "Last Score"
+    "lastAttempt": "Last Score",
+    "welcome": {
+        "seo_title": "Multitest - IELTS & CEFR Exam Simulator (UzBMB)",
+        "seo_description": "Join Uzbekistan's first computerized IELTS & Multilevel (CEFR) simulator. Practice in a real UzBMB exam environment and boost your results with AI-powered feedback.",
+        "seo_keywords": "multitest, ielts mock test, cefr mock test uzbekistan, uzbmb simulator, computer based ielts, ielts speaking practice, multilevel preparation, online exam simulator"
+    }
 }

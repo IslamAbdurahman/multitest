@@ -463,5 +463,10 @@
     "latest_result": "So‘nggi natija",
     "totalAttempts": "Jami urinishlar",
     "completedTests": "Muvaffaqiyatli yakunlangan testlar",
-    "lastAttempt": "So‘nggi ball"
+    "lastAttempt": "So‘nggi ball",
+    "welcome": {
+        "seo_title": "Multitest - IELTS va CEFR imtihon simulyatori (UzBMB)",
+        "seo_description": "O'zbekistondagi birinchi kompyuterlashtirilgan Multilevel (CEFR) va IELTS simulyatori. Haqiqiy UzBMB imtihon muhitida mashq qiling va IELTS ballingizni oshiring.",
+        "seo_keywords": "multitest, ielts mock test, cefr mock test uzbekistan, uzbmb simulator, multilevel Speaking practice, online ielts simulation, ielts farg'ona, cefr farg'ona, ingliz tili imtihonlari"
+    }
 }
