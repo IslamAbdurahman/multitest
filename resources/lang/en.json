@@ -473,7 +473,9 @@
         "phone": "Phone Number",
         "select_role": "Select a role",
         "reset_password": "Reset Password",
-        "leave_blank_to_keep": "Leave blank to keep current password"
+        "leave_blank_to_keep": "Leave blank to keep current password",
+        "joined": "Joined",
+        "activity": "Activity"
     },
     "attempt_show": {
         "assessment_report": "Assessment Report",

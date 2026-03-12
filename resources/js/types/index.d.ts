@@ -189,6 +189,10 @@ export interface User {
     attempts: Attempt[];
     last_attempt?: Attempt;
 
+    attempts_count?: number;
+    tests_count?: number;
+    mocks_count?: number;
+
     [key: string]: unknown;
 }
 

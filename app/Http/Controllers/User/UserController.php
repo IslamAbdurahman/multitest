@@ -31,6 +31,7 @@ class UserController extends Controller
         $user = User::with([
             'roles',
         ])
+            ->withCount(['attempts', 'tests', 'mocks'])
             ->whereNotIn('id', [Auth::user()->id])
             ->orderBy('id', 'desc');
 
@@ -83,7 +84,7 @@ class UserController extends Controller
         }
 
         return Inertia::render('user/show', [
-            'user' => $user,
+            'user' => $user->loadCount(['attempts', 'tests', 'mocks'])->load(['last_attempt.test']),
         ]);
     }
 

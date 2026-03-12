@@ -2,7 +2,7 @@ import DeleteItemModal from '@/components/delete-item-modal';
 import UpdateUserModal from '@/components/user/update-user-modal';
 import { type UserPaginate, SearchData } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
-import { ChevronLeft, ChevronRight, Mail, Phone, ShieldCheck, UserCircle } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, Mail, Phone, ShieldCheck, UserCircle, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { BsTelegram } from 'react-icons/bs';
@@ -48,6 +48,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                 <th className="px-6 py-5">#</th>
                                 <th className="px-6 py-5">{t('common.user')}</th>
                                 <th className="px-6 py-5">{t('common.role')}</th>
+                                <th className="px-6 py-5">{t('user_management.joined')}</th>
+                                <th className="px-6 py-5">{t('user_management.activity')}</th>
                                 <th className="px-6 py-5">{t('user_management.contact')}</th>
                                 <th className="px-6 py-5 text-right">{t('common.actions')}</th>
                             </tr>
@@ -88,6 +90,33 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                                         {role.name}
                                                     </span>
                                                 ))}
+                                            </div>
+                                        </td>
+
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-400">
+                                                <Calendar className="h-3.5 w-3.5 text-slate-300" />
+                                                {new Date(item.created_at).toLocaleDateString(undefined, {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                })}
+                                            </div>
+                                        </td>
+
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-center gap-1.5 text-[10px] font-black tracking-tight text-slate-400 uppercase">
+                                                        <Zap className="h-3 w-3 text-amber-500" />
+                                                        {t('exam_attempts.title')}: {item.attempts_count || 0}
+                                                    </div>
+                                                    {(item.tests_count ?? 0) > 0 && (
+                                                        <div className="text-[10px] font-bold text-slate-400">
+                                                            Tests: {item.tests_count}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </td>
 

@@ -467,7 +467,9 @@
         "phone": "Telefon raqami",
         "select_role": "Rolni tanlang",
         "reset_password": "Parolni tiklash",
-        "leave_blank_to_keep": "Hozirgi parolni saqlab qolish uchun bo'sh qoldiring"
+        "leave_blank_to_keep": "Hozirgi parolni saqlab qolish uchun bo'sh qoldiring",
+        "joined": "Qo'shilgan",
+        "activity": "Faollik"
     },
     "attempt_show": {
         "assessment_report": "Baholash hisoboti",
