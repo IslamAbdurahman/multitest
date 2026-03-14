@@ -46,8 +46,19 @@ class EvaluateSpeakingJob implements ShouldQueue
 
                 $answer->score_ai = (int) ($data['score'] ?? 0);
 
-                // 3. Silence Detection
-                if ($this->isNonSpeechResponse($transcript)) {
+                // 3. Language & Silence Enforcement
+                $targetLanguage = strtolower($answer->question->part->test->language->name_en);
+                $detectedLanguage = strtolower($data['detected_language'] ?? '');
+
+                // Ensure score is 0 if language mismatch (excluding noise/silence which is handled below)
+                if ($detectedLanguage !== 'noise' && $detectedLanguage !== 'silence' && !empty($detectedLanguage)) {
+                    // Check if detected language contains target language or vice versa (e.g. "English" vs "English (US)")
+                    if (!str_contains($detectedLanguage, $targetLanguage) && !str_contains($targetLanguage, $detectedLanguage)) {
+                        $answer->score_ai = 0;
+                    }
+                }
+
+                if ($this->isNonSpeechResponse($transcript) || $detectedLanguage === 'noise' || $detectedLanguage === 'silence') {
                     $answer->score_ai = 0;
                 }
             } else {

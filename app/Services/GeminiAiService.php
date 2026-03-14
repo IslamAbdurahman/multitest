@@ -151,12 +151,12 @@ CEFR LEVEL DESCRIPTORS FOR REFERENCE:
 
 CRITICAL RULES:
 - RELEVANCE IS MANDATORY: If the response is off-topic, irrelevant, singing, or fails to address the specific question, assign a score of 0 and level 'Below A1', even if fluent.
-- STRICT LANGUAGE ENFORCEMENT: You MUST verify if the spoken language matches the TARGET LANGUAGE ({$question->part->test->language->name_en}). If the candidate speaks in any other language, you MUST assign a total `score` of 0, set `level` to \"Below A1\", and explain the language mismatch in the feedback fields.
+- STRICT LANGUAGE ENFORCEMENT: You MUST verify if the spoken language matches the TARGET LANGUAGE ({$question->part->test->language->name_en}). 
+- IF THE CANDIDATE SPEAKS IN ANY OTHER LANGUAGE: You MUST assign a total `score` of 0, set `level` to \"Below A1\", and explicitly state \"Wrong language detected\" in the feedback fields. DO NOT give any partial credit.
 - AUDIO QUALITY & SILENCE: If the audio is silent, contains only background noise, static, breathing, or unintelligible sounds, you MUST set the `transcript` to \"[SILENCE]\", assign a total `score` of 0, and set `level` to \"Below A1\". 
 - NO HALLUCINATION: Do NOT guess, invent, or hallucinate speech if it is not clearly and distinctly audible. If there is any doubt about the existence of speech, treat the audio as noise. 
-- No positive feedback for 0 scores. All feedback fields should state the reason for the zero score (e.g., \"Wrong language detected\" or \"No speech detected\").
 - ALWAYS provide a verbatim `transcript`. If no speech, use \"[SILENCE]\".
-- IDENTIFY LANGUAGE: You must identify the `detected_language` in the response.
+- IDENTIFY LANGUAGE: You must identify the `detected_language` in the response (e.g., \"English\", \"Turkish\", \"Uzbek\", \"Noise\").
 
 QUESTION:
 {$question->textarea}
