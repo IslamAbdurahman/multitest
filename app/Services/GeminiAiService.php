@@ -139,8 +139,9 @@ IMPORTANT RULES:
 - The response MUST be entirely in the TARGET LANGUAGE.
 - The response MUST directly and clearly answer the given question.
 - If the response is NOT in the target language (fully or partially), assign a score of 0 and level 'Below A1'.
-- If the response is off-topic, irrelevant, memorized, or does not answer the question, assign a score of 0 and level 'Below A1'.
 - If the audio is silent, contains only background noise, or is non-discernible speech, assign a score of 0 and level 'Below A1'.
+- CRITICAL RELEVANCE RULE: The response MUST directly and clearly answer the given QUESTION.
+- If the response is off-topic, irrelevant, memorized, singing, or fails to address the specific question asked, assign a score of 0 and level 'Below A1', EVEN IF the speech is otherwise fluent in the target language.
 - Do NOT translate or interpret speech from any other language.
 - Do NOT evaluate content spoken in any other language.
 - If score is 0, do NOT provide any positive feedback.
