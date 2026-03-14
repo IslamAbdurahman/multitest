@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\EvaluateSpeakingJob;
 use App\Models\AttemptAnswer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AttemptAnswerObserver
 {
@@ -33,7 +34,9 @@ class AttemptAnswerObserver
      */
     public function deleting(AttemptAnswer $attemptAnswer): void
     {
-        //
+        if ($attemptAnswer->audio_path) {
+            Storage::disk('public')->delete($attemptAnswer->audio_path);
+        }
     }
 
     /**

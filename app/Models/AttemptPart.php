@@ -9,6 +9,14 @@ class AttemptPart extends Model
 {
     /** @use HasFactory<\Database\Factories\AttemptPartFactory> */
     use HasFactory;
+    protected static function booted()
+    {
+        static::deleting(function ($part) {
+            $part->attempt_answers()->each(function ($answer) {
+                $answer->delete();
+            });
+        });
+    }
 
 
 

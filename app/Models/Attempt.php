@@ -10,6 +10,14 @@ class Attempt extends Model
 {
     /** @use HasFactory<\Database\Factories\AttemptFactory> */
     use HasFactory;
+    protected static function booted()
+    {
+        static::deleting(function ($attempt) {
+            $attempt->attempt_parts()->each(function ($part) {
+                $part->delete();
+            });
+        });
+    }
 
 
     protected $fillable = [
