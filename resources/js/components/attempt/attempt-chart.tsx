@@ -10,9 +10,9 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
     const { t } = useTranslation();
     const { appearance } = useAppearance();
 
-    // Determine if we are in dark mode
-    const isDark = typeof window !== 'undefined' ? 
-        document.documentElement.classList.contains('dark') : false;
+    // Determine if we are in dark mode reactively
+    const isDark = appearance === 'dark' || 
+        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
     // X o'qi uchun sanalar
     const labels = attempts.map((a) =>
@@ -95,7 +95,7 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
             </div>
 
             <div className="h-[320px] w-full">
-                <Bar data={{ labels, datasets }} options={options} />
+                <Bar key={isDark ? 'dark' : 'light'} data={{ labels, datasets }} options={options} />
             </div>
         </div>
     );

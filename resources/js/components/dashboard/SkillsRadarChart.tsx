@@ -17,9 +17,9 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
     const { t } = useTranslation();
     const { appearance } = useAppearance();
     
-    // Determine if we are in dark mode
-    const isDark = typeof window !== 'undefined' ? 
-        document.documentElement.classList.contains('dark') : false;
+    // Determine if we are in dark mode reactively
+    const isDark = appearance === 'dark' || 
+        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
     // Default data if no skills are provided
     const data = skills || {
@@ -116,7 +116,7 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
             </CardHeader>
             <CardContent>
                 <div className="flex h-[300px] items-center justify-center">
-                    <Chart options={options} series={series} type="radar" width="400" height="300" />
+                    <Chart key={isDark ? 'dark' : 'light'} options={options} series={series} type="radar" width="400" height="300" />
                 </div>
             </CardContent>
         </Card>
