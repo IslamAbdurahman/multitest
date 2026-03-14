@@ -2,11 +2,17 @@ import { Attempt } from '@/types';
 import { BarElement, CategoryScale, Chart as ChartJS, Filler, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { useAppearance } from '@/hooks/use-appearance';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Filler);
 
 export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
     const { t } = useTranslation();
+    const { appearance } = useAppearance();
+
+    // Determine if we are in dark mode
+    const isDark = typeof window !== 'undefined' ? 
+        document.documentElement.classList.contains('dark') : false;
 
     // X o'qi uchun sanalar
     const labels = attempts.map((a) =>
@@ -50,11 +56,13 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
                     usePointStyle: true,
                     pointStyle: 'circle',
                     font: { size: 12, weight: 600 },
-                    color: '#64748b',
+                    color: isDark ? '#94a3b8' : '#64748b',
                 },
             },
             tooltip: {
-                backgroundColor: '#1e293b',
+                backgroundColor: isDark ? '#0f172a' : '#1e293b',
+                titleColor: '#fff',
+                bodyColor: '#cbd5e1',
                 padding: 12,
                 cornerRadius: 12,
             },
@@ -62,7 +70,7 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
         scales: {
             x: {
                 grid: { display: false },
-                ticks: { color: '#94a3b8' },
+                ticks: { color: isDark ? '#64748b' : '#94a3b8' },
             },
             y: {
                 min: 0,
@@ -70,9 +78,11 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
                 max: chartMax,
                 ticks: {
                     stepSize: highestScore > 10 ? undefined : 1, // Katta sonlarda step avtomatik bo'lgani ma'qul
-                    color: '#94a3b8',
+                    color: isDark ? '#64748b' : '#94a3b8',
                 },
-                grid: { color: 'rgba(226, 232, 240, 0.4)' },
+                grid: { 
+                    color: isDark ? 'rgba(51, 65, 85, 0.4)' : 'rgba(226, 232, 240, 0.4)' 
+                },
             },
         },
     };
