@@ -106,6 +106,8 @@ class EvaluateSpeakingJob implements ShouldQueue
             '/\bnot possible to transcribe\b/i',
             '/\bupbeat music\b/i',
             '/\bstrong beat\b/i',
+            '/\[SILENCE\]/i',
+            '/\[NOISE\]/i',
             '/^\(.*\)$/', // Transcriptions in parentheses like (Silence)
             '/^[0-9: ]+$/', // Just timestamps or numbers
         ];

@@ -152,9 +152,10 @@ CEFR LEVEL DESCRIPTORS FOR REFERENCE:
 CRITICAL RULES:
 - RELEVANCE IS MANDATORY: If the response is off-topic, irrelevant, singing, or fails to address the specific question, assign a score of 0 and level 'Below A1', even if fluent.
 - LANGUAGE ACCURACY: If the response is NOT in the target language, assign a score of 0.
-- AUDIO QUALITY: If silent or only background noise, assign a score of 0.
-- No positive feedback for 0 scores.
-- ALWAYS provide a verbatim `transcript`.
+- AUDIO QUALITY & SILENCE: If the audio is silent, contains only background noise, static, breathing, or unintelligible sounds, you MUST set the `transcript` to \"[SILENCE]\", assign a total `score` of 0, and set `level` to \"Below A1\". 
+- NO HALLUCINATION: Do NOT guess, invent, or hallucinate speech if it is not clearly and distinctly audible. If there is any doubt about the existence of speech, treat the audio as noise. 
+- No positive feedback for 0 scores. All feedback fields should state that no speech was detected.
+- ALWAYS provide a verbatim `transcript`. If no speech, use \"[SILENCE]\".
 
 QUESTION:
 {$question->textarea}
