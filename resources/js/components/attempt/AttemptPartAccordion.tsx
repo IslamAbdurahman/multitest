@@ -1,6 +1,7 @@
 import AttemptAnswerComponent from '@/components/attempt/AttemptAnswer';
 import { AttemptPart } from '@/types';
-import { CheckCircle2, ChevronDown, Info, Star } from 'lucide-react';
+import { router } from '@inertiajs/react';
+import { CheckCircle2, ChevronDown, Info, Sparkles, Star } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -93,6 +94,27 @@ export default function AttemptPartAccordion({ attempt_parts }: PartAccordionPro
                                 </div>
                             </div>
                         </button>
+
+                        {/* Re-evaluate Button Row (visible when open) */}
+                        {isOpen && (
+                            <div className="flex justify-end gap-3 border-t border-slate-50 px-6 py-3 dark:border-slate-800">
+                                <button
+                                    onClick={() => {
+                                        if (confirm(t('common.are_you_sure'))) {
+                                            router.post(route('attempt_part.re_evaluate', { attempt_part: item.id }), {}, {
+                                                onSuccess: () => {
+                                                    // Success handled by toast/redirect
+                                                }
+                                            });
+                                        }
+                                    }}
+                                    className="inline-flex items-center gap-2 rounded-xl bg-indigo-50 px-4 py-2 text-xs font-bold text-indigo-600 transition-colors hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400"
+                                >
+                                    <Sparkles className="h-3.5 w-3.5" />
+                                    {t('attempt_details.re_evaluate')}
+                                </button>
+                            </div>
+                        )}
 
                         {/* Accordion Content with CSS Grid for smooth height animation */}
                         <div

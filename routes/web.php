@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('practice/{attempt}', [\App\Http\Controllers\PracticeController::class, 'index'])->name('practice.index');
     Route::get('practice/attempt_part/{attempt_part}', [\App\Http\Controllers\PracticeController::class, 'show'])->name('practice.show');
     Route::post('practice/attempt_part/{attempt_part}/save', [\App\Http\Controllers\PracticeController::class, 'save_answers'])->name('practice.save_answers');
+    Route::post('attempt_parts/{attempt_part}/re-evaluate', [\App\Http\Controllers\AttemptPartController::class, 'reEvaluate'])->name('attempt_part.re_evaluate');
 
 });
 

@@ -86,16 +86,7 @@ class EvaluateSpeakingJob implements ShouldQueue
             return false;
         }
 
-        // 3. Reject if it looks like Uzbek Latin (common markers like o', g', sh, ch prefixes or specific letter frequencies)
-        $uzbekWords = ['bo\'lib', 'emas', 'uchun', 'bo\'lgan', 'bilan', 'hamda', 'qilish', 'tomonidan', 'o\'zbekiston', 'assalomu', 'alaykum'];
-        $lowerText = strtolower($text);
-        foreach ($uzbekWords as $word) {
-            if (preg_match('/\b' . preg_quote($word) . '\b/', $lowerText)) {
-                 return false;
-            }
-        }
-
-        // 4. Must contain English letters or numbers/symbols typical of noise/silence (which we handled above)
+        // 3. Must contain English letters or numbers/symbols typical of noise/silence (which we handled above)
         return preg_match('/[a-zA-Z]/', $text) === 1;
     }
 

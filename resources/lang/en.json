@@ -482,12 +482,18 @@
         "assessment_report": "Assessment Report",
         "performance_analysis": "Detailed performance analysis and feedback",
         "expert_feedback": "Expert Feedback",
+        "re_evaluate": "Re-evaluate",
         "question_breakdown": "Question Breakdown",
         "final_score": "Final Score",
         "started_at": "Started At",
         "finished_at": "Finished At",
         "not_available": "N/A",
         "download_pdf": "Download PDF"
+    },
+    "common": {
+        "are_you_sure": "Are you sure you want to proceed?",
+        "seconds_short": "s",
+        "instructions": "Instructions"
     },
     "practice": {
         "speaking_session_active": "Speaking Session Active",

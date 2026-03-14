@@ -476,12 +476,18 @@
         "assessment_report": "Baholash hisoboti",
         "performance_analysis": "Batafsil natija tahlili va fikr-mulohazalar",
         "expert_feedback": "Ekspert fikri",
+        "re_evaluate": "Qayta baholash",
         "question_breakdown": "Savollar tahlili",
         "final_score": "Yakuniy ball",
         "started_at": "Boshlangan vaqt",
         "finished_at": "Tugallangan vaqt",
         "not_available": "Mavjud emas",
         "download_pdf": "PDF yuklab olish"
+    },
+    "common": {
+        "are_you_sure": "Ishonchingiz komilmi?",
+        "seconds_short": "s",
+        "instructions": "Ko'rsatmalar"
     },
     "practice": {
         "speaking_session_active": "Speaking sessiyasi faol",

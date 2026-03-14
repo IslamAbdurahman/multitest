@@ -59,8 +59,16 @@ class AttemptPartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AttemptPart $attemptPart)
+    public function reEvaluate(AttemptPart $attemptPart)
     {
-        //
+        $attemptPart->load('attempt_answers');
+
+        foreach ($attemptPart->attempt_answers as $answer) {
+            if ($answer->audio_path) {
+                \App\Jobs\EvaluateSpeakingJob::dispatch($answer->id);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Re-evaluation started.');
     }
 }

@@ -174,7 +174,7 @@ QUESTION:
                             'level' => new Schema(type: DataType::STRING),
                             'transcript' => new Schema(type: DataType::STRING),
                         ],
-                        required: ['score', 'level', 'transcript']
+                        required: ['score', 'level', 'transcript', 'fluency', 'vocabulary', 'grammar', 'pronunciation', 'interaction']
                     )
                 ))
                 ->generateContent([
