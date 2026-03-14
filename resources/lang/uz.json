@@ -399,7 +399,8 @@
         "grammar": "Grammatika (Grammar)",
         "pronunciation": "Talaffuz (Pronunciation)",
         "estimated_level": "Taxminiy daraja",
-        "general_feedback": "Umumiy fikr-mulohaza"
+        "general_feedback": "Umumiy fikr-mulohaza",
+        "interaction": "Muloqot (Interaction)"
     },
     "evaluation": {
         "evaluate": "Baholash",
@@ -564,6 +565,7 @@
         "vocabulary": "Lug'at boyligi",
         "grammar": "Grammatika",
         "pronunciation": "Talaffuz",
+        "interaction": "Muloqot",
         "overall_level": "Umumiy daraja"
     }
 }

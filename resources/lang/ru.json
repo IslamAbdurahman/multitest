@@ -401,7 +401,8 @@
         "grammar": "Грамматика",
         "pronunciation": "Произношение",
         "estimated_level": "Оценочный уровень",
-        "general_feedback": "Общий отзыв"
+        "general_feedback": "Общий отзыв",
+        "interaction": "Взаимодействие (Interaction)"
     },
     "evaluation": {
         "evaluate": "Оценить",
@@ -566,6 +567,7 @@
         "vocabulary": "Словарный запас",
         "grammar": "Грамматика",
         "pronunciation": "Произношение",
+        "interaction": "Взаимодействие",
         "overall_level": "Общий уровень"
     }
 }

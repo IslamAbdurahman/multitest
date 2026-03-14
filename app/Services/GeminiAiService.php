@@ -128,37 +128,33 @@ Transcript: {$transcript}";
             $mimeType = $this->getMimeType($fullPath);
 
             $instruction = "
-You are an official Uzbekistan Multilevel (CEFR) Speaking Examiner.
+You are an expert Uzbekistan Multilevel (CEFR) Speaking Examiner.
+Your task is to evaluate the provided audio response based on official scientific CEFR descriptors.
 
 TARGET LANGUAGE:
 - Language code: {$question->part->test->language->code}
 - Language name (English): {$question->part->test->language->name_en}
 
-IMPORTANT RULES:
-- Evaluate ONLY the provided audio response.
-- The response MUST be entirely in the TARGET LANGUAGE.
-- The response MUST directly and clearly answer the given question.
-- If the response is NOT in the target language (fully or partially), assign a score of 0 and level 'Below A1'.
-- If the audio is silent, contains only background noise, or is non-discernible speech, assign a score of 0 and level 'Below A1'.
-- CRITICAL RELEVANCE RULE: The response MUST directly and clearly answer the given QUESTION.
-- If the response is off-topic, irrelevant, memorized, singing, or fails to address the specific question asked, assign a score of 0 and level 'Below A1', EVEN IF the speech is otherwise fluent in the target language.
-- Do NOT translate or interpret speech from any other language.
-- Do NOT evaluate content spoken in any other language.
-- If score is 0, do NOT provide any positive feedback.
-- ALWAYS provide a verbatim `transcript` of the audio in the requested JSON format.
+SCORING CRITERIA (Total: 0–75 points, 15 points each):
+1. Fluency and Coherence (0–15): Speech flow, hesitations, linking of ideas.
+2. Lexical Resource (0–15): Range and accuracy of vocabulary.
+3. Grammatical Range & Accuracy (0–15): Variety and correctness of structures.
+4. Pronunciation (0–15): Intelligibility, stress, and intonation.
+5. Interactive Communication / Relevance (0–15): Directly answering the question and maintaining interaction.
 
-EVALUATION CRITERIA (Total: 0–75 points):
-- Fluency
-- Vocabulary
-- Grammar
-- Pronunciation
+CEFR LEVEL DESCRIPTORS FOR REFERENCE:
+- C1 (65–75): Fluent, spontaneous, complex subjects, almost no searching for words.
+- B2 (51–64): Regular interaction with native speakers possible without strain. Clear, detailed descriptions on wide range of subjects.
+- B1 (38–50): Can deal with most situations. Narrate dreams, hopes, ambitions. Simple connected phrases.
+- A2 (16–37): Simple and routine tasks. Direct exchange of information on familiar topics.
+- A1 (0–15): Basic expressions, very simple phrases about personal details.
 
-CEFR LEVEL MAPPING:
-- 0–15   → Below A1
-- 16–37  → A2
-- 38–50  → B1
-- 51–64  → B2
-- 65–75  → C1
+CRITICAL RULES:
+- RELEVANCE IS MANDATORY: If the response is off-topic, irrelevant, singing, or fails to address the specific question, assign a score of 0 and level 'Below A1', even if fluent.
+- LANGUAGE ACCURACY: If the response is NOT in the target language, assign a score of 0.
+- AUDIO QUALITY: If silent or only background noise, assign a score of 0.
+- No positive feedback for 0 scores.
+- ALWAYS provide a verbatim `transcript`.
 
 QUESTION:
 {$question->textarea}
@@ -173,6 +169,7 @@ QUESTION:
                             'vocabulary' => new Schema(type: DataType::STRING),
                             'grammar' => new Schema(type: DataType::STRING),
                             'pronunciation' => new Schema(type: DataType::STRING),
+                            'interaction' => new Schema(type: DataType::STRING),
                             'score' => new Schema(type: DataType::NUMBER),
                             'level' => new Schema(type: DataType::STRING),
                             'transcript' => new Schema(type: DataType::STRING),

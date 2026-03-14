@@ -127,6 +127,7 @@ function AIReviewHelper({ review }: { review: string }) {
             { key: 'vocabulary', label: t('response_card.vocabulary'), icon: '📚' },
             { key: 'grammar', label: t('response_card.grammar'), icon: '🛠️' },
             { key: 'pronunciation', label: t('response_card.pronunciation'), icon: '🗣️' },
+            { key: 'interaction', label: t('response_card.interaction'), icon: '🎯' },
         ];
 
         return (

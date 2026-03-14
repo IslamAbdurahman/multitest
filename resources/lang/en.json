@@ -404,7 +404,8 @@
         "grammar": "Grammar",
         "pronunciation": "Pronunciation",
         "estimated_level": "Estimated Level",
-        "general_feedback": "General Feedback"
+        "general_feedback": "General Feedback",
+        "interaction": "Interaction / Relevance"
     },
     "evaluation": {
         "evaluate": "Evaluate",
@@ -575,6 +576,7 @@
         "vocabulary": "Vocabulary",
         "grammar": "Grammar",
         "pronunciation": "Pronunciation",
+        "interaction": "Interaction",
         "overall_level": "Overall Level"
     }
 }
