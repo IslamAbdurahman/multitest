@@ -66,7 +66,8 @@
         "private": "Shaxsiy",
         "exam": "Imtihon",
         "passive": "passiv",
-        "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda"
+        "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
+        "are_you_sure": "Ishonchingiz komilmi?"
     },
     "landing": {
         "trusted_companies": "Barcha o'lchamdagi kompaniyalar tomonidan ishonch bildirilgan",
@@ -299,7 +300,6 @@
         "assign_tests": "Testlarni biriktirish",
         "assign_tests_description": "Ushbu mock imtihon to'plamiga kiritiladigan testlarni tanlang."
     },
-
     "success": {
         "created": "Muvaffaqiyatli yaratildi",
         "updated": "Muvaffaqiyatli yangilandi",
@@ -380,9 +380,10 @@
         "submit": "Parolni tasdiqlash"
     },
     "attempt_details": {
-        "questions_answered": "Javob berilgan savollar",
-        "part_score": "Bo'lim balli",
-        "response_details": "Javob tafsilotlari"
+        "questions_answered": "Savollarga javob berildi",
+        "part_score": "Qism balli",
+        "response_details": "Javob tafsilotlari",
+        "re_evaluate": "Qayta baholash"
     },
     "response_card": {
         "question_details": "Savol tafsilotlari",
@@ -476,18 +477,12 @@
         "assessment_report": "Baholash hisoboti",
         "performance_analysis": "Batafsil natija tahlili va fikr-mulohazalar",
         "expert_feedback": "Ekspert fikri",
-        "re_evaluate": "Qayta baholash",
         "question_breakdown": "Savollar tahlili",
         "final_score": "Yakuniy ball",
         "started_at": "Boshlangan vaqt",
         "finished_at": "Tugallangan vaqt",
         "not_available": "Mavjud emas",
         "download_pdf": "PDF yuklab olish"
-    },
-    "common": {
-        "are_you_sure": "Ishonchingiz komilmi?",
-        "seconds_short": "s",
-        "instructions": "Ko'rsatmalar"
     },
     "practice": {
         "speaking_session_active": "Speaking sessiyasi faol",

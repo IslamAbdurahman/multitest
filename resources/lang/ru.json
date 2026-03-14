@@ -66,7 +66,8 @@
         "exam": "Экзамен",
         "passive": "пассивный",
         "showing": "Показано с {{from}} по {{to}} из {{total}} результатов",
-        "private": "Приватный"
+        "private": "Приватный",
+        "are_you_sure": "Вы уверены, что хотите продолжить?"
     },
     "landing": {
         "trusted_companies": "Нам доверяют компании всех размеров",
@@ -135,7 +136,7 @@
     },
     "register": {
         "title": "Создать аккаунт",
-        "description": "Присоединяйтесь к первому в Узбекистане компьютерному симулятору IELTS и начните практиковаться сегодня.",
+        "description": "Присоединитесь к первому в Узбекистане компьютерному симулятору IELTS и начните практиковаться сегодня.",
         "name": "Полное имя",
         "name_placeholder": "например, Иван Иванов",
         "email": "Электронная почта",
@@ -301,7 +302,6 @@
         "assign_tests": "Назначить тесты",
         "assign_tests_description": "Выберите практические тесты для включения в этот пакет мок-экзамена."
     },
-
     "success": {
         "created": "Успешно создано",
         "updated": "Успешно обновлено",
@@ -384,95 +384,8 @@
     "attempt_details": {
         "questions_answered": "Отвечено на вопросы",
         "part_score": "Балл за часть",
-        "response_details": "Детали ответа"
-    },
-    "response_card": {
-        "question_details": "Детали вопроса",
-        "preparation_time": "Время на подготовку",
-        "speaking_time": "Время ответа",
-        "student_response": "Ответ студента",
-        "ai_score": "Балл AI",
-        "audio_not_supported": "Ваш браузер не поддерживает аудио элемент.",
-        "no_audio": "Аудиозапись ответа отсутствует",
-        "transcript": "Транскрипт",
-        "ai_analysis": "AI анализ и обратная связь",
-        "fluency": "Беглость речи",
-        "vocabulary": "Словарный запас",
-        "grammar": "Грамматика",
-        "pronunciation": "Произношение",
-        "estimated_level": "Оценочный уровень",
-        "general_feedback": "Общий отзыв",
-        "interaction": "Взаимодействие (Interaction)"
-    },
-    "evaluation": {
-        "evaluate": "Оценить",
-        "evaluate_submission": "Оценить работу",
-        "grading": "Оценка попытки от",
-        "final_score": "Итоговый балл",
-        "teacher_feedback": "Отзыв учителя",
-        "write_detailed_feedback": "Напишите подробный отзыв и области для улучшения...",
-        "complete_evaluation": "Завершить оценку"
-    },
-    "test_table": {
-        "test_library": "Библиотека тестов",
-        "browse_description": "Просмотр и управление отдельными компонентами тестов для ваших мок-экзаменов.",
-        "create_title": "Создать новый тест",
-        "create_description": "Заполните детали ниже, чтобы добавить новый тест в библиотеку.",
-        "enter_title": "Введите название теста...",
-        "enter_instructions": "Введите краткие инструкции к тесту...",
-        "audio_file": "Аудиофайл",
-        "click_to_upload": "Нажмите или перетащите для загрузки аудио",
-        "update_title": "Обновить тест",
-        "update_description": "Измените детали теста и обновите ресурсы по мере необходимости.",
-        "update_test": "Обновить тест",
-        "replace_audio_optional": "Нажмите, чтобы заменить аудио (необязательно)",
-        "test_sections": "Секции теста",
-        "manage_parts_description": "Организуйте и управляйте частями теста и связанными с ними вопросами.",
-        "add_section": "Добавить секцию",
-        "new_section_title": "Создать новую секцию",
-        "new_section_description": "Добавьте новую часть в этот тест для группировки вопросов.",
-        "enter_section_name": "например, Часть 1: Введение",
-        "update_section_title": "Обновить секцию",
-        "update_section_description": "Измените свойства секции и обновите аудио-инструкцию."
-    },
-    "test_show": {
-        "part_instructions": "Инструкции к части",
-        "no_audio_attached": "К этой секции не прикреплен аудиофайл.",
-        "questions_list": "Список вопросов",
-        "questions": "Вопросы",
-        "audio_prompt": "Аудио вопроса",
-        "preparation_time": "Время на подготовку",
-        "answering_time": "Время на ответ",
-        "no_questions_yet": "В эту секцию еще не добавлены вопросы.",
-        "add_question": "Добавить вопрос",
-        "create_question_title": "Создать новый вопрос",
-        "create_question_description": "Добавьте новый интерактивный элемент в эту секцию теста.",
-        "question_text_prompt": "Текст вопроса / Визуальная подсказка",
-        "preparation_time_sec": "Время на подготовку (сек)",
-        "speaking_time_sec": "Время на ответ (сек)",
-        "audio_prompt_file": "Аудиофайл вопроса",
-        "save_question": "Сохранить вопрос",
-        "update_question_title": "Обновить вопрос",
-        "update_question_description": "Измените содержание, время или аудио для этого конкретного вопроса."
-    },
-    "user_management": {
-        "description": "Просмотр и управление всеми зарегистрированными пользователями (всего аккаунтов: {{count}}).",
-        "role_filter": "Фильтр по роли",
-        "per_page": "На странице",
-        "user_profile": "Профиль пользователя",
-        "member_since": "Зарегистрирован с {{date}}",
-        "no_recent_activity": "Для этого пользователя нет записей о недавней активности.",
-        "title": "Управление пользователями",
-        "manage_permissions": "Управление разрешениями и профилями",
-        "contact": "Контактная информация",
-        "edit_user_title": "Редактировать профиль пользователя",
-        "modifying_account_for": "Редактирование аккаунта для",
-        "phone": "Номер телефона",
-        "select_role": "Выберите роль",
-        "reset_password": "Сбросить пароль",
-        "leave_blank_to_keep": "Оставьте пустым, чтобы сохранить текущий пароль",
-        "joined": "Присоединился",
-        "activity": "Активность"
+        "response_details": "Детали ответа",
+        "re_evaluate": "Переоценить"
     },
     "attempt_show": {
         "assessment_report": "Отчет об оценке",
