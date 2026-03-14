@@ -156,7 +156,11 @@ export default function AttemptShow() {
                         <div className="h-[1px] flex-1 bg-slate-200" />
                     </div>
                     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                        <AttemptPartAccordion attempt_parts={attempt.attempt_parts ?? []} />
+                        <AttemptPartAccordion
+                            attempt_parts={attempt.attempt_parts ?? []}
+                            isAdmin={isAdmin}
+                            isTeacher={isTeacher}
+                        />
                     </div>
                 </div>
             </div>

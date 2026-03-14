@@ -11,7 +11,7 @@ interface PartAccordionProps {
     isTeacher?: boolean;
 }
 
-export default function AttemptPartAccordion({ attempt_parts }: PartAccordionProps) {
+export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher }: PartAccordionProps) {
     const { t } = useTranslation();
     const [openIndex, setOpenIndex] = useState<number | null>(0); // Default open the first part
 
@@ -95,8 +95,8 @@ export default function AttemptPartAccordion({ attempt_parts }: PartAccordionPro
                             </div>
                         </button>
 
-                        {/* Re-evaluate Button Row (visible when open) */}
-                        {isOpen && (
+                        {/* Re-evaluate Button Row (visible when open and authorized) */}
+                        {isOpen && (isAdmin || isTeacher) && (
                             <div className="flex justify-end gap-3 border-t border-slate-50 px-6 py-3 dark:border-slate-800">
                                 <button
                                     onClick={() => {
