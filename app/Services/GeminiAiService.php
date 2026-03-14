@@ -144,6 +144,7 @@ IMPORTANT RULES:
 - Do NOT translate or interpret speech from any other language.
 - Do NOT evaluate content spoken in any other language.
 - If score is 0, do NOT provide any positive feedback.
+- ALWAYS provide a verbatim `transcript` of the audio in the requested JSON format.
 
 EVALUATION CRITERIA (Total: 0–75 points):
 - Fluency
@@ -173,8 +174,9 @@ QUESTION:
                             'pronunciation' => new Schema(type: DataType::STRING),
                             'score' => new Schema(type: DataType::NUMBER),
                             'level' => new Schema(type: DataType::STRING),
+                            'transcript' => new Schema(type: DataType::STRING),
                         ],
-                        required: ['score', 'level']
+                        required: ['score', 'level', 'transcript']
                     )
                 ))
                 ->generateContent([

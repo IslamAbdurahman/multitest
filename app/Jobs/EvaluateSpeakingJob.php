@@ -31,45 +31,33 @@ class EvaluateSpeakingJob implements ShouldQueue
         $aiService = new GeminiAiService();
 
         try {
-            // 1. Transcribe audio
-            $transcript = $aiService->transcribeAudio($answer->audio_path);
-            $answer->transcript = $transcript;
-
-            // 2. Language & Content validation
-            if ($this->isNonSpeechResponse($transcript)) {
-                $answer->score_ai = 0;
-                $answer->review_ai = json_encode([
-                    'score' => 0,
-                    'level' => 'Below A1',
-                    'feedback' => 'The audio contains no discernible speech or only background noise.',
-                ]);
-                $answer->save();
-                return;
-            }
-
-            if (!$this->isMostlyEnglish($transcript)) {
-                $answer->score_ai = 0;
-                $answer->review_ai = json_encode([
-                    'score' => 0,
-                    'level' => 'Below A1',
-                    'feedback' => 'Non-English response. Automatically scored as 0.',
-                ]);
-                $answer->save();
-                return;
-            }
-
-            // 3. Evaluate speaking (audio-based CEFR)
-            $questionText = strip_tags($answer->question->textarea ?? 'General Speaking Task');
+            // 1. Evaluate speaking directly (Consolidated: Audio -> Transcript + CEFR)
             $resultText = $aiService->evaluateSpeakingDirectly(
                 $answer->audio_path,
                 $answer->question
             );
 
-            // 4. Parse Result
+            // 2. Parse Result
             $data = json_decode($resultText, true);
             if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
-                $answer->score_ai = (int) ($data['score'] ?? 0);
+                $transcript = $data['transcript'] ?? '';
+                $answer->transcript = $transcript;
                 $answer->review_ai = $resultText; // Store raw JSON for the frontend helper
+
+                // 3. Language & Content validation (as a secondary check on AI returned transcript)
+                if ($this->isNonSpeechResponse($transcript)) {
+                    $answer->score_ai = 0;
+                    $answer->save();
+                    return;
+                }
+
+                if (!$this->isMostlyEnglish($transcript)) {
+                    $answer->score_ai = 0;
+                    $answer->save();
+                    return;
+                }
+
+                $answer->score_ai = (int) ($data['score'] ?? 0);
             } else {
                 // Fallback for non-JSON or weird output
                 if (preg_match('/"score"\s*:\s*(\d+)/', $resultText, $matches)) {
@@ -77,6 +65,7 @@ class EvaluateSpeakingJob implements ShouldQueue
                 }
                 $answer->review_ai = $resultText;
             }
+
             $answer->save();
 
         } catch (\Throwable $e) {
@@ -92,9 +81,12 @@ class EvaluateSpeakingJob implements ShouldQueue
             return false;
         }
 
-        // 2. Reject if it looks like Uzbek Latin (common markers like o', g', sh, ch prefixes or specific letter frequencies)
-        // This is a heuristic: check for common Uzbek Latin specific markers.
-        // Actually, many Uzbek words are distinct. Let's look for common Uzbek words.
+        // 2. Reject if contains Turkish/Azeri special characters (ğ, ü, ş, ı, ö, ç)
+        if (preg_match('/[ğüşıöçĞÜŞİÖÇ]/u', $text)) {
+            return false;
+        }
+
+        // 3. Reject if it looks like Uzbek Latin (common markers like o', g', sh, ch prefixes or specific letter frequencies)
         $uzbekWords = ['bo\'lib', 'emas', 'uchun', 'bo\'lgan', 'bilan', 'hamda', 'qilish', 'tomonidan', 'o\'zbekiston', 'assalomu', 'alaykum'];
         $lowerText = strtolower($text);
         foreach ($uzbekWords as $word) {
@@ -103,7 +95,7 @@ class EvaluateSpeakingJob implements ShouldQueue
             }
         }
 
-        // 3. Must contain English letters or numbers/symbols typical of noise/silence (which we handled above)
+        // 4. Must contain English letters or numbers/symbols typical of noise/silence (which we handled above)
         return preg_match('/[a-zA-Z]/', $text) === 1;
     }
 
