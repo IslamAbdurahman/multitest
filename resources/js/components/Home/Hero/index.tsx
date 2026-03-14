@@ -62,21 +62,12 @@ const Hero = () => {
 
                     {/* Right Image */}
                     <div className="col-span-6 flex justify-center">
-                        {/* Light Mode Image */}
                         <img
-                            src={`${getImagePrefix()}images/banner/mahila_boy_light.png`}
+                            src={`${getImagePrefix()}images/banner/mahila_boy.png`}
                             alt={t('hero.hero_alt')}
                             width={1000}
                             height={805}
-                            className="block object-contain dark:hidden"
-                        />
-                        {/* Dark Mode Image */}
-                        <img
-                            src={`${getImagePrefix()}images/banner/mahila_boy_dark.png`}
-                            alt={t('hero.hero_alt')}
-                            width={1000}
-                            height={805}
-                            className="hidden object-contain dark:block"
+                            className="object-contain"
                         />
                     </div>
                 </div>
