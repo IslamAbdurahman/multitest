@@ -44,20 +44,12 @@ class EvaluateSpeakingJob implements ShouldQueue
                 $answer->transcript = $transcript;
                 $answer->review_ai = $resultText; // Store raw JSON for the frontend helper
 
-                // 3. Language & Content validation (as a secondary check on AI returned transcript)
+                $answer->score_ai = (int) ($data['score'] ?? 0);
+
+                // 3. Silence Detection
                 if ($this->isNonSpeechResponse($transcript)) {
                     $answer->score_ai = 0;
-                    $answer->save();
-                    return;
                 }
-
-                if (!$this->isMostlyEnglish($transcript)) {
-                    $answer->score_ai = 0;
-                    $answer->save();
-                    return;
-                }
-
-                $answer->score_ai = (int) ($data['score'] ?? 0);
             } else {
                 // Fallback for non-JSON or weird output
                 if (preg_match('/"score"\s*:\s*(\d+)/', $resultText, $matches)) {
