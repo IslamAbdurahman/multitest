@@ -140,6 +140,7 @@ IMPORTANT RULES:
 - The response MUST directly and clearly answer the given question.
 - If the response is NOT in the target language (fully or partially), assign a score of 0 and level 'Below A1'.
 - If the response is off-topic, irrelevant, memorized, or does not answer the question, assign a score of 0 and level 'Below A1'.
+- If the audio is silent, contains only background noise, or is non-discernible speech, assign a score of 0 and level 'Below A1'.
 - Do NOT translate or interpret speech from any other language.
 - Do NOT evaluate content spoken in any other language.
 - If score is 0, do NOT provide any positive feedback.
