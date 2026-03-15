@@ -1,5 +1,5 @@
 import { router, usePage } from '@inertiajs/react';
-import { ClipboardList, History, LayoutGrid, Settings } from 'lucide-react';
+import { FileText, History, Home, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function AppBottomNav() {
@@ -10,12 +10,12 @@ export function AppBottomNav() {
         {
             title: t('sidebar.dashboard'), // Asosiy
             href: '/dashboard',
-            icon: LayoutGrid,
+            icon: Home,
         },
         {
             title: t('sidebar.test'),
             href: '/test',
-            icon: ClipboardList,
+            icon: FileText,
         },
         {
             title: t('sidebar.attempt'),
@@ -25,7 +25,7 @@ export function AppBottomNav() {
         {
             title: t('sidebar.profile'), // Oylik
             href: '/settings/profile',
-            icon: Settings,
+            icon: User,
         },
     ];
 

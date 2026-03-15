@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Auth, Language, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ClipboardList, Folder, GitBranch, Globe, GraduationCap, History, LayoutGrid, Send, Users } from 'lucide-react';
+import { ClipboardList, FileText, Folder, Github, Globe, GraduationCap, History, Languages, LayoutDashboard, Send, Users } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
@@ -16,7 +16,7 @@ export function AppSidebar() {
         {
             title: t('sidebar.repository'),
             href: 'https://github.com/islamabdurahman',
-            icon: GitBranch,
+            icon: Github,
         },
         {
             title: t('sidebar.telegram'),
@@ -58,9 +58,9 @@ export function AppSidebar() {
     // 3️⃣ Memo LAST
     const filteredNavItems = useMemo((): NavItem[] => {
         const baseItems: NavItem[] = [
-            { title: t('sidebar.dashboard'), href: '/dashboard', icon: LayoutGrid },
+            { title: t('sidebar.dashboard'), href: '/dashboard', icon: LayoutDashboard },
             { title: t('sidebar.user'), href: '/user', icon: Users },
-            { title: t('sidebar.test'), href: '/test', icon: ClipboardList },
+            { title: t('sidebar.test'), href: '/test', icon: FileText },
             { title: t('sidebar.mock'), href: '/mock', icon: GraduationCap },
             { title: t('sidebar.attempt'), href: '/attempt', icon: History },
         ];
@@ -68,7 +68,7 @@ export function AppSidebar() {
         const languageItems: NavItem[] = languages.map((lang) => ({
             title: (i18n.language === 'uz' ? lang.name_uz : i18n.language === 'ru' ? lang.name_ru : lang.name_en) + ' (' + lang.tests_count + ')',
             href: `/language/${lang.id}`,
-            icon: Globe,
+            icon: Languages,
         }));
 
         return [...baseItems, ...languageItems].filter((item) => {
