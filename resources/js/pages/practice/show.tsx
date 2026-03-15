@@ -34,13 +34,13 @@ export default function PracticeShow() {
             <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
                 {/* 🛰️ Global Progress Bar */}
                 <div className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
-                    <div className="mx-auto max-w-[95vw]">
+                    <div className="mx-auto w-full lg:w-[80%]">
                         <StepTabs attempt_parts={attempt_part.attempt?.attempt_parts ?? []} active={attempt_part.id} />
                     </div>
                 </div>
 
                 {/* 🎭 Main Stage */}
-                <main className="mx-auto flex max-w-[95vw] flex-col items-center px-4 py-6 md:px-6 md:py-12">
+                <main className="mx-auto flex w-full lg:w-[80%] flex-col items-center px-4 py-6 md:px-6 md:py-12">
                     {/* 🎙️ The Interactive Player Instance */}
                     <div className="w-full">
                         <div className="relative overflow-hidden rounded-2xl md:rounded-[3rem] bg-white shadow-2xl ring-1 shadow-indigo-500/10 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
