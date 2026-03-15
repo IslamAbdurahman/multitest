@@ -260,8 +260,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
 
             <div className="grid min-h-[500px] grid-cols-1 md:grid-cols-12">
                 <div className="border-r border-slate-100 p-6 md:p-10 md:col-span-8">
-                    <div className="mb-5 flex items-center justify-between">
-                        <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
+                    <div className="mb-6 flex items-center justify-between">
+                        <span className="text-[10px] md:text-[11px] font-black tracking-[0.15em] text-slate-400 uppercase leading-none">
                             {phase === 'introduction'
                                 ? t('question_player.introduction')
                                 : phase === 'uploading'
