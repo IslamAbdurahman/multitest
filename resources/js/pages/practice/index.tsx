@@ -25,9 +25,9 @@ export default function Practice() {
 
             <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
                 {/* 1. Top Navigation & Progress */}
-                <div className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
+                <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
                     <div className="mx-auto max-w-[95vw]">
-                        <StepTabs attempt_parts={attempt?.attempt_parts ?? []} active={firstPartId ?? 0} />
+                        <StepTabs attempt_parts={attempt?.attempt_parts ?? []} active={0} />
                     </div>
                 </div>
 
