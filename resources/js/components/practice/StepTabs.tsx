@@ -10,14 +10,14 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
     const activeIndex = attempt_parts.findIndex((p) => p.id === active);
 
     return (
-        <div className="scrollbar-hide flex w-full items-center justify-start gap-0 overflow-x-auto px-2 py-4 md:px-4">
+        <div className="scrollbar-hide flex w-full items-center justify-center gap-1 overflow-x-auto px-2 py-4 md:px-4">
             {attempt_parts.map((p, index) => {
                 const isCompleted = index < activeIndex;
                 const isActive = p.id === active;
                 const isLast = index === attempt_parts.length - 1;
 
                 return (
-                    <div key={p.id} className={`flex items-center ${!isLast ? 'flex-1' : 'flex-none'}`}>
+                    <div key={p.id} className="flex items-center flex-none">
                         <div className="group relative flex flex-col items-center">
                             {/* 🔘 Stepper Node - Dynamic Width Pill */}
                             <div className="relative z-10 flex items-center justify-center">
@@ -46,9 +46,9 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                             </div>
                         </div>
 
-                        {/* 🔗 Connector Line - Adjusted for center alignment */}
+                        {/* 🔗 Connector Line - Fixed width to keep tabs closer */}
                         {!isLast && (
-                            <div className="mx-1 md:mx-2 h-0.5 md:h-[3px] min-w-[0.5rem] md:min-w-[2rem] flex-1 rounded-full bg-slate-100 dark:bg-slate-800">
+                            <div className="mx-1 md:mx-2 h-0.5 md:h-[3px] w-4 md:w-12 rounded-full bg-slate-100 dark:bg-slate-800">
                                 <div
                                     className="h-full bg-indigo-500 transition-all duration-1000 ease-in-out"
                                     style={{ width: isCompleted ? '100%' : '0%' }}
