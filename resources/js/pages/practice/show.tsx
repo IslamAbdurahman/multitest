@@ -40,17 +40,17 @@ export default function PracticeShow() {
                 </div>
 
                 {/* 🎭 Main Stage */}
-                <main className="mx-auto flex max-w-7xl flex-col items-center px-6 py-12">
+                <main className="mx-auto flex max-w-7xl flex-col items-center px-4 py-6 md:px-6 md:py-12">
                     {/* 🎙️ The Interactive Player Instance */}
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-[3rem] bg-white shadow-2xl ring-1 shadow-indigo-500/10 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+                        <div className="relative overflow-hidden rounded-2xl md:rounded-[3rem] bg-white shadow-2xl ring-1 shadow-indigo-500/10 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
                             {/* Key forces a re-mount of QuestionPlayer logic (timers/state) for each new part */}
                             <QuestionPlayer key={attempt_part.id} attempt_part={attempt_part} />
                         </div>
                     </div>
 
                     {/* 🛡️ Status Bar & Trust Indicators */}
-                    <div className="mt-12 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="mt-6 md:mt-12 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
                         <StatusIndicator
                             icon={<CloudUpload className="h-4 w-4" />}
                             label={t('practice_show.auto_save')}
@@ -70,7 +70,7 @@ export default function PracticeShow() {
                     </div>
 
                     {/* Quick Help Tip */}
-                    <div className="mt-16 flex max-w-md items-start gap-3 rounded-2xl bg-indigo-50/50 p-4 dark:bg-indigo-500/5">
+                    <div className="mt-8 md:mt-16 flex max-w-md items-start gap-3 rounded-2xl bg-indigo-50/50 p-4 dark:bg-indigo-500/5">
                         <Info className="h-5 w-5 shrink-0 text-indigo-400" />
                         <p className="text-xs leading-relaxed font-medium text-slate-500 dark:text-slate-400">
                             <strong>{t('practice_show.pro_tip')}:</strong> {t('practice_show.speaking_exam_hint_text')}

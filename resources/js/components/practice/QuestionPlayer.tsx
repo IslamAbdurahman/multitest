@@ -208,8 +208,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
     };
 
     return (
-        <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-10 py-6">
+        <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl md:rounded-[2.5rem] border border-slate-200 bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-4 py-4 md:px-10 md:py-6">
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-3">
                         <span className="rounded-md bg-indigo-600 px-2 py-0.5 text-[10px] font-bold text-white uppercase">
@@ -218,16 +218,16 @@ export default function QuestionPlayer({ attempt_part }: any) {
                         <h1 className="text-xl font-black tracking-tight text-slate-800">{attempt_part.part.title}</h1>
                     </div>
                 </div>
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-6 py-3 shadow-lg">
-                    <Clock className="h-5 w-5 text-indigo-400" />
-                    <span className="font-mono text-2xl font-black text-white tabular-nums">
+                <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 md:px-6 md:py-3 shadow-lg">
+                    <Clock className="h-4 w-4 md:h-5 md:w-5 text-indigo-400" />
+                    <span className="font-mono text-lg md:text-2xl font-black text-white tabular-nums">
                         {phase === 'uploading' ? '--:--' : formatTime(timer)}
                     </span>
                 </div>
             </div>
 
-            <div className="grid min-h-[450px] grid-cols-1 md:grid-cols-12">
-                <div className="border-r border-slate-100 p-10 md:col-span-8">
+            <div className="grid min-h-[400px] md:min-h-[450px] grid-cols-1 md:grid-cols-12">
+                <div className="border-r border-slate-100 p-4 md:p-10 md:col-span-8">
                     <div className="mb-6 flex items-center justify-between">
                         <span className="text-xs font-black tracking-widest text-slate-400 uppercase">
                             {phase === 'introduction'
@@ -238,7 +238,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                         </span>
                         <PhaseBadge phase={phase} />
                     </div>
-                    <div className="prose prose-indigo prose-lg dark:prose-invert max-w-none">
+                    <div className="prose prose-indigo prose-base md:prose-lg dark:prose-invert max-w-none">
                         {phase === 'introduction' ? (
                             <div className="space-y-4">
                                 <h2 className="text-2xl font-black text-slate-800">{attempt_part.part.name}</h2>
@@ -258,7 +258,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-10 text-center md:col-span-4">
+                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-10 text-center md:col-span-4">
                     <RecordingPod phase={phase} />
                     <div className="mt-8 w-full space-y-4">
                         <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
@@ -356,7 +356,7 @@ function PhaseBadge({ phase }: { phase: string }) {
         uploading: 'bg-indigo-50 text-indigo-600 border-indigo-100',
     };
     return (
-        <div className={`flex items-center gap-2 rounded-full border px-4 py-1.5 text-[10px] font-black tracking-widest uppercase ${styles[phase as keyof typeof styles]}`}>
+        <div className={`flex items-center gap-2 rounded-full border px-3 py-1 md:px-4 md:py-1.5 text-[10px] font-black tracking-widest uppercase ${styles[phase as keyof typeof styles]}`}>
             <span className={`h-1.5 w-1.5 rounded-full ${phase === 'recording' ? 'animate-pulse bg-red-600' : phase === 'uploading' ? 'animate-bounce bg-indigo-600' : 'bg-current'}`} />
             {phase === 'introduction' ? t('question_player.phase_intro') : phase === 'audio' ? t('question_player.phase_instruction') : phase === 'ready' ? t('question_player.phase_preparing') : phase === 'uploading' ? t('question_player.phase_saving') : t('question_player.phase_answering')}
         </div>

@@ -22,7 +22,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                             {/* 🔘 Stepper Node - Dynamic Width Pill */}
                             <div className="relative z-10 flex items-center justify-center">
                                 <div
-                                    className={`flex h-12 min-w-[3rem] items-center justify-center gap-2 rounded-[1.25rem] border-4 px-4 transition-all duration-500 ease-out ${
+                                    className={`flex h-10 md:h-12 min-w-[2.5rem] md:min-w-[3rem] items-center justify-center gap-2 rounded-[1rem] md:rounded-[1.25rem] border-2 md:border-4 px-3 md:px-4 transition-all duration-500 ease-out ${
                                         isActive
                                             ? 'scale-105 border-indigo-100 bg-indigo-600 text-white shadow-xl shadow-indigo-200 dark:border-indigo-900/40 dark:shadow-none'
                                             : isCompleted
@@ -33,7 +33,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                     {isCompleted && <Check className="h-4 w-4 shrink-0 stroke-[4]" />}
 
                                     <span
-                                        className={`text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
+                                        className={`text-[10px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
                                             isActive ? 'text-white' : isCompleted ? 'text-slate-200' : 'text-slate-400'
                                         }`}
                                     >
@@ -42,7 +42,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                 </div>
 
                                 {/* Pulse Effect for active step */}
-                                {isActive && <div className="absolute inset-0 -z-10 scale-110 animate-pulse rounded-[1.25rem] bg-indigo-400/30" />}
+                                {isActive && <div className="absolute inset-0 -z-10 scale-110 animate-pulse rounded-[1rem] md:rounded-[1.25rem] bg-indigo-400/30" />}
                             </div>
                         </div>
 
