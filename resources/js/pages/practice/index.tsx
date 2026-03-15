@@ -26,12 +26,12 @@ export default function Practice() {
             <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
                 {/* 1. Top Navigation & Progress */}
                 <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                    <div className="mx-auto max-w-[95vw]">
+                    <div className="mx-auto max-w-5xl">
                         <StepTabs attempt_parts={attempt?.attempt_parts ?? []} active={0} />
                     </div>
                 </div>
 
-                <div className="mx-auto max-w-[95vw] px-6 py-12">
+                <div className="mx-auto max-w-5xl px-6 py-12">
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
                         {/* 📝 Left Side: Test Context (Col 7) */}
                         <div className="space-y-8 lg:col-span-7">
@@ -109,17 +109,21 @@ export default function Practice() {
                                             </div>
                                         </div>
 
-                                        <audio
-                                            autoPlay
-                                            onPlay={() => setIsPlaying(true)}
-                                            onPause={() => setIsPlaying(false)}
-                                            onEnded={handleAudioEnd}
-                                            className="h-10 w-full rounded-full opacity-40 transition-opacity hover:opacity-100"
-                                            controls
-                                            controlsList="nodownload"
-                                        >
-                                            <source src={attempt.mock?.audio_path ?? attempt.test?.audio_path ?? ''} type="audio/mpeg" />
-                                        </audio>
+                                        {(attempt.mock?.audio_path || attempt.test?.audio_path) ? (
+                                            <audio
+                                                autoPlay
+                                                onPlay={() => setIsPlaying(true)}
+                                                onPause={() => setIsPlaying(false)}
+                                                onEnded={handleAudioEnd}
+                                                className="h-10 w-full rounded-full opacity-40 transition-opacity hover:opacity-100"
+                                                controls
+                                                controlsList="nodownload"
+                                            >
+                                                <source src={attempt.mock?.audio_path ?? attempt.test?.audio_path} type="audio/mpeg" />
+                                            </audio>
+                                        ) : (
+                                            <p className="text-xs text-slate-400 italic">{t('practice.no_audio_available')}</p>
+                                        )}
                                     </div>
 
                                     {firstPartId && (

@@ -50,7 +50,13 @@ export default function QuestionPlayer({ attempt_part }: any) {
     /* Phase 0: Part Introduction */
     useEffect(() => {
         if (phase !== 'introduction') return;
-        const introAudio = new Audio(attempt_part.part.audio_path);
+        const audioPath = attempt_part.part.audio_path;
+        if (!audioPath) {
+            setIndex(0);
+            setPhase('audio');
+            return;
+        }
+        const introAudio = new Audio(audioPath);
         introAudio.play().catch(() => {
             setIndex(0);
             setPhase('audio');
@@ -68,7 +74,15 @@ export default function QuestionPlayer({ attempt_part }: any) {
     /* Phase 1: Question Audio */
     useEffect(() => {
         if (phase !== 'audio' || !question) return;
-        const audio = new Audio(question.audio_path);
+        const audioPath = question.audio_path;
+        if (!audioPath) {
+            const readySec = question.ready_second;
+            setPhase('ready');
+            setTimer(readySec);
+            setTotalTime(readySec);
+            return;
+        }
+        const audio = new Audio(audioPath);
         audio.play().catch(() => {
             setPhase('ready');
             setTimer(question.ready_second);
@@ -85,12 +99,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
         };
     }, [phase, index]);
 
-    /* Auto full-screen when first question starts */
-    useEffect(() => {
-        if (phase === 'audio' && index === 0 && !document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => { });
-        }
-    }, [phase, index]);
+    /* Fullscreen is now triggered by user click (toggleFullscreen) only */
 
     /* Phase 2 & 3: Timer Logic */
     useEffect(() => {
