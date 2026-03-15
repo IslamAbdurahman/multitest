@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Auth, Language, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, Globe, LayoutGrid, Users } from 'lucide-react';
+import { ClipboardList, Folder, GitBranch, Globe, GraduationCap, History, LayoutGrid, Send, Users } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
@@ -16,12 +16,12 @@ export function AppSidebar() {
         {
             title: t('sidebar.repository'),
             href: 'https://github.com/islamabdurahman',
-            icon: Folder,
+            icon: GitBranch,
         },
         {
             title: t('sidebar.telegram'),
             href: 'https://t.me/livelongevity',
-            icon: BookOpen,
+            icon: Send,
         },
     ];
 
@@ -60,9 +60,9 @@ export function AppSidebar() {
         const baseItems: NavItem[] = [
             { title: t('sidebar.dashboard'), href: '/dashboard', icon: LayoutGrid },
             { title: t('sidebar.user'), href: '/user', icon: Users },
-            { title: t('sidebar.test'), href: '/test', icon: Users },
-            { title: t('sidebar.mock'), href: '/mock', icon: Users },
-            { title: t('sidebar.attempt'), href: '/attempt', icon: Users },
+            { title: t('sidebar.test'), href: '/test', icon: ClipboardList },
+            { title: t('sidebar.mock'), href: '/mock', icon: GraduationCap },
+            { title: t('sidebar.attempt'), href: '/attempt', icon: History },
         ];
 
         const languageItems: NavItem[] = languages.map((lang) => ({
