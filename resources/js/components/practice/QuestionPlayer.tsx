@@ -88,7 +88,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
     /* Auto full-screen when first question starts */
     useEffect(() => {
         if (phase === 'audio' && index === 0 && !document.fullscreenElement) {
-            playerRef.current?.requestFullscreen().catch(() => {});
+            document.documentElement.requestFullscreen().catch(() => {});
         }
     }, [phase, index]);
 
@@ -224,13 +224,11 @@ export default function QuestionPlayer({ attempt_part }: any) {
 
     const toggleFullscreen = () => {
         if (!document.fullscreenElement) {
-            playerRef.current?.requestFullscreen().catch((err) => {
+            document.documentElement.requestFullscreen().catch((err) => {
                 console.error(`Error attempting to enable full-screen mode: ${err.message}`);
             });
-            setIsFullscreen(true);
         } else {
             document.exitFullscreen();
-            setIsFullscreen(false);
         }
     };
 
