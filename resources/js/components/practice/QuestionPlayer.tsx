@@ -286,7 +286,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                             </div>
                         ) : (
                             <div
-                                className="tinymce-content text-lg md:text-xl lg:text-2xl leading-loose font-normal text-slate-700"
+                                className="tinymce-content text-lg md:text-xl lg:text-2xl leading-relaxed font-normal text-slate-700"
                                 dangerouslySetInnerHTML={{ __html: question?.textarea }}
                             />
                         )}
