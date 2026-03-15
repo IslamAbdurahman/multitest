@@ -28,17 +28,22 @@
     font-style: italic !important;
 }
 
-/* Force TinyMCE images to be responsive and centered */
+/* Force TinyMCE images to be responsive and support side-by-side layout */
+.tinymce-content {
+    text-align: center; /* Center the content (images and text) for a balanced look */
+}
+
 .tinymce-content img {
     max-width: 100% !important;
     height: auto !important;
-    display: block !important;
-    margin: 1.5rem auto !important;
+    display: inline-block !important; /* Allow side-by-side images */
+    margin: 0.5rem !important;
     border-radius: 0.75rem !important;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    vertical-align: middle;
 }
 
-/* Force TinyMCE images to block level to ensure new lines */
+/* Force TinyMCE images to respect layout flows if needed */
 .prose img {
     display: inline !important;
     margin-left: auto;
