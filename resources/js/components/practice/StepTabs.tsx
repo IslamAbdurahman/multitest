@@ -33,7 +33,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                     {isCompleted && <Check className="h-4 w-4 shrink-0 stroke-[4]" />}
 
                                     <span
-                                        className={`text-[9px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
+                                        className={`text-[10px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
                                             isActive ? 'text-white' : isCompleted ? 'text-slate-200' : 'text-slate-400'
                                         }`}
                                     >

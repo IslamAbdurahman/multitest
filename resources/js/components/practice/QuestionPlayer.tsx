@@ -286,7 +286,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                             </div>
                         ) : (
                             <div
-                                className="text-lg md:text-xl lg:text-2xl leading-loose font-normal text-slate-700"
+                                className="text-lg md:text-xl lg:text-2xl leading-loose font-normal text-slate-700 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-md [&_img]:mx-auto [&_img]:my-8 [&_img]:block"
                                 dangerouslySetInnerHTML={{ __html: question?.textarea }}
                             />
                         )}
