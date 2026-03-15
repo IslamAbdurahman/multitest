@@ -88,7 +88,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
     /* Auto full-screen when first question starts */
     useEffect(() => {
         if (phase === 'audio' && index === 0 && !document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
+            document.documentElement.requestFullscreen().catch(() => { });
         }
     }, [phase, index]);
 
@@ -171,7 +171,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
         form.append(`answers[0][started_at]`, answer.started_at);
         form.append(`answers[0][finished_at]`, answer.finished_at);
         form.append(`answers[0][audio_path]`, answer.audio, `q_${answer.question_id}.${answer.ext}`);
-        
+
         // Use standard fetch for a silent "fire and forget" auto-save
         fetch(route('practice.save_answers', attempt_part.id), {
             method: 'POST',
@@ -181,15 +181,15 @@ export default function QuestionPlayer({ attempt_part }: any) {
                 'X-Requested-With': 'XMLHttpRequest',
             },
         })
-        .then(async response => {
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Auto-save failed:', response.statusText, errorData.errors || errorData);
-            }
-        })
-        .catch(error => {
-            console.error('Auto-save network error:', error);
-        });
+            .then(async response => {
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Auto-save failed:', response.statusText, errorData.errors || errorData);
+                }
+            })
+            .catch(error => {
+                console.error('Auto-save network error:', error);
+            });
     };
 
     const goNext = () => {
