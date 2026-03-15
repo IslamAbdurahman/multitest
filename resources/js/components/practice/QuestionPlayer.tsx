@@ -243,81 +243,104 @@ export default function QuestionPlayer({ attempt_part }: any) {
     }, []);
 
     return (
-        <div ref={playerRef} className={`mx-auto w-full max-w-7xl overflow-hidden border border-slate-200 bg-white shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
-            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-4 py-4 md:px-10 md:py-6">
-                <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-3">
-                        <span className="rounded-md bg-indigo-600 px-2 py-0.5 text-[10px] font-bold text-white uppercase">
-                            {t('question_player.part_label')}
-                        </span>
-                        <h1 className="text-xl font-black tracking-tight text-slate-800">{attempt_part.part.title}</h1>
+        <div
+            ref={playerRef}
+            className={`mx-auto w-full overflow-hidden border border-slate-800 bg-white shadow-2xl transition-all duration-300 dark:bg-slate-900 ${isFullscreen ? 'rounded-none min-h-screen flex flex-col' : 'rounded-2xl md:rounded-3xl'}`}
+        >
+            {/* ═══ TOP HEADER BAR — Official Navy ═══ */}
+            <div className="flex items-center justify-between bg-slate-900 px-4 py-3 md:px-8 md:py-4">
+                <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 ring-1 ring-indigo-400/30">
+                        <span className="text-base">🇺🇿</span>
+                    </div>
+                    <div className="hidden sm:block">
+                        <p className="text-[9px] font-bold tracking-widest text-indigo-300 uppercase">National Assessment System</p>
+                        <p className="text-xs font-black text-white tracking-tight">{attempt_part.part.title}</p>
+                    </div>
+                    <div className="block sm:hidden">
+                        <p className="text-xs font-black text-white">{attempt_part.part.title}</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
+
+                <div className="flex items-center gap-2">
+                    <PhaseBadge phase={phase} />
                     <button
                         onClick={toggleFullscreen}
-                        className="flex items-center justify-center rounded-xl bg-slate-100 p-3 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+                        className="flex items-center justify-center rounded-lg bg-white/10 p-2 text-slate-300 transition-colors hover:bg-white/20"
                         title={isFullscreen ? t('common.exit_fullscreen') : t('common.fullscreen')}
                     >
-                        {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
+                        {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                     </button>
                 </div>
             </div>
 
-            <div className="grid min-h-[400px] md:min-h-[450px] grid-cols-1 md:grid-cols-12">
-                <div className="border-r border-slate-100 p-4 md:p-10 md:col-span-8">
-                    <div className="mb-6 flex items-center justify-between">
-                        <span className="text-xs font-black tracking-widest text-slate-400 uppercase">
+            {/* ═══ MAIN CONTENT AREA ═══ */}
+            <div className={`grid grid-cols-1 md:grid-cols-12 ${isFullscreen ? 'flex-1' : 'min-h-[480px] md:min-h-[560px]'}`}>
+
+                {/* LEFT: Question / Instruction Content */}
+                <div className="flex flex-col justify-center border-b border-slate-100 p-6 md:col-span-8 md:border-b-0 md:border-r md:p-12">
+                    {/* Phase Label */}
+                    <div className="mb-4 flex items-center gap-2">
+                        <div className="h-px flex-1 bg-slate-100" />
+                        <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">
                             {phase === 'introduction'
                                 ? t('question_player.introduction')
                                 : phase === 'uploading'
                                     ? t('question_player.saving_results')
                                     : t('question_player.question_counter', { current: index + 1, total: questions.length })}
                         </span>
-                        <PhaseBadge phase={phase} />
+                        <div className="h-px flex-1 bg-slate-100" />
                     </div>
-                    <div className="prose prose-indigo prose-lg md:prose-2xl dark:prose-invert max-w-none">
-                        {phase === 'introduction' ? (
-                            <div className="space-y-6">
-                                <h2 className="text-3xl md:text-5xl font-black text-slate-800">{attempt_part.part.name}</h2>
-                                <div
-                                    className="leading-relaxed font-medium text-slate-600 text-lg md:text-2xl"
-                                    dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
-                                />
+
+                    {/* Content */}
+                    {phase === 'introduction' ? (
+                        <div className="space-y-5">
+                            <h2 className="text-3xl font-black leading-tight tracking-tight text-slate-900 md:text-4xl">
+                                {attempt_part.part.name}
+                            </h2>
+                            <div
+                                className="prose prose-slate max-w-none text-lg leading-relaxed text-slate-600 md:text-xl"
+                                dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
+                            />
+                        </div>
+                    ) : phase === 'uploading' ? (
+                        <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">
+                                <CloudUpload className="h-8 w-8 animate-bounce text-indigo-500" />
                             </div>
-                        ) : phase === 'uploading' ? (
-                            <div className="flex h-full flex-col items-center justify-center space-y-4 py-20 text-center">
-                                <h2 className="text-2xl font-black text-slate-800">{t('question_player.uploading_title')}</h2>
-                                <p className="text-slate-500">{t('question_player.uploading_desc')}</p>
-                            </div>
-                        ) : (
-                            <div className="leading-relaxed font-medium text-slate-700 text-lg md:text-3xl" dangerouslySetInnerHTML={{ __html: question?.textarea }} />
-                        )}
-                    </div>
+                            <h2 className="text-2xl font-black text-slate-800">{t('question_player.uploading_title')}</h2>
+                            <p className="text-slate-500">{t('question_player.uploading_desc')}</p>
+                        </div>
+                    ) : (
+                        <div
+                            className="prose prose-slate max-w-none text-xl font-semibold leading-relaxed text-slate-800 md:text-3xl"
+                            dangerouslySetInnerHTML={{ __html: question?.textarea }}
+                        />
+                    )}
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-10 text-center md:col-span-4">
-                    {/* Timer on top, larger and prominent */}
-                    <div className="mb-4">
-                        <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
-                    </div>
-                    {/* Smaller mic pod below */}
+                {/* RIGHT: Status Panel — Dark */}
+                <div className="flex flex-col items-center justify-center gap-6 bg-slate-900 p-6 text-center md:col-span-4 md:p-10">
+                    {/* Circular Timer */}
+                    <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
+
+                    {/* Mic / Status Pod */}
                     <RecordingPod phase={phase} />
-                    <div className="mt-8 w-full space-y-4">
-                        <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
-                            <p className="mb-1 text-[10px] font-black tracking-tighter text-slate-400 uppercase">{t('question_player.status')}</p>
-                            <p className="text-sm font-bold text-slate-700">
-                                {phase === 'introduction'
-                                    ? t('question_player.status_intro')
-                                    : phase === 'audio'
-                                        ? t('question_player.status_listening')
-                                        : phase === 'ready'
-                                            ? t('question_player.status_preparing')
-                                            : phase === 'uploading'
-                                                ? t('question_player.status_uploading')
-                                                : t('question_player.status_capturing')}
-                            </p>
-                        </div>
+
+                    {/* Status Card */}
+                    <div className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                        <p className="mb-1 text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">{t('question_player.status')}</p>
+                        <p className="text-sm font-bold text-white">
+                            {phase === 'introduction'
+                                ? t('question_player.status_intro')
+                                : phase === 'audio'
+                                    ? t('question_player.status_listening')
+                                    : phase === 'ready'
+                                        ? t('question_player.status_preparing')
+                                        : phase === 'uploading'
+                                            ? t('question_player.status_uploading')
+                                            : t('question_player.status_capturing')}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -325,83 +348,93 @@ export default function QuestionPlayer({ attempt_part }: any) {
     );
 }
 
-// Sub-components (RecordingPod and PhaseBadge) stay the same as your original design
+// ═══ Sub-Components ═══
+
 function RecordingPod({ phase }: { phase: string }) {
     const { t } = useTranslation();
+
     if (phase === 'uploading') {
         return (
-            <div className="flex flex-col items-center">
-                <div className="relative mb-3">
-                    <div className="absolute inset-0 animate-pulse rounded-full bg-indigo-400 opacity-20"></div>
-                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
-                        <CloudUpload size={28} className="animate-bounce" strokeWidth={2.5} />
+            <div className="flex flex-col items-center gap-2">
+                <div className="relative">
+                    <div className="absolute inset-0 animate-pulse rounded-full bg-indigo-400/30" />
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/30">
+                        <CloudUpload size={28} className="animate-bounce" strokeWidth={2} />
                     </div>
                 </div>
-                <span className="animate-pulse text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">
+                <span className="animate-pulse text-[10px] font-black tracking-[0.15em] text-indigo-400 uppercase">
                     {t('question_player.uploading_live')}
                 </span>
             </div>
         );
     }
+
     if (phase === 'recording') {
         return (
-            <div className="flex flex-col items-center">
-                <div className="relative mb-3">
-                    <div className="absolute inset-0 animate-ping rounded-full bg-red-400 opacity-20"></div>
-                    <div className="absolute -inset-2 animate-pulse rounded-full bg-red-100 opacity-40"></div>
-                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-red-600 text-white shadow-xl">
-                        <Mic size={28} strokeWidth={2.5} />
+            <div className="flex flex-col items-center gap-2">
+                <div className="relative">
+                    <div className="absolute -inset-2 animate-ping rounded-full bg-red-500/20" />
+                    <div className="absolute -inset-1 animate-pulse rounded-full bg-red-500/10" />
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-600/40">
+                        <Mic size={28} strokeWidth={2} />
                     </div>
                 </div>
-                <span className="animate-pulse text-xs font-black tracking-[0.2em] text-red-600 uppercase">
+                <span className="animate-pulse text-[10px] font-black tracking-[0.15em] text-red-400 uppercase">
                     {t('question_player.recording_live')}
                 </span>
             </div>
         );
     }
+
     if (phase === 'ready') {
         return (
-            <div className="flex flex-col items-center">
-                <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-amber-500 text-white shadow-xl">
-                    <Timer size={28} strokeWidth={2.5} />
+            <div className="flex flex-col items-center gap-2">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500 text-white shadow-lg shadow-amber-500/30">
+                    <Timer size={28} strokeWidth={2} />
                 </div>
-                <span className="text-xs font-black tracking-[0.2em] text-amber-600 uppercase">{t('question_player.get_ready')}</span>
+                <span className="text-[10px] font-black tracking-[0.15em] text-amber-400 uppercase">{t('question_player.get_ready')}</span>
             </div>
         );
     }
+
     if (phase === 'introduction') {
         return (
-            <div className="flex flex-col items-center">
-                <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
-                    <Info size={28} strokeWidth={2.5} />
+            <div className="flex flex-col items-center gap-2">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/30">
+                    <Info size={28} strokeWidth={2} />
                 </div>
-                <span className="text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">{t('question_player.part_intro')}</span>
+                <span className="text-[10px] font-black tracking-[0.15em] text-indigo-400 uppercase">{t('question_player.part_intro')}</span>
             </div>
         );
     }
+
     return (
-        <div className="flex flex-col items-center">
-            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-2 border-slate-200 bg-white text-slate-400 shadow-sm">
+        <div className="flex flex-col items-center gap-2">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400">
                 <Volume2 size={28} />
             </div>
-            <span className="text-xs font-black tracking-[0.2em] text-slate-400 uppercase">{t('question_player.playing_audio')}</span>
+            <span className="text-[10px] font-black tracking-[0.15em] text-slate-500 uppercase">{t('question_player.playing_audio')}</span>
         </div>
     );
 }
 
 function PhaseBadge({ phase }: { phase: string }) {
     const { t } = useTranslation();
-    const styles = {
-        introduction: 'bg-indigo-50 text-indigo-600 border-indigo-100',
-        audio: 'bg-blue-50 text-blue-600 border-blue-100',
-        ready: 'bg-amber-50 text-amber-600 border-amber-100',
-        recording: 'bg-red-50 text-red-600 border-red-100',
-        uploading: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+    const styles: Record<string, string> = {
+        introduction: 'bg-indigo-500/20 text-indigo-300 ring-indigo-500/30',
+        audio: 'bg-blue-500/20 text-blue-300 ring-blue-500/30',
+        ready: 'bg-amber-500/20 text-amber-300 ring-amber-500/30',
+        recording: 'bg-red-500/20 text-red-300 ring-red-500/30',
+        uploading: 'bg-indigo-500/20 text-indigo-300 ring-indigo-500/30',
     };
     return (
-        <div className={`flex items-center gap-2 rounded-full border px-3 py-1 md:px-4 md:py-1.5 text-[10px] font-black tracking-widest uppercase ${styles[phase as keyof typeof styles]}`}>
-            <span className={`h-1.5 w-1.5 rounded-full ${phase === 'recording' ? 'animate-pulse bg-red-600' : phase === 'uploading' ? 'animate-bounce bg-indigo-600' : 'bg-current'}`} />
-            {phase === 'introduction' ? t('question_player.phase_intro') : phase === 'audio' ? t('question_player.phase_instruction') : phase === 'ready' ? t('question_player.phase_preparing') : phase === 'uploading' ? t('question_player.phase_saving') : t('question_player.phase_answering')}
+        <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[9px] font-black tracking-widest ring-1 uppercase ${styles[phase] ?? styles.introduction}`}>
+            <span className={`h-1.5 w-1.5 rounded-full bg-current ${phase === 'recording' ? 'animate-pulse' : phase === 'uploading' ? 'animate-bounce' : ''}`} />
+            {phase === 'introduction' ? t('question_player.phase_intro')
+                : phase === 'audio' ? t('question_player.phase_instruction')
+                : phase === 'ready' ? t('question_player.phase_preparing')
+                : phase === 'uploading' ? t('question_player.phase_saving')
+                : t('question_player.phase_answering')}
         </div>
     );
 }
