@@ -5,8 +5,8 @@ interface CircularTimerProps {
 }
 
 export default function CircularTimer({ timeLeft, totalTime, phase }: CircularTimerProps) {
-    const size = 120;
-    const strokeWidth = 10;
+    const size = 140;
+    const strokeWidth = 11;
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
 
@@ -54,7 +54,7 @@ export default function CircularTimer({ timeLeft, totalTime, phase }: CircularTi
                 width={size}
                 height={size}
                 viewBox={`0 0 ${size} ${size}`}
-                className="rotate-[-90deg]"
+                className="-scale-x-100 rotate-[-90deg]"
             >
                 {/* Background track */}
                 <circle

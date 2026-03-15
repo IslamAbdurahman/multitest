@@ -298,6 +298,11 @@ export default function QuestionPlayer({ attempt_part }: any) {
                 </div>
 
                 <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-10 text-center md:col-span-4">
+                    {/* Timer on top, larger and prominent */}
+                    <div className="mb-4">
+                        <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
+                    </div>
+                    {/* Smaller mic pod below */}
                     <RecordingPod phase={phase} />
                     <div className="mt-8 w-full space-y-4">
                         <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
@@ -327,10 +332,10 @@ function RecordingPod({ phase }: { phase: string }) {
     if (phase === 'uploading') {
         return (
             <div className="flex flex-col items-center">
-                <div className="relative mb-6">
+                <div className="relative mb-3">
                     <div className="absolute inset-0 animate-pulse rounded-full bg-indigo-400 opacity-20"></div>
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
-                        <CloudUpload size={40} className="animate-bounce" strokeWidth={2.5} />
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
+                        <CloudUpload size={28} className="animate-bounce" strokeWidth={2.5} />
                     </div>
                 </div>
                 <span className="animate-pulse text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">
@@ -342,11 +347,11 @@ function RecordingPod({ phase }: { phase: string }) {
     if (phase === 'recording') {
         return (
             <div className="flex flex-col items-center">
-                <div className="relative mb-6">
+                <div className="relative mb-3">
                     <div className="absolute inset-0 animate-ping rounded-full bg-red-400 opacity-20"></div>
-                    <div className="absolute -inset-4 animate-pulse rounded-full bg-red-100 opacity-40"></div>
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-red-600 text-white shadow-xl">
-                        <Mic size={40} strokeWidth={2.5} />
+                    <div className="absolute -inset-2 animate-pulse rounded-full bg-red-100 opacity-40"></div>
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-red-600 text-white shadow-xl">
+                        <Mic size={28} strokeWidth={2.5} />
                     </div>
                 </div>
                 <span className="animate-pulse text-xs font-black tracking-[0.2em] text-red-600 uppercase">
@@ -358,8 +363,8 @@ function RecordingPod({ phase }: { phase: string }) {
     if (phase === 'ready') {
         return (
             <div className="flex flex-col items-center">
-                <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-amber-500 text-white shadow-xl">
-                    <Timer size={40} strokeWidth={2.5} />
+                <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-amber-500 text-white shadow-xl">
+                    <Timer size={28} strokeWidth={2.5} />
                 </div>
                 <span className="text-xs font-black tracking-[0.2em] text-amber-600 uppercase">{t('question_player.get_ready')}</span>
             </div>
@@ -368,8 +373,8 @@ function RecordingPod({ phase }: { phase: string }) {
     if (phase === 'introduction') {
         return (
             <div className="flex flex-col items-center">
-                <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
-                    <Info size={40} strokeWidth={2.5} />
+                <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-indigo-600 text-white shadow-xl">
+                    <Info size={28} strokeWidth={2.5} />
                 </div>
                 <span className="text-xs font-black tracking-[0.2em] text-indigo-600 uppercase">{t('question_player.part_intro')}</span>
             </div>
@@ -377,8 +382,8 @@ function RecordingPod({ phase }: { phase: string }) {
     }
     return (
         <div className="flex flex-col items-center">
-            <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-2 border-slate-200 bg-white text-slate-400 shadow-sm">
-                <Volume2 size={40} />
+            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-2 border-slate-200 bg-white text-slate-400 shadow-sm">
+                <Volume2 size={28} />
             </div>
             <span className="text-xs font-black tracking-[0.2em] text-slate-400 uppercase">{t('question_player.playing_audio')}</span>
         </div>
