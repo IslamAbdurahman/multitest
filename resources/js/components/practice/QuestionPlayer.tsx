@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { Clock, CloudUpload, Info, Mic, Volume2 } from 'lucide-react';
+import { Clock, CloudUpload, Info, Maximize, Mic, Minimize, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +10,9 @@ export default function QuestionPlayer({ attempt_part }: any) {
     const [index, setIndex] = useState(-1);
     const [phase, setPhase] = useState<'introduction' | 'audio' | 'ready' | 'recording' | 'uploading'>('introduction');
     const [timer, setTimer] = useState(0);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    const playerRef = useRef<HTMLDivElement>(null);
 
     const recorderRef = useRef<MediaRecorder | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
@@ -207,8 +210,28 @@ export default function QuestionPlayer({ attempt_part }: any) {
         router.post(route('practice.save_answers', attempt_part.id), form);
     };
 
+    const toggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            playerRef.current?.requestFullscreen().catch((err) => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+            setIsFullscreen(true);
+        } else {
+            document.exitFullscreen();
+            setIsFullscreen(false);
+        }
+    };
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
     return (
-        <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl md:rounded-[2.5rem] border border-slate-200 bg-white shadow-2xl">
+        <div ref={playerRef} className={`mx-auto w-full max-w-7xl overflow-hidden border border-slate-200 bg-white shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-4 py-4 md:px-10 md:py-6">
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-3">
@@ -218,11 +241,20 @@ export default function QuestionPlayer({ attempt_part }: any) {
                         <h1 className="text-xl font-black tracking-tight text-slate-800">{attempt_part.part.title}</h1>
                     </div>
                 </div>
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 md:px-6 md:py-3 shadow-lg">
-                    <Clock className="h-4 w-4 md:h-5 md:w-5 text-indigo-400" />
-                    <span className="font-mono text-lg md:text-2xl font-black text-white tabular-nums">
-                        {phase === 'uploading' ? '--:--' : formatTime(timer)}
-                    </span>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={toggleFullscreen}
+                        className="flex items-center justify-center rounded-xl bg-slate-100 p-3 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+                        title={isFullscreen ? t('common.exit_fullscreen') : t('common.fullscreen')}
+                    >
+                        {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
+                    </button>
+                    <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 md:px-6 md:py-3 shadow-lg">
+                        <Clock className="h-4 w-4 md:h-5 md:w-5 text-indigo-400" />
+                        <span className="font-mono text-lg md:text-2xl font-black text-white tabular-nums">
+                            {phase === 'uploading' ? '--:--' : formatTime(timer)}
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -238,12 +270,12 @@ export default function QuestionPlayer({ attempt_part }: any) {
                         </span>
                         <PhaseBadge phase={phase} />
                     </div>
-                    <div className="prose prose-indigo prose-base md:prose-lg dark:prose-invert max-w-none">
+                    <div className="prose prose-indigo prose-lg md:prose-2xl dark:prose-invert max-w-none">
                         {phase === 'introduction' ? (
-                            <div className="space-y-4">
-                                <h2 className="text-2xl font-black text-slate-800">{attempt_part.part.name}</h2>
+                            <div className="space-y-6">
+                                <h2 className="text-3xl md:text-5xl font-black text-slate-800">{attempt_part.part.name}</h2>
                                 <div
-                                    className="leading-relaxed font-medium text-slate-600"
+                                    className="leading-relaxed font-medium text-slate-600 text-lg md:text-2xl"
                                     dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
                                 />
                             </div>
@@ -253,7 +285,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                                 <p className="text-slate-500">{t('question_player.uploading_desc')}</p>
                             </div>
                         ) : (
-                            <div className="leading-relaxed font-medium text-slate-700" dangerouslySetInnerHTML={{ __html: question?.textarea }} />
+                            <div className="leading-relaxed font-medium text-slate-700 text-lg md:text-3xl" dangerouslySetInnerHTML={{ __html: question?.textarea }} />
                         )}
                     </div>
                 </div>
