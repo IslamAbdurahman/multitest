@@ -43,10 +43,10 @@ export default function Practice() {
                                     </span>
                                     {t('practice.speaking_session_active')}
                                 </div>
-                                <h1 className="text-5xl leading-[1.1] font-black tracking-tight text-slate-900 dark:text-white">
+                                <h1 className="text-3xl md:text-4xl lg:text-5xl leading-tight font-extrabold tracking-tight text-slate-900 dark:text-white">
                                     {attempt.mock?.name || attempt.test?.name}
                                 </h1>
-                                <div className="prose prose-slate dark:prose-invert max-w-none text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+                                <div className="max-w-none text-base md:text-lg leading-relaxed text-slate-500 dark:text-slate-400">
                                     {attempt.mock?.description || attempt.test?.description}
                                 </div>
                             </div>
