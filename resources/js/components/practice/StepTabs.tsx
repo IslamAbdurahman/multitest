@@ -10,19 +10,19 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
     const activeIndex = attempt_parts.findIndex((p) => p.id === active);
 
     return (
-        <div className="scrollbar-hide flex w-full items-center justify-start md:justify-center gap-1 overflow-x-auto px-4 py-4">
+        <div className="scrollbar-hide flex w-full items-center justify-between lg:justify-center gap-1 overflow-x-auto px-2 py-4 md:px-4">
             {attempt_parts.map((p, index) => {
                 const isCompleted = index < activeIndex;
                 const isActive = p.id === active;
                 const isLast = index === attempt_parts.length - 1;
 
                 return (
-                    <div key={p.id} className="flex items-center flex-none">
+                    <div key={p.id} className={`flex items-center ${!isLast ? 'flex-1 lg:flex-none' : 'flex-none'}`}>
                         <div className="group relative flex flex-col items-center">
                             {/* 🔘 Stepper Node - Dynamic Width Pill */}
                             <div className="relative z-10 flex items-center justify-center">
                                 <div
-                                    className={`flex h-8 md:h-12 min-w-[2rem] md:min-w-[3rem] items-center justify-center gap-1 md:gap-2 rounded-lg md:rounded-[1.25rem] border md:border-4 px-2 md:px-4 transition-all duration-500 ease-out ${
+                                    className={`flex h-9 md:h-12 min-w-[2.25rem] md:min-w-[3rem] items-center justify-center gap-1 md:gap-2 rounded-lg md:rounded-[1.25rem] border md:border-4 px-2.5 md:px-4 transition-all duration-500 ease-out ${
                                         isActive
                                             ? 'scale-105 border-indigo-100 bg-indigo-600 text-white shadow-xl shadow-indigo-200 dark:border-indigo-900/40 dark:shadow-none'
                                             : isCompleted
@@ -33,7 +33,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                     {isCompleted && <Check className="h-4 w-4 shrink-0 stroke-[4]" />}
 
                                     <span
-                                        className={`text-[8px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
+                                        className={`text-[9px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
                                             isActive ? 'text-white' : isCompleted ? 'text-slate-200' : 'text-slate-400'
                                         }`}
                                     >
@@ -46,9 +46,9 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                             </div>
                         </div>
 
-                        {/* 🔗 Connector Line - Fixed width to keep tabs closer */}
+                        {/* 🔗 Connector Line - Expands on mobile, fixed on desktop */}
                         {!isLast && (
-                            <div className="mx-1 md:mx-2 h-0.5 md:h-[3px] w-4 md:w-12 rounded-full bg-slate-100 dark:bg-slate-800">
+                            <div className="mx-1 md:mx-2 h-0.5 md:h-[3px] flex-1 lg:flex-none lg:w-16 rounded-full bg-slate-100 dark:bg-slate-800">
                                 <div
                                     className="h-full bg-indigo-500 transition-all duration-1000 ease-in-out"
                                     style={{ width: isCompleted ? '100%' : '0%' }}
