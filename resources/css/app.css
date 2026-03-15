@@ -30,17 +30,22 @@
 
 /* Force TinyMCE images to be responsive and support side-by-side layout */
 .tinymce-content {
-    text-align: center; /* Center the content (images and text) for a balanced look */
+    text-align: center; /* Center the content for a balanced look */
 }
 
-.tinymce-content img {
+.tinymce-content :is(img, .prose img) {
     max-width: 100% !important;
     height: auto !important;
     display: inline-block !important; /* Allow side-by-side images */
-    margin: 0.5rem !important;
-    border-radius: 0.75rem !important;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    margin: 1rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
     vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.tinymce-content img:hover {
+    transform: scale(1.02);
 }
 
 /* Force TinyMCE images to respect layout flows if needed */
