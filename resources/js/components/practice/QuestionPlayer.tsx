@@ -261,7 +261,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     >
                         {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
                     </button>
-                    <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
                 </div>
             </div>
 

@@ -54,7 +54,7 @@ export default function CircularTimer({ timeLeft, totalTime, phase }: CircularTi
                 width={size}
                 height={size}
                 viewBox={`0 0 ${size} ${size}`}
-                className="-scale-x-100 rotate-[-90deg]"
+                className="-scale-x-100 rotate-[-270deg]"
             >
                 {/* Background track */}
                 <circle
