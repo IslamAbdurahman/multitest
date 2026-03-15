@@ -1,8 +1,8 @@
+import CircularTimer from '@/components/practice/CircularTimer';
 import { router } from '@inertiajs/react';
-import { Clock, CloudUpload, Info, Maximize, Mic, Minimize, Volume2 } from 'lucide-react';
+import { CloudUpload, Info, Maximize, Mic, Minimize, Timer, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import CircularTimer from './CircularTimer';
 
 export default function QuestionPlayer({ attempt_part }: any) {
     const { t } = useTranslation();
@@ -10,8 +10,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
 
     const [index, setIndex] = useState(-1);
     const [phase, setPhase] = useState<'introduction' | 'audio' | 'ready' | 'recording' | 'uploading'>('introduction');
-    const [isStarted, setIsStarted] = useState(false);
     const [timer, setTimer] = useState(0);
+    const [totalTime, setTotalTime] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const playerRef = useRef<HTMLDivElement>(null);
@@ -25,7 +25,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
     useEffect(() => {
         setIndex(-1);
         setPhase('introduction');
-        setIsStarted(false);
         answersRef.current = [];
         return () => stopAllMedia();
     }, [attempt_part.id]);
@@ -50,7 +49,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
 
     /* Phase 0: Part Introduction */
     useEffect(() => {
-        if (phase !== 'introduction' || !isStarted) return;
+        if (phase !== 'introduction') return;
         const introAudio = new Audio(attempt_part.part.audio_path);
         introAudio.play().catch(() => {
             setIndex(0);
@@ -64,7 +63,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
             introAudio.pause();
             introAudio.src = '';
         };
-    }, [phase, isStarted, attempt_part.id]);
+    }, [phase, attempt_part.id]);
 
     /* Phase 1: Question Audio */
     useEffect(() => {
@@ -75,13 +74,22 @@ export default function QuestionPlayer({ attempt_part }: any) {
             setTimer(question.ready_second);
         });
         audio.onended = () => {
+            const readySec = question.ready_second;
             setPhase('ready');
-            setTimer(question.ready_second);
+            setTimer(readySec);
+            setTotalTime(readySec);
         };
         return () => {
             audio.pause();
             audio.src = '';
         };
+    }, [phase, index]);
+
+    /* Auto full-screen when first question starts */
+    useEffect(() => {
+        if (phase === 'audio' && index === 0 && !document.fullscreenElement) {
+            playerRef.current?.requestFullscreen().catch(() => {});
+        }
     }, [phase, index]);
 
     /* Phase 2 & 3: Timer Logic */
@@ -151,6 +159,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
             recorder.start();
             setPhase('recording');
             setTimer(question.answer_second);
+            setTotalTime(question.answer_second);
         } catch (err) {
             alert(t('question_player.mic_error'));
         }
@@ -233,11 +242,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }, []);
 
-    const handleStart = () => {
-        toggleFullscreen();
-        setIsStarted(true);
-    };
-
     return (
         <div ref={playerRef} className={`mx-auto w-full max-w-7xl overflow-hidden border border-slate-200 bg-white shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-4 py-4 md:px-10 md:py-6">
@@ -249,7 +253,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
                         <h1 className="text-xl font-black tracking-tight text-slate-800">{attempt_part.part.title}</h1>
                     </div>
                 </div>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
                     <button
                         onClick={toggleFullscreen}
                         className="flex items-center justify-center rounded-xl bg-slate-100 p-3 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
@@ -257,19 +261,12 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     >
                         {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
                     </button>
-                    {phase !== 'introduction' && phase !== 'uploading' && (
-                        <CircularTimer
-                            seconds={timer}
-                            totalSeconds={phase === 'ready' ? (question?.ready_second || 0) : (question?.answer_second || 0)}
-                            size={70}
-                            strokeWidth={6}
-                        />
-                    )}
+                    <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
                 </div>
             </div>
 
-            <div className="grid min-h-[400px] md:min-h-[550px] grid-cols-1 md:grid-cols-12">
-                <div className="border-r border-slate-100 p-6 md:p-12 md:col-span-8">
+            <div className="grid min-h-[400px] md:min-h-[450px] grid-cols-1 md:grid-cols-12">
+                <div className="border-r border-slate-100 p-4 md:p-10 md:col-span-8">
                     <div className="mb-6 flex items-center justify-between">
                         <span className="text-xs font-black tracking-widest text-slate-400 uppercase">
                             {phase === 'introduction'
@@ -288,17 +285,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
                                     className="leading-relaxed font-medium text-slate-600 text-lg md:text-2xl"
                                     dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
                                 />
-                                {!isStarted && (
-                                    <div className="pt-8">
-                                        <button
-                                            onClick={handleStart}
-                                            className="group flex items-center justify-center gap-4 rounded-3xl bg-indigo-600 px-10 py-6 text-xl font-black text-white shadow-2xl shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 md:text-2xl"
-                                        >
-                                            <Maximize className="h-6 w-6 md:h-8 md:w-8" />
-                                            <span className="tracking-widest uppercase">{t('attempt_modal.start_practice')}</span>
-                                        </button>
-                                    </div>
-                                )}
                             </div>
                         ) : phase === 'uploading' ? (
                             <div className="flex h-full flex-col items-center justify-center space-y-4 py-20 text-center">
@@ -311,38 +297,26 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-16 text-center md:col-span-4">
-                    {phase !== 'introduction' && phase !== 'uploading' ? (
-                        <div className="flex flex-col items-center gap-8">
-                            <CircularTimer
-                                seconds={timer}
-                                totalSeconds={phase === 'ready' ? (question?.ready_second || 0) : (question?.answer_second || 0)}
-                                size={window.innerWidth < 768 ? 180 : 280}
-                                strokeWidth={window.innerWidth < 768 ? 12 : 20}
-                            />
-                            <div className="flex flex-col items-center">
-                                <RecordingPod phase={phase} />
-                                <PhaseBadge phase={phase} />
-                            </div>
+                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-10 text-center md:col-span-4">
+                    <RecordingPod phase={phase} />
+                    <div className="mt-8 w-full space-y-4">
+                        <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
+                            <p className="mb-1 text-[10px] font-black tracking-tighter text-slate-400 uppercase">{t('question_player.status')}</p>
+                            <p className="text-sm font-bold text-slate-700">
+                                {phase === 'introduction'
+                                    ? t('question_player.status_intro')
+                                    : phase === 'audio'
+                                        ? t('question_player.status_listening')
+                                        : phase === 'ready'
+                                            ? t('question_player.status_preparing')
+                                            : phase === 'uploading'
+                                                ? t('question_player.status_uploading')
+                                                : t('question_player.status_capturing')}
+                            </p>
                         </div>
-                    ) : (
-                        <div className="flex flex-col items-center gap-6">
-                            <RecordingPod phase={phase} />
-                            <div className="mt-8 w-full space-y-4">
-                                <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
-                                    <p className="mb-1 text-[10px] font-black tracking-tighter text-slate-400 uppercase">{t('question_player.status')}</p>
-                                    <p className="text-sm font-bold text-slate-700">
-                                        {phase === 'introduction'
-                                            ? t('question_player.status_intro')
-                                            : t('question_player.status_uploading')}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    </div>
                 </div>
             </div>
-
         </div>
     );
 }
@@ -385,7 +359,7 @@ function RecordingPod({ phase }: { phase: string }) {
         return (
             <div className="flex flex-col items-center">
                 <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-amber-500 text-white shadow-xl">
-                    <Clock size={40} strokeWidth={2.5} />
+                    <Timer size={40} strokeWidth={2.5} />
                 </div>
                 <span className="text-xs font-black tracking-[0.2em] text-amber-600 uppercase">{t('question_player.get_ready')}</span>
             </div>
