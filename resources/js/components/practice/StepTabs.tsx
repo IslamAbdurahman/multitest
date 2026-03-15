@@ -10,7 +10,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
     const activeIndex = attempt_parts.findIndex((p) => p.id === active);
 
     return (
-        <div className="scrollbar-hide flex w-full items-center justify-center gap-1 overflow-x-auto px-2 py-4 md:px-4">
+        <div className="scrollbar-hide flex w-full items-center justify-start md:justify-center gap-1 overflow-x-auto px-4 py-4">
             {attempt_parts.map((p, index) => {
                 const isCompleted = index < activeIndex;
                 const isActive = p.id === active;
