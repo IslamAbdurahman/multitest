@@ -150,7 +150,17 @@ CEFR LEVEL DESCRIPTORS FOR REFERENCE:
 - A1 (0–15): Basic expressions, very simple phrases about personal details.
 
 CRITICAL RULES:
-- RELEVANCE IS MANDATORY: If the response is off-topic, irrelevant, singing, or fails to address the specific question, assign a score of 0 and level 'Below A1', even if fluent.
+
+⚠️ RELEVANCE CHECK (HIGHEST PRIORITY):
+- You MUST compare the student's spoken answer against the SPECIFIC QUESTION below.
+- Set `is_relevant` to `true` ONLY if the student's response DIRECTLY addresses, discusses, or attempts to answer the question.
+- Set `is_relevant` to `false` if:
+  • The student talks about a completely different topic than the question asks.
+  • The student reads or recites something unrelated.
+  • The student answers a DIFFERENT question (e.g., question asks about \"social media\" but student talks about \"pictures\").
+  • The student repeats the question itself without giving an actual answer.
+- If `is_relevant` is `false`: You MUST set `score` to 0 and `level` to \"Below A1\".
+
 - STRICT LANGUAGE ENFORCEMENT: You MUST verify if the spoken language matches the TARGET LANGUAGE ({$question->part->test->language->name_en}). 
 - IF THE CANDIDATE SPEAKS IN ANY OTHER LANGUAGE: You MUST assign a total `score` of 0, set `level` to \"Below A1\", and explicitly state \"Wrong language detected\" in the feedback fields. DO NOT give any partial credit.
 - AUDIO QUALITY & SILENCE: If the audio is silent, contains only background noise, static, breathing, or unintelligible sounds, you MUST set the `transcript` to \"[SILENCE]\", assign a total `score` of 0, and set `level` to \"Below A1\". 
@@ -176,8 +186,9 @@ QUESTION:
                             'level' => new Schema(type: DataType::STRING),
                             'transcript' => new Schema(type: DataType::STRING),
                             'detected_language' => new Schema(type: DataType::STRING),
+                            'is_relevant' => new Schema(type: DataType::BOOLEAN),
                         ],
-                        required: ['score', 'level', 'transcript', 'fluency', 'vocabulary', 'grammar', 'pronunciation', 'interaction', 'detected_language']
+                        required: ['score', 'level', 'transcript', 'fluency', 'vocabulary', 'grammar', 'pronunciation', 'interaction', 'detected_language', 'is_relevant']
                     )
                 ))
                 ->generateContent([

@@ -58,6 +58,13 @@ class EvaluateSpeakingJob implements ShouldQueue
                     }
                 }
 
+                // 4. Relevance Enforcement: If AI says answer is not relevant to the question, force score to 0
+                $isRelevant = $data['is_relevant'] ?? true;
+                if ($isRelevant === false) {
+                    $answer->score_ai = 0;
+                    Log::info("Answer #{$answer->id}: Score set to 0 due to irrelevant response.");
+                }
+
                 if ($this->isNonSpeechResponse($transcript) || $detectedLanguage === 'noise' || $detectedLanguage === 'silence') {
                     $answer->score_ai = 0;
                 }
