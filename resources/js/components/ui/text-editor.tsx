@@ -113,6 +113,10 @@ export default function TextEditor({
                     suffix: '.min',
                     height,
                     menubar: "file edit view insert format tools table help",
+                    convert_urls: true,
+                    relative_urls: false,
+                    remove_script_host: true,
+                    document_base_url: '/',
                     plugins: [
                         "advlist",
                         "anchor",
