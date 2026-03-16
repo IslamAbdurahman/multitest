@@ -64,6 +64,38 @@
     margin-bottom: 1.5rem;
 }
 
+/* Generic Table Styles for user-generated content */
+:is(.tinymce-content, .prose) table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    text-align: left !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 0.5rem !important;
+}
+
+:is(.tinymce-content, .prose) :is(th, td) {
+    border: 1px solid theme('colors.slate.300') !important;
+    padding: 0.75rem 1rem !important;
+    text-align: left !important;
+    vertical-align: top !important;
+}
+
+:is(.tinymce-content, .prose) th {
+    background-color: theme('colors.slate.100') !important;
+    font-weight: 700 !important;
+    color: theme('colors.slate.800') !important;
+}
+
+.dark :is(.tinymce-content, .prose) :is(th, td) {
+    border-color: theme('colors.slate.700') !important;
+}
+
+.dark :is(.tinymce-content, .prose) th {
+    background-color: theme('colors.slate.800') !important;
+    color: theme('colors.slate.200') !important;
+}
+
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
