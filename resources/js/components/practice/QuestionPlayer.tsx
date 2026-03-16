@@ -228,7 +228,44 @@ export default function QuestionPlayer({ attempt_part }: any) {
         const next = attempt_part.attempt.attempt_parts.find((p: any) => p.id > attempt_part.id);
         if (next) form.append('next_attempt_part_id', next.id);
 
-        router.post(route('practice.save_answers', attempt_part.id), form);
+        // Use fetch to avoid BodyStreamBuffer abort, then navigate after upload completes
+        fetch(route('practice.save_answers', attempt_part.id), {
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    // Navigate to the next part or back to attempt page
+                    if (data.redirect) {
+                        router.visit(data.redirect);
+                    } else if (next) {
+                        router.visit(route('practice.show', next.id));
+                    } else {
+                        router.visit(route('attempt.show', attempt_part.attempt.id));
+                    }
+                } else {
+                    console.error('Final submit failed:', response.statusText);
+                    // Still navigate even if save failed
+                    if (next) {
+                        router.visit(route('practice.show', next.id));
+                    } else {
+                        router.visit(route('attempt.show', attempt_part.attempt.id));
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Final submit network error:', error);
+                if (next) {
+                    router.visit(route('practice.show', next.id));
+                } else {
+                    router.visit(route('attempt.show', attempt_part.attempt.id));
+                }
+            });
     };
 
     const toggleFullscreen = () => {

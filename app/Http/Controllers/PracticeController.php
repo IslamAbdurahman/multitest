@@ -99,18 +99,26 @@ class PracticeController extends Controller
             DB::commit();
 
             if (!empty($data['next_attempt_part_id'])) {
-                return redirect()->route('practice.show', $data['next_attempt_part_id']);
+                $redirectUrl = route('practice.show', $data['next_attempt_part_id']);
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['redirect' => $redirectUrl]);
+                }
+                return redirect()->to($redirectUrl);
             }
 
             $attemptPart->attempt()->update(['finished_at' => now()]);
 
             if ($attemptPart->attempt->mock) {
-                return redirect()->route('home.index', ['slug' => $attemptPart->attempt->mock?->slug])
-                    ->with('success', 'Answers saved successfully.');
+                $redirectUrl = route('home.index', ['slug' => $attemptPart->attempt->mock?->slug]);
+            } else {
+                $redirectUrl = route('attempt.index');
             }
 
-            return redirect()->route('attempt.index')
-                ->with('success', 'Answers saved successfully.');
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['redirect' => $redirectUrl, 'message' => 'Answers saved successfully.']);
+            }
+
+            return redirect()->to($redirectUrl)->with('success', 'Answers saved successfully.');
 
 
         } catch (\Exception $exception) {
