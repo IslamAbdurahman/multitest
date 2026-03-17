@@ -115,8 +115,8 @@ export default function AttemptShow() {
                                 value={attempt.started_at ? new Date(attempt.started_at).toLocaleDateString() : t('attempt_show.not_available')}
                                 subValue={
                                     attempt.started_at
-                                        ? new Date(attempt.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                        : ''
+                                        ? new Date(attempt.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                                        : '--:--'
                                 }
                                 icon="🕒"
                             />
@@ -125,8 +125,8 @@ export default function AttemptShow() {
                                 value={attempt.finished_at ? new Date(attempt.finished_at).toLocaleDateString() : t('attempt_show.not_available')}
                                 subValue={
                                     attempt.finished_at
-                                        ? new Date(attempt.finished_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                        : ''
+                                        ? new Date(attempt.finished_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                                        : '--:--'
                                 }
                                 icon="🏁"
                             />

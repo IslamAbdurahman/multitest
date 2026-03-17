@@ -21,6 +21,8 @@ export default function Mock() {
 
     const { data, setData } = useForm<SearchData>({
         search: '',
+        from: '',
+        to: '',
         per_page: mock.per_page,
         page: mock.current_page,
         total: mock.total,
@@ -33,8 +35,12 @@ export default function Mock() {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
-        const searchQuery = urlParams.get('search') || '';
-        setData('search', searchQuery);
+        setData({
+            ...data,
+            search: urlParams.get('search') || '',
+            from: urlParams.get('from') || '',
+            to: urlParams.get('to') || '',
+        });
     }, [location.search]);
 
     return (

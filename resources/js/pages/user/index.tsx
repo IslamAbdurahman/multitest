@@ -2,14 +2,15 @@ import MobileSearchModal from '@/components/MobileSearchModal';
 import SearchForm from '@/components/search-form';
 import UserTable from '@/components/user/user-table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type UserPaginate, SearchData } from '@/types';
+import { type BreadcrumbItem, type UserPaginate, SearchData, Role } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function User() {
-    const { user } = usePage<{
+    const { user, roles } = usePage<{
         user: UserPaginate;
+        roles: Role[];
     }>().props;
     const { t } = useTranslation();
 
@@ -36,8 +37,11 @@ export default function User() {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
-        const searchQuery = urlParams.get('search') || '';
-        setData('search', searchQuery);
+        setData({
+            ...data,
+            search: urlParams.get('search') || '',
+            role: urlParams.get('role') || '',
+        });
     }, [location.search]);
 
     return (
@@ -55,9 +59,9 @@ export default function User() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <MobileSearchModal data={data} setData={setData} handleSubmit={handleSubmit} />
+                        <MobileSearchModal roles={roles} data={data} setData={setData} handleSubmit={handleSubmit} />
                         <div className="hidden lg:block">
-                            <SearchForm handleSubmit={handleSubmit} setData={setData} data={data} />
+                            <SearchForm roles={roles} handleSubmit={handleSubmit} setData={setData} data={data} />
                         </div>
                     </div>
                 </div>

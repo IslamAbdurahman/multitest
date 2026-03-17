@@ -53,6 +53,26 @@ class AttemptController extends Controller
                 $attempt->where('test_id', $test_id);
             }
 
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $attempt->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                          ->orWhere('email', 'like', '%' . $search . '%')
+                          ->orWhere('phone', 'like', '%' . $search . '%');
+                })->orWhereHas('test', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('mock', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+            }
+
+            if ($request->has('role') && !empty($request->input('role')) && $request->input('role') !== '0') {
+                $role = $request->input('role');
+                $attempt->whereHas('user.roles', function ($query) use ($role) {
+                    $query->where('name', $role);
+                });
+            }
+
             if (Auth::user()->hasRole('Teacher')) {
                 $attempt->where(function ($query) {
                     $query->whereHas('mock', function ($query) {

@@ -150,7 +150,12 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                     {test.links.map((link, idx) => (
                         <Link
                             key={idx}
-                            href={`${link.url ?? '?'}&search=${searchData.search}&per_page=${searchData.per_page}`}
+                            href={link.url ? `${link.url}&${new URLSearchParams(
+                                Object.entries(searchData).reduce((acc, [k, v]) => {
+                                    if (v !== '' && v !== null && v !== undefined) acc[k] = String(v);
+                                    return acc;
+                                }, {} as Record<string, string>)
+                            ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-4 text-xs font-bold transition-all ${
                                 link.active
                                     ? 'scale-105 bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/10'

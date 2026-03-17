@@ -219,7 +219,12 @@ const MockTable = ({ searchData, ...mock }: MockTableProps) => {
                     {mock.links.map((link, idx) => (
                         <Link
                             key={idx}
-                            href={`${link.url ?? '?'}&search=${searchData.search}&per_page=${searchData.per_page}`}
+                            href={link.url ? `${link.url}&${new URLSearchParams(
+                                Object.entries(searchData).reduce((acc, [k, v]) => {
+                                    if (v !== '' && v !== null && v !== undefined) acc[k] = String(v);
+                                    return acc;
+                                }, {} as Record<string, string>)
+                            ).toString()}` : '#'}
                             className={`flex h-11 min-w-[44px] items-center justify-center rounded-2xl px-4 text-xs font-black transition-all ${
                                 link.active
                                     ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/30'

@@ -97,9 +97,13 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                             <div className="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-400">
                                                 <Calendar className="h-3.5 w-3.5 text-slate-300" />
                                                 {new Date(item.created_at).toLocaleDateString(undefined, {
-                                                    month: 'short',
-                                                    day: 'numeric',
+                                                    month: '2-digit',
+                                                    day: '2-digit',
                                                     year: 'numeric',
+                                                })} {new Date(item.created_at).toLocaleTimeString(undefined, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: false
                                                 })}
                                             </div>
                                         </td>
@@ -167,7 +171,12 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                     {user.links.map((link, idx) => (
                         <Link
                             key={idx}
-                            href={`${link.url ?? '?'}&search=${searchData.search}&per_page=${searchData.per_page}`}
+                            href={link.url ? `${link.url}&${new URLSearchParams(
+                                Object.entries(searchData).reduce((acc, [k, v]) => {
+                                    if (v !== '' && v !== null && v !== undefined) acc[k] = String(v);
+                                    return acc;
+                                }, {} as Record<string, string>)
+                            ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-3 text-xs font-black transition-all ${
                                 link.active
                                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'

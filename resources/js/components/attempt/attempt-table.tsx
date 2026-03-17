@@ -109,7 +109,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                     </div>
                                                     <div className="flex items-center gap-1.5 text-slate-400" title={t('exam_attempts.time_started')}>
                                                         <Clock className="h-3 w-3" />
-                                                        {new Date(item.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        {new Date(item.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                                                     </div>
                                                 </div>
                                             </td>
@@ -183,7 +183,12 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                     {attempt.links.map((link, idx) => (
                         <Link
                             key={idx}
-                            href={`${link.url ?? '?'}&search=${searchData.search ?? ''}&per_page=${searchData.per_page ?? 10}`}
+                            href={link.url ? `${link.url}&${new URLSearchParams(
+                                Object.entries(searchData).reduce((acc, [k, v]) => {
+                                    if (v !== '' && v !== null && v !== undefined) acc[k] = String(v);
+                                    return acc;
+                                }, {} as Record<string, string>)
+                            ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-3 text-xs font-black transition-all ${
                                 link.active
                                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
