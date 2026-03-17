@@ -173,7 +173,7 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                             key={idx}
                             href={link.url ? `${link.url}&${new URLSearchParams(
                                 Object.entries(searchData).reduce((acc, [k, v]) => {
-                                    if (v !== '' && v !== null && v !== undefined) acc[k] = String(v);
+                                    if (k !== 'page' && k !== 'total' && v !== '' && v !== null && v !== undefined) acc[k] = String(v);
                                     return acc;
                                 }, {} as Record<string, string>)
                             ).toString()}` : '#'}
