@@ -40,7 +40,7 @@ export default function Test() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('nav.tests')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
                 {/* Search and Per-Page Selection */}
                 <div className="flex items-center justify-end">
                     <MobileSearchModal data={data} setData={setData} handleSubmit={handleSubmit} />

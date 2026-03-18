@@ -12,7 +12,7 @@ export default function Register() {
             <Head title={t('register.title')} />
 
             {/* Language Selection Bar - Positioned for focus */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-4 flex justify-center sm:mb-8">
                 <LanguageBar />
             </div>
 
@@ -20,7 +20,7 @@ export default function Register() {
             <RegisterCard />
 
             {/* Help/Support Text (Optional) */}
-            <p className="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">{t('register.terms_agreement')}</p>
+            <p className="mt-4 text-center text-xs text-slate-400 sm:mt-8 dark:text-slate-500">{t('register.terms_agreement')}</p>
         </AuthLayout>
     );
 }

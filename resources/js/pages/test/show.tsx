@@ -47,9 +47,9 @@ export default function TestShow() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${test.name} | ${t('nav.test_details')}`} />
 
-            <div className="animate-in fade-in flex flex-col gap-8 p-4 duration-500 md:p-8">
+            <div className="animate-in fade-in flex flex-col gap-4 p-3 duration-500 sm:gap-6 sm:p-6 md:p-8">
                 {/* 🧭 NAVIGATION & ACTIONS HEADER */}
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between sm:gap-6">
                     <div className="space-y-2">
                         <Link
                             href="/test"
@@ -76,8 +76,8 @@ export default function TestShow() {
                 </div>
 
                 {/* 📂 CONTENT SECTION */}
-                <div className="relative rounded-[2.5rem] border border-slate-200 bg-white/50 p-6 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
-                    <div className="mb-8 flex flex-col justify-between gap-4 border-b border-slate-100 pb-6 sm:flex-row sm:items-center dark:border-slate-800">
+                <div className="relative rounded-3xl border border-slate-200 bg-white/50 p-4 shadow-sm backdrop-blur-sm sm:rounded-[2.5rem] sm:p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <div className="mb-6 flex flex-col justify-between gap-4 border-b border-slate-100 pb-4 sm:mb-8 sm:flex-row sm:items-center sm:pb-6 dark:border-slate-800">
                         <div>
                             <h2 className="flex items-center gap-2 text-xl font-extrabold text-slate-800 dark:text-slate-100">
                                 <LayoutGrid className="h-5 w-5 text-indigo-50" />

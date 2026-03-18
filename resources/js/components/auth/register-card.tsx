@@ -37,7 +37,7 @@ export default function RegisterCard() {
     };
 
     return (
-        <div className="mx-auto w-full max-w-md space-y-6">
+        <div className="mx-auto w-full max-w-md space-y-4 sm:space-y-6">
             {/* 🔑 Social Login Section */}
             <SocialSignIn />
 
@@ -51,8 +51,8 @@ export default function RegisterCard() {
             </div>
 
             {/* 📝 Registration Form */}
-            <form className="flex flex-col gap-5" onSubmit={submit}>
-                <div className="grid gap-4">
+            <form className="flex flex-col gap-4 sm:gap-5" onSubmit={submit}>
+                <div className="grid gap-3 sm:gap-4">
                     {/* Name */}
                     <div className="grid gap-1.5">
                         <Label htmlFor="name" className="text-sm font-bold text-slate-700 dark:text-slate-300">
@@ -65,7 +65,7 @@ export default function RegisterCard() {
                             autoFocus
                             tabIndex={1}
                             autoComplete="name"
-                            className="h-12 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-800"
+                            className="h-11 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 sm:h-12 dark:border-slate-800"
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
@@ -85,7 +85,7 @@ export default function RegisterCard() {
                             required
                             tabIndex={2}
                             autoComplete="tel"
-                            className="h-12 rounded-xl border-slate-200 dark:border-slate-800"
+                            className="h-11 rounded-xl border-slate-200 sm:h-12 dark:border-slate-800"
                             value={data.phone}
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
@@ -104,7 +104,7 @@ export default function RegisterCard() {
                             type="email"
                             tabIndex={3}
                             autoComplete="email"
-                            className="h-12 rounded-xl border-slate-200 dark:border-slate-800"
+                            className="h-11 rounded-xl border-slate-200 sm:h-12 dark:border-slate-800"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
@@ -124,7 +124,7 @@ export default function RegisterCard() {
                             required
                             tabIndex={4}
                             autoComplete="new-password"
-                            className="h-12 rounded-xl border-slate-200 dark:border-slate-800"
+                            className="h-11 rounded-xl border-slate-200 sm:h-12 dark:border-slate-800"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
@@ -144,7 +144,7 @@ export default function RegisterCard() {
                             required
                             tabIndex={5}
                             autoComplete="new-password"
-                            className="h-12 rounded-xl border-slate-200 dark:border-slate-800"
+                            className="h-11 rounded-xl border-slate-200 sm:h-12 dark:border-slate-800"
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
@@ -156,7 +156,7 @@ export default function RegisterCard() {
                     {/* Submit Button */}
                     <Button
                         type="submit"
-                        className="mt-4 h-12 w-full rounded-xl bg-indigo-600 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-[0.98] disabled:opacity-70 dark:shadow-none"
+                        className="mt-2 h-11 w-full rounded-xl bg-indigo-600 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-[0.98] disabled:opacity-70 sm:mt-4 sm:h-12 dark:shadow-none"
                         tabIndex={6}
                         disabled={processing}
                     >

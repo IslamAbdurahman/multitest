@@ -55,7 +55,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <Head title={t('login.submit')} />
 
             {/* Language Selection Bar */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-4 flex justify-center sm:mb-8">
                 <LanguageBar />
             </div>
 
@@ -63,7 +63,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <LoginCard />
 
             {/* Password Management & Status */}
-            <div className="mt-6 space-y-4">
+            <div className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
                 <div className="flex items-center justify-between">
                     <Label className="text-slate-600 dark:text-slate-400">{t('login.password')}</Label>
 

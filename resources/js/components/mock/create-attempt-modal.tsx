@@ -48,9 +48,9 @@ export default function CreateAttemptModal({ mock, test }: Props) {
             </button>
 
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="overflow-hidden rounded-2xl md:rounded-[2.5rem] border-none bg-white p-0 shadow-2xl sm:max-w-[500px] dark:bg-slate-950">
+                <DialogContent className="overflow-hidden rounded-[20px] border-none bg-white p-0 shadow-2xl md:rounded-[2.5rem] sm:max-w-[500px] dark:bg-slate-950">
                     {/* 🌑 Header: Dark Themed for Focus */}
-                    <div className="bg-slate-900 p-6 md:p-10 text-white dark:bg-slate-900/50">
+                    <div className="bg-slate-900 p-5 text-white sm:p-6 md:p-10 dark:bg-slate-900/50">
                         <DialogHeader>
                             <div className="mb-4 md:mb-6 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-[1.25rem] border border-indigo-500/30 bg-indigo-500/20 text-indigo-400">
                                 <Headphones className="h-6 w-6 md:h-7 md:w-7" />
@@ -62,7 +62,7 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                         </DialogHeader>
                     </div>
 
-                    <div className="space-y-6 md:space-y-8 p-6 md:p-10">
+                    <div className="space-y-4 p-4 sm:space-y-6 sm:p-6 md:space-y-8 md:p-10">
                         {/* 🎙️ Mic Testing Area */}
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
@@ -101,7 +101,7 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                                 <Button
                                     type="submit"
                                     disabled={processing || !hasCheckedMic}
-                                    className={`group h-14 md:h-16 w-full rounded-2xl text-sm font-black transition-all ${
+                                    className={`group h-12 w-full rounded-2xl text-sm font-black transition-all sm:h-14 md:h-16 ${
                                         hasCheckedMic
                                             ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
                                             : 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600'

@@ -69,9 +69,9 @@ export default function Attempt() {
             {/* ✅ Meta title from translations */}
             <Head title={t('exam_attempts.title')} />
 
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
                 {/* Header Section: Title and Search */}
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center sm:gap-4">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('exam_attempts.title')}</h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">{t('exam_attempts.subtitle')}</p>
