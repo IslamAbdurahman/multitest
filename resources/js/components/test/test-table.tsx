@@ -107,7 +107,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                                     {item.description || t('common.no_description')}
                                 </p>
 
-                                {item.audio_path && (
+                                {(isAdmin || isTeacher) && item.audio_path && (
                                     <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-2 transition-colors group-hover:border-indigo-100 dark:border-slate-800 dark:bg-slate-950/50 dark:group-hover:border-indigo-900/30">
                                         <audio
                                             preload="none"
