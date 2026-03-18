@@ -17,8 +17,8 @@ class SendResultTelegramJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $user;
-    protected $attempt;
+    protected User $user;
+    protected Attempt $attempt;
 
     public function __construct(User $user, Attempt $attempt)
     {
@@ -26,35 +26,59 @@ class SendResultTelegramJob implements ShouldQueue
         $this->attempt = $attempt;
     }
 
-    public function handle()
+    public function handle(): void
     {
         try {
             if (!$this->user->telegram_id) {
+                Log::info("SendResultTelegramJob skipped: user {$this->user->id} has no telegram_id.");
                 return;
             }
 
             $telegram = new Api(env('MultitestUzBot_TOKEN'));
 
-            // PDF URL
-            $pdfUrl = url('/attempt-pdf/'.$this->attempt->id);
+            // Reload attempt with ai_score_avg
+            $attempt = Attempt::query()
+                ->where('id', $this->attempt->id)
+                ->withAiScoreAvg()
+                ->with(['mock', 'test'])
+                ->firstOrFail();
 
-            // Wrap the URL in InputFile
-            $document = InputFile::create($pdfUrl, "TestResult_{$this->attempt->id}.pdf");
+            $testName = $attempt->mock?->name ?? $attempt->test?->name ?? 'Test';
+            $score = $attempt->ai_score_avg !== null ? number_format($attempt->ai_score_avg, 1) : '—';
+            $resultUrl = url('/attempt/' . $attempt->id);
 
-            // Caption
-            $caption = "Hello {$this->user->name},\nYour test attempt is complete! 🎉";
+            // Build message
+            $caption = "🎉 *Natijangiz tayyor!*\n\n"
+                . "👤 {$this->user->name}\n"
+                . "📝 *Test:* {$testName}\n"
+                . "📊 *AI bahosi:* {$score} / 75\n\n"
+                . "📋 [Natijani ko'rish]({$resultUrl})";
 
-            Log::info("Telegram PDF sent to user {$this->user->telegram_id}");
+            // Try sending PDF first
+            try {
+                $pdfUrl = url('/attempt-pdf/' . $attempt->id);
+                $document = InputFile::create($pdfUrl, "TestResult_{$attempt->id}.pdf");
 
-            // Send document
-            $telegram->sendDocument([
-                'chat_id' => $this->user->telegram_id,
-                'document' => $document,
-                'caption' => $caption,
-                'parse_mode' => 'HTML',
-            ]);
+                $telegram->sendDocument([
+                    'chat_id' => $this->user->telegram_id,
+                    'document' => $document,
+                    'caption' => $caption,
+                    'parse_mode' => 'Markdown',
+                ]);
 
-            Log::info("Telegram PDF sent to user {$this->user->telegram_id}");
+                Log::info("Telegram PDF sent to user {$this->user->telegram_id} for attempt #{$attempt->id}");
+            } catch (\Exception $pdfError) {
+                // If PDF fails, send just the text message
+                Log::warning("PDF send failed, sending text only: " . $pdfError->getMessage());
+
+                $telegram->sendMessage([
+                    'chat_id' => $this->user->telegram_id,
+                    'text' => $caption,
+                    'parse_mode' => 'Markdown',
+                ]);
+
+                Log::info("Telegram text message sent to user {$this->user->telegram_id} for attempt #{$attempt->id}");
+            }
 
         } catch (\Exception $e) {
             Log::error("SendResultTelegramJob failed: " . $e->getMessage());

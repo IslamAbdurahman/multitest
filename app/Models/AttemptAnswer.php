@@ -33,6 +33,11 @@ class AttemptAnswer extends Model
         'score'        => 'integer',
     ];
 
+    public function attempt_part()
+    {
+        return $this->belongsTo(AttemptPart::class, 'attempt_part_id');
+    }
+
     public function attempt()
     {
         return $this->belongsTo(Attempt::class , 'attempt_id');

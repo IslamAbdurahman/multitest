@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class EvaluateSpeakingJob implements ShouldQueue
@@ -78,9 +79,67 @@ class EvaluateSpeakingJob implements ShouldQueue
 
             $answer->save();
 
+            // Check if all answers for this attempt are now AI-evaluated
+            $this->checkAndNotifyIfComplete($answer);
+
         } catch (\Throwable $e) {
             $answer->review_ai = 'AI Error: ' . $e->getMessage();
             $answer->save();
+        }
+    }
+
+    /**
+     * Check if all answers for the parent attempt have been AI-evaluated.
+     * If yes, dispatch notification to the user (Telegram or Email).
+     */
+    protected function checkAndNotifyIfComplete(AttemptAnswer $answer): void
+    {
+        try {
+            $attemptPart = $answer->attempt_part;
+            if (!$attemptPart) return;
+
+            $attempt = $attemptPart->attempt;
+            if (!$attempt) return;
+
+            // Count total answers with audio and unevaluated ones
+            $totalAudioAnswers = AttemptAnswer::whereHas('attempt_part', function ($q) use ($attempt) {
+                $q->where('attempt_id', $attempt->id);
+            })->whereNotNull('audio_path')->count();
+
+            $unevaluatedAnswers = AttemptAnswer::whereHas('attempt_part', function ($q) use ($attempt) {
+                $q->where('attempt_id', $attempt->id);
+            })->whereNotNull('audio_path')->whereNull('score_ai')->count();
+
+            // Only proceed if there were audio answers and all are now evaluated
+            if ($totalAudioAnswers === 0 || $unevaluatedAnswers > 0) {
+                return;
+            }
+
+            // Use cache lock to prevent duplicate notifications from concurrent jobs
+            $lockKey = "attempt_notification_{$attempt->id}";
+            $lock = Cache::lock($lockKey, 60);
+
+            if ($lock->get()) {
+                $user = $attempt->user;
+                if (!$user) {
+                    $lock->release();
+                    return;
+                }
+
+                Log::info("All AI evaluations complete for attempt #{$attempt->id}. Sending notification to user {$user->id}.");
+
+                if ($user->telegram_id) {
+                    SendResultTelegramJob::dispatch($user, $attempt)->delay(now()->addSeconds(5));
+                    Log::info("Dispatched SendResultTelegramJob for user {$user->id}");
+                } elseif ($user->email) {
+                    SendResultEmailJob::dispatch($user, $attempt)->delay(now()->addSeconds(5));
+                    Log::info("Dispatched SendResultEmailJob for user {$user->id}");
+                } else {
+                    Log::info("User {$user->id} has neither telegram_id nor email. No notification sent.");
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error("checkAndNotifyIfComplete failed: " . $e->getMessage());
         }
     }
 
