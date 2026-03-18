@@ -80,7 +80,7 @@ const QuestionTable = ({ part }: QuestionTableProps) => {
                                 />
 
                                 {/* Audio Player Section */}
-                                {item.audio_path && (
+                                {(isAdmin || isTeacher) && item.audio_path && (
                                     <div className="mt-6 space-y-2">
                                         <div className="flex items-center gap-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                                             <Headphones className="h-3 w-3" />
