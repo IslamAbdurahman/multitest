@@ -281,17 +281,17 @@ export default function QuestionPlayer({ attempt_part }: any) {
     }, []);
 
     return (
-        <div ref={playerRef} className={`mx-auto w-full overflow-hidden border border-slate-200 bg-white shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
-            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-4 py-3 md:px-8 md:py-4">
+        <div ref={playerRef} className={`mx-auto w-full overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 px-4 py-3 md:px-8 md:py-4">
                 <div className="flex items-center gap-3">
                     <span className="rounded-md bg-indigo-600 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white uppercase">
                         {t('question_player.part_label')}
                     </span>
-                    <h1 className="text-base md:text-lg font-bold tracking-tight text-slate-800">{attempt_part.part.title}</h1>
+                    <h1 className="text-base md:text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100">{attempt_part.part.title}</h1>
                 </div>
                 <button
                     onClick={toggleFullscreen}
-                    className="flex items-center justify-center rounded-xl bg-slate-100 p-2.5 text-slate-500 transition-colors hover:bg-slate-200"
+                    className="flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 p-2 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700"
                     title={isFullscreen ? t('common.exit_fullscreen') : t('common.fullscreen')}
                 >
                     {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
@@ -299,9 +299,9 @@ export default function QuestionPlayer({ attempt_part }: any) {
             </div>
 
             <div className="grid min-h-[500px] grid-cols-1 md:grid-cols-12">
-                <div className="border-r border-slate-100 p-6 md:p-10 md:col-span-8">
+                <div className="border-r border-slate-100 dark:border-slate-800 p-4 md:p-10 md:col-span-8">
                     <div className="mb-6 flex items-center justify-between">
-                        <span className="text-[10px] md:text-[11px] font-black tracking-[0.15em] text-slate-400 uppercase leading-none">
+                        <span className="text-[10px] md:text-[11px] font-black tracking-[0.15em] text-slate-400 dark:text-slate-500 uppercase leading-none">
                             {phase === 'introduction'
                                 ? t('question_player.introduction')
                                 : phase === 'uploading'
@@ -313,27 +313,27 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     <div className="max-w-none">
                         {phase === 'introduction' ? (
                             <div className="space-y-4">
-                                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug text-slate-800">{attempt_part.part.name}</h2>
+                                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug text-slate-800 dark:text-slate-100">{attempt_part.part.name}</h2>
                                 <div
-                                    className="text-base md:text-lg leading-relaxed text-slate-600"
+                                    className="text-base md:text-lg leading-relaxed text-slate-600 dark:text-slate-300"
                                     dangerouslySetInnerHTML={{ __html: attempt_part.part.description }}
                                 />
                             </div>
                         ) : phase === 'uploading' ? (
                             <div className="flex h-full flex-col items-center justify-center space-y-4 py-20 text-center">
-                                <h2 className="text-2xl font-bold text-slate-800">{t('question_player.uploading_title')}</h2>
-                                <p className="text-slate-500">{t('question_player.uploading_desc')}</p>
+                                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">{t('question_player.uploading_title')}</h2>
+                                <p className="text-slate-500 dark:text-slate-400">{t('question_player.uploading_desc')}</p>
                             </div>
                         ) : (
                             <div
-                                className="tinymce-content prose prose-slate dark:prose-invert prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-img:rounded-2xl prose-strong:text-indigo-600 max-w-none flex-1 text-lg md:text-xl leading-relaxed"
+                                className="tinymce-content prose prose-slate dark:prose-invert prose-p:text-slate-600 dark:prose-p:text-slate-200 prose-img:rounded-2xl prose-strong:text-indigo-600 max-w-none flex-1 text-lg md:text-xl leading-relaxed dark:text-slate-200"
                                 dangerouslySetInnerHTML={{ __html: question?.textarea }}
                             />
                         )}
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-slate-50/50 p-6 md:p-10 text-center md:col-span-4">
+                <div className="flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/10 p-4 md:p-10 text-center md:col-span-4">
                     {/* Timer on top, larger and prominent */}
                     <div className="mb-4">
                         <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
@@ -341,9 +341,9 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     {/* Smaller mic pod below */}
                     <RecordingPod phase={phase} />
                     <div className="mt-6 w-full space-y-3">
-                        <div className="rounded-xl border border-slate-100 bg-white p-3 shadow-sm">
-                            <p className="mb-1 text-[10px] font-semibold tracking-widest text-slate-400 uppercase">{t('question_player.status')}</p>
-                            <p className="text-sm font-semibold text-slate-700">
+                        <div className="rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 shadow-sm">
+                            <p className="mb-1 text-[10px] font-semibold tracking-widest text-slate-400 dark:text-slate-500 uppercase">{t('question_player.status')}</p>
+                            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                                 {phase === 'introduction'
                                     ? t('question_player.status_intro')
                                     : phase === 'audio'
