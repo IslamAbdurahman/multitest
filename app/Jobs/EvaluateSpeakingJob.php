@@ -125,6 +125,7 @@ class EvaluateSpeakingJob implements ShouldQueue
                 . "Donat qilishingiz mumkin.";
 
             if (count($imageUrls) > 0) {
+                // Send each image individually
                 foreach ($imageUrls as $index => $imgData) {
                     try {
                         $photo = $imgData['type'] === 'local' 
@@ -139,6 +140,7 @@ class EvaluateSpeakingJob implements ShouldQueue
                         ]);
                     } catch (\Exception $imgErr) {
                         Log::warning("Image send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
+                        // If the first image fails, we still need to send the text
                         if ($index === 0) {
                             $this->sendFallbackText($telegram, $chatId, $caption);
                         }
