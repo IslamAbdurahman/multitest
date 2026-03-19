@@ -115,31 +115,43 @@ class EvaluateSpeakingJob implements ShouldQueue
 
             // Extract text and image from question
             $questionText = $this->extractText($question->textarea ?? '');
-            $imageUrl = $this->extractImageUrl($question->textarea ?? '');
+            $imageUrls = $this->extractImageUrls($question->textarea ?? '');
             $scoreAi = $answer->score_ai ?? 0;
 
-            // If question has an image, send as photo with caption
-            if ($imageUrl) {
-                try {
-                    $caption = "📝 *savol :* {$questionText}\n"
-                        . "📊 *AI bahosi:* {$scoreAi}";
+            $msg = "📝 *savol :* {$questionText}\n"
+                 . "📊 *AI bahosi:* {$scoreAi}";
 
-                    $telegram->sendPhoto([
-                        'chat_id' => $chatId,
-                        'photo' => $imageUrl,
-                        'caption' => $caption,
-                        'parse_mode' => 'Markdown',
-                    ]);
+            if (count($imageUrls) > 0) {
+                try {
+                    if (count($imageUrls) === 1) {
+                        $telegram->sendPhoto([
+                            'chat_id' => $chatId,
+                            'photo' => $imageUrls[0],
+                            'caption' => $msg,
+                            'parse_mode' => 'Markdown',
+                        ]);
+                    } else {
+                        $media = [];
+                        foreach ($imageUrls as $index => $url) {
+                            $media[] = [
+                                'type' => 'photo',
+                                'media' => $url,
+                                'caption' => $index === 0 ? $msg : '',
+                                'parse_mode' => 'Markdown'
+                            ];
+                        }
+                        $telegram->sendMediaGroup([
+                            'chat_id' => $chatId,
+                            'media' => json_encode($media)
+                        ]);
+                    }
                     return;
                 } catch (\Exception $imgErr) {
-                    Log::warning("Image send failed, sending text: " . $imgErr->getMessage());
+                    Log::warning("Image/Media send failed, sending text instead: " . $imgErr->getMessage());
                 }
             }
 
-            // Send as text message
-            $msg = "📝 *savol :* {$questionText}\n"
-                . "📊 *AI bahosi:* {$scoreAi}";
-
+            // Send as text message if no images or image send failed
             $telegram->sendMessage([
                 'chat_id' => $chatId,
                 'text' => $msg,
@@ -152,13 +164,18 @@ class EvaluateSpeakingJob implements ShouldQueue
     }
 
     /**
-     * Extract plain text from HTML.
+     * Extract plain text from HTML and clean weird spaces/entities.
      */
     protected function extractText(string $html): string
     {
         $text = strip_tags($html);
         $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        
+        // Replace non-breaking spaces with normal spaces
+        $text = str_replace("\xC2\xA0", ' ', $text);
+        
         $text = trim(preg_replace('/\s+/', ' ', $text));
+        
         if (mb_strlen($text) > 200) {
             $text = mb_substr($text, 0, 200) . '...';
         }
@@ -166,18 +183,21 @@ class EvaluateSpeakingJob implements ShouldQueue
     }
 
     /**
-     * Extract first image URL from HTML.
+     * Extract all image URLs from HTML.
      */
-    protected function extractImageUrl(string $html): ?string
+    protected function extractImageUrls(string $html): array
     {
-        if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
-            $url = $matches[1];
-            if (!str_starts_with($url, 'http')) {
-                $url = url($url);
+        if (preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
+            $urls = [];
+            foreach ($matches[1] as $url) {
+                if (!str_starts_with($url, 'http')) {
+                    $url = url($url);
+                }
+                $urls[] = $url;
             }
-            return $url;
+            return $urls;
         }
-        return null;
+        return [];
     }
 
     /**
