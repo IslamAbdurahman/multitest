@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Telegram\Bot\Api;
 
 class EvaluateSpeakingJob implements ShouldQueue
 {
@@ -79,6 +80,9 @@ class EvaluateSpeakingJob implements ShouldQueue
 
             $answer->save();
 
+            // Send per-question Telegram notification immediately
+            $this->sendPerQuestionTelegram($answer);
+
             // Check if all answers for this attempt are now AI-evaluated
             $this->checkAndNotifyIfComplete($answer);
 
@@ -86,6 +90,94 @@ class EvaluateSpeakingJob implements ShouldQueue
             $answer->review_ai = 'AI Error: ' . $e->getMessage();
             $answer->save();
         }
+    }
+
+    /**
+     * Send Telegram notification for this specific question right after AI evaluation.
+     */
+    protected function sendPerQuestionTelegram(AttemptAnswer $answer): void
+    {
+        try {
+            $attemptPart = $answer->attempt_part;
+            if (!$attemptPart) return;
+
+            $attempt = $attemptPart->attempt;
+            if (!$attempt) return;
+
+            $user = $attempt->user;
+            if (!$user || !$user->telegram_id) return;
+
+            $question = $answer->question;
+            if (!$question) return;
+
+            $telegram = new Api(env('MultitestUzBot_TOKEN'));
+            $chatId = $user->telegram_id;
+
+            // Extract text and image from question
+            $questionText = $this->extractText($question->textarea ?? '');
+            $imageUrl = $this->extractImageUrl($question->textarea ?? '');
+            $scoreAi = $answer->score_ai ?? 0;
+
+            // If question has an image, send as photo with caption
+            if ($imageUrl) {
+                try {
+                    $caption = "📝 *savol :* {$questionText}\n"
+                        . "📊 *AI bahosi:* {$scoreAi}";
+
+                    $telegram->sendPhoto([
+                        'chat_id' => $chatId,
+                        'photo' => $imageUrl,
+                        'caption' => $caption,
+                        'parse_mode' => 'Markdown',
+                    ]);
+                    return;
+                } catch (\Exception $imgErr) {
+                    Log::warning("Image send failed, sending text: " . $imgErr->getMessage());
+                }
+            }
+
+            // Send as text message
+            $msg = "📝 *savol :* {$questionText}\n"
+                . "📊 *AI bahosi:* {$scoreAi}";
+
+            $telegram->sendMessage([
+                'chat_id' => $chatId,
+                'text' => $msg,
+                'parse_mode' => 'Markdown',
+            ]);
+
+        } catch (\Throwable $e) {
+            Log::error("sendPerQuestionTelegram failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Extract plain text from HTML.
+     */
+    protected function extractText(string $html): string
+    {
+        $text = strip_tags($html);
+        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        $text = trim(preg_replace('/\s+/', ' ', $text));
+        if (mb_strlen($text) > 200) {
+            $text = mb_substr($text, 0, 200) . '...';
+        }
+        return $text ?: '—';
+    }
+
+    /**
+     * Extract first image URL from HTML.
+     */
+    protected function extractImageUrl(string $html): ?string
+    {
+        if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
+            $url = $matches[1];
+            if (!str_starts_with($url, 'http')) {
+                $url = url($url);
+            }
+            return $url;
+        }
+        return null;
     }
 
     /**
