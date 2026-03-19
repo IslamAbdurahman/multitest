@@ -124,9 +124,12 @@ class EvaluateSpeakingJob implements ShouldQueue
                 . "`9860600402432220`\n\n"
                 . "Donat qilishingiz mumkin.";
 
+            Log::info("Telegram notify start for Answer #{$answer->id}. Images: " . count($imageUrls));
+
             if (count($imageUrls) > 1) {
                 // Send as media group (Album)
                 try {
+                    Log::info("Sending MediaGroup for Answer #{$answer->id} with " . count($imageUrls) . " images.");
                     $media = [];
                     $attachments = [];
 
@@ -147,6 +150,7 @@ class EvaluateSpeakingJob implements ShouldQueue
                             'parse_mode' => 'Markdown',
                         ];
                     }
+
                     $params = [
                         'chat_id' => $chatId,
                         'media' => json_encode($media),
@@ -158,13 +162,16 @@ class EvaluateSpeakingJob implements ShouldQueue
                     }
 
                     $telegram->sendMediaGroup($params);
+                    Log::info("MediaGroup sent successfully for Answer #{$answer->id}");
                     return;
                 } catch (\Exception $grpErr) {
-                    Log::warning("MediaGroup send failed for Answer #{$answer->id}: " . $grpErr->getMessage());
+                    Log::error("MediaGroup send failed for Answer #{$answer->id}: " . $grpErr->getMessage());
+                    // Fall through to fallback
                 }
             } elseif (count($imageUrls) === 1) {
                 // Single image
                 try {
+                    Log::info("Sending single photo for Answer #{$answer->id}");
                     $imgData = $imageUrls[0];
                     $photo = $imgData['type'] === 'local' 
                         ? InputFile::create($imgData['path'], basename($imgData['path'])) 
@@ -176,17 +183,20 @@ class EvaluateSpeakingJob implements ShouldQueue
                         'caption' => $caption,
                         'parse_mode' => 'Markdown',
                     ]);
+                    Log::info("Single photo sent successfully for Answer #{$answer->id}");
                     return;
                 } catch (\Exception $imgErr) {
-                    Log::warning("Single photo send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
+                    Log::error("Single photo send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
+                    // Fall through to fallback
                 }
             }
 
-            // Send as text message fallback
+            // Ultimate fallback (text only)
+            Log::info("Falling back to text-only message for Answer #{$answer->id}");
             $this->sendFallbackText($telegram, $chatId, $caption);
 
         } catch (\Throwable $e) {
-            Log::error("sendPerQuestionTelegram failed: " . $e->getMessage());
+            Log::error("sendPerQuestionTelegram fatal failure for Answer #{$answer->id}: " . $e->getMessage());
         }
     }
 

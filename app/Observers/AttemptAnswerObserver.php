@@ -14,8 +14,14 @@ class AttemptAnswerObserver
      */
     public function saved(AttemptAnswer $attemptAnswer): void
     {
-        // Dispatch only if audio_path was just provided or changed
-        if ($attemptAnswer->wasChanged('audio_path') && $attemptAnswer->audio_path) {
+        // Dispatch if audio_path is newly provided (created) or changed (updated)
+        if ($attemptAnswer->audio_path && ($attemptAnswer->wasRecentlyCreated || $attemptAnswer->wasChanged('audio_path'))) {
+            // Clear previous AI results to allow Job to run again
+            $attemptAnswer->score_ai = null;
+            $attemptAnswer->transcript = null;
+            $attemptAnswer->review_ai = null;
+            $attemptAnswer->saveQuietly();
+
             EvaluateSpeakingJob::dispatch($attemptAnswer->id);
         }
     }
