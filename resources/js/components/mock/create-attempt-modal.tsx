@@ -68,7 +68,7 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                             <Button
                                 type="submit"
                                 disabled={processing || !hasCheckedMic}
-                                className={`group h-12 w-full rounded-xl text-[10px] font-black transition-all md:h-14 ${
+                                className={`group h-12 w-full rounded-xl text-xs font-black transition-all md:h-14 ${
                                     hasCheckedMic
                                         ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
                                         : 'bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 border border-transparent dark:border-slate-800 cursor-not-allowed'
