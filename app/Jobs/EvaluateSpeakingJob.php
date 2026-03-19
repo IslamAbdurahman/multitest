@@ -30,7 +30,7 @@ class EvaluateSpeakingJob implements ShouldQueue
     public function handle()
     {
         $answer = AttemptAnswer::find($this->answerId);
-        if (!$answer || !$answer->audio_path) return;
+        if (!$answer || !$answer->audio_path || $answer->score_ai !== null) return;
 
         $aiService = new GeminiAiService();
 
@@ -124,32 +124,66 @@ class EvaluateSpeakingJob implements ShouldQueue
                 . "`9860600402432220`\n\n"
                 . "Donat qilishingiz mumkin.";
 
-            if (count($imageUrls) > 0) {
-                // Send each image individually
-                foreach ($imageUrls as $index => $imgData) {
-                    try {
-                        $photo = $imgData['type'] === 'local' 
-                            ? InputFile::create($imgData['path'], basename($imgData['path'])) 
-                            : $imgData['path'];
+            if (count($imageUrls) > 1) {
+                // Send as media group (Album)
+                try {
+                    $media = [];
+                    $attachments = [];
 
-                        $telegram->sendPhoto([
-                            'chat_id' => $chatId,
-                            'photo' => $photo,
+                    foreach ($imageUrls as $index => $imgData) {
+                        $attachmentName = "photo{$index}";
+                        
+                        if ($imgData['type'] === 'local') {
+                            $attachments[$attachmentName] = InputFile::create($imgData['path'], basename($imgData['path']));
+                            $mediaId = "attach://{$attachmentName}";
+                        } else {
+                            $mediaId = $imgData['path'];
+                        }
+
+                        $media[] = [
+                            'type' => 'photo',
+                            'media' => $mediaId,
                             'caption' => $index === 0 ? $caption : '',
                             'parse_mode' => 'Markdown',
-                        ]);
-                    } catch (\Exception $imgErr) {
-                        Log::warning("Image send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
-                        // If the first image fails, we still need to send the text
-                        if ($index === 0) {
-                            $this->sendFallbackText($telegram, $chatId, $caption);
-                        }
+                        ];
                     }
+                    $params = [
+                        'chat_id' => $chatId,
+                        'media' => json_encode($media),
+                    ];
+
+                    // Merge attachments directly into params for multipart upload
+                    foreach ($attachments as $key => $file) {
+                        $params[$key] = $file;
+                    }
+
+                    $telegram->sendMediaGroup($params);
+                    return;
+                } catch (\Exception $grpErr) {
+                    Log::warning("MediaGroup send failed for Answer #{$answer->id}: " . $grpErr->getMessage());
                 }
-            } else {
-                // Send as text message fallback
-                $this->sendFallbackText($telegram, $chatId, $caption);
+            } elseif (count($imageUrls) === 1) {
+                // Single image
+                try {
+                    $imgData = $imageUrls[0];
+                    $photo = $imgData['type'] === 'local' 
+                        ? InputFile::create($imgData['path'], basename($imgData['path'])) 
+                        : $imgData['path'];
+
+                    $telegram->sendPhoto([
+                        'chat_id' => $chatId,
+                        'photo' => $photo,
+                        'caption' => $caption,
+                        'parse_mode' => 'Markdown',
+                    ]);
+                    return;
+                } catch (\Exception $imgErr) {
+                    Log::warning("Single photo send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
+                }
             }
+
+            // Send as text message fallback
+            $this->sendFallbackText($telegram, $chatId, $caption);
 
         } catch (\Throwable $e) {
             Log::error("sendPerQuestionTelegram failed: " . $e->getMessage());

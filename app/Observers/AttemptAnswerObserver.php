@@ -10,21 +10,12 @@ use Illuminate\Support\Facades\Storage;
 class AttemptAnswerObserver
 {
     /**
-     * Handle the AttemptAnswer "created" event.
+     * Handle the AttemptAnswer "saved" event.
      */
-    public function created(AttemptAnswer $attemptAnswer): void
+    public function saved(AttemptAnswer $attemptAnswer): void
     {
-        if ($attemptAnswer->audio_path) {
-            EvaluateSpeakingJob::dispatch($attemptAnswer->id);
-        }
-    }
-
-    /**
-     * Handle the AttemptAnswer "updated" event.
-     */
-    public function updated(AttemptAnswer $attemptAnswer): void
-    {
-        if ($attemptAnswer->isDirty('audio_path') && $attemptAnswer->audio_path) {
+        // Dispatch only if audio_path was just provided or changed
+        if ($attemptAnswer->wasChanged('audio_path') && $attemptAnswer->audio_path) {
             EvaluateSpeakingJob::dispatch($attemptAnswer->id);
         }
     }
