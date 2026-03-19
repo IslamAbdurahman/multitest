@@ -113,48 +113,54 @@ class EvaluateSpeakingJob implements ShouldQueue
             $telegram = new Api(env('MultitestUzBot_TOKEN'));
             $chatId = $user->telegram_id;
 
-            // Extract text and image from question
+            // Extract text and images from question
             $questionText = $this->extractText($question->textarea ?? '');
             $imageUrls = $this->extractImageUrls($question->textarea ?? '');
             $scoreAi = $answer->score_ai ?? 0;
 
-            $msg = "📝 *savol :* {$questionText}\n"
-                 . "📊 *AI bahosi:* {$scoreAi}";
+            $caption = "📝 *savol :* {$questionText}\n"
+                . "📊 *AI bahosi:* {$scoreAi}";
 
-            if (count($imageUrls) > 0) {
+            if (count($imageUrls) > 1) {
+                // Send as media group if multiple images
                 try {
-                    if (count($imageUrls) === 1) {
-                        $telegram->sendPhoto([
-                            'chat_id' => $chatId,
-                            'photo' => $imageUrls[0],
-                            'caption' => $msg,
+                    $media = [];
+                    foreach ($imageUrls as $i => $url) {
+                        $media[] = [
+                            'type' => 'photo',
+                            'media' => $url,
+                            'caption' => $i === 0 ? $caption : '',
                             'parse_mode' => 'Markdown',
-                        ]);
-                    } else {
-                        $media = [];
-                        foreach ($imageUrls as $index => $url) {
-                            $media[] = [
-                                'type' => 'photo',
-                                'media' => $url,
-                                'caption' => $index === 0 ? $msg : '',
-                                'parse_mode' => 'Markdown'
-                            ];
-                        }
-                        $telegram->sendMediaGroup([
-                            'chat_id' => $chatId,
-                            'media' => json_encode($media)
-                        ]);
+                        ];
                     }
+
+                    $telegram->sendMediaGroup([
+                        'chat_id' => $chatId,
+                        'media' => json_encode($media),
+                    ]);
+                    return;
+                } catch (\Exception $grpErr) {
+                    Log::warning("MediaGroup send failed, falling back to single text: " . $grpErr->getMessage());
+                }
+            } elseif (count($imageUrls) === 1) {
+                // Single image
+                try {
+                    $telegram->sendPhoto([
+                        'chat_id' => $chatId,
+                        'photo' => $imageUrls[0],
+                        'caption' => $caption,
+                        'parse_mode' => 'Markdown',
+                    ]);
                     return;
                 } catch (\Exception $imgErr) {
-                    Log::warning("Image/Media send failed, sending text instead: " . $imgErr->getMessage());
+                    Log::warning("Image send failed, falling back to text: " . $imgErr->getMessage());
                 }
             }
 
-            // Send as text message if no images or image send failed
+            // Send as text message fallback
             $telegram->sendMessage([
                 'chat_id' => $chatId,
-                'text' => $msg,
+                'text' => $caption,
                 'parse_mode' => 'Markdown',
             ]);
 
@@ -164,18 +170,13 @@ class EvaluateSpeakingJob implements ShouldQueue
     }
 
     /**
-     * Extract plain text from HTML and clean weird spaces/entities.
+     * Extract plain text from HTML.
      */
     protected function extractText(string $html): string
     {
         $text = strip_tags($html);
         $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-        
-        // Replace non-breaking spaces with normal spaces
-        $text = str_replace("\xC2\xA0", ' ', $text);
-        
         $text = trim(preg_replace('/\s+/', ' ', $text));
-        
         if (mb_strlen($text) > 200) {
             $text = mb_substr($text, 0, 200) . '...';
         }
@@ -187,17 +188,16 @@ class EvaluateSpeakingJob implements ShouldQueue
      */
     protected function extractImageUrls(string $html): array
     {
+        $urls = [];
         if (preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
-            $urls = [];
             foreach ($matches[1] as $url) {
                 if (!str_starts_with($url, 'http')) {
                     $url = url($url);
                 }
                 $urls[] = $url;
             }
-            return $urls;
         }
-        return [];
+        return $urls;
     }
 
     /**
