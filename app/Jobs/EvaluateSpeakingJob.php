@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Api;
 
+use Telegram\Bot\FileUpload\InputFile;
+
 class EvaluateSpeakingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -33,7 +35,7 @@ class EvaluateSpeakingJob implements ShouldQueue
         $aiService = new GeminiAiService();
 
         try {
-            // 1. Evaluate speaking directly (Consolidated: Audio -> Transcript + CEFR)
+            // 1. Evaluate speaking directly
             $resultText = $aiService->evaluateSpeakingDirectly(
                 $answer->audio_path,
                 $answer->question
@@ -44,7 +46,7 @@ class EvaluateSpeakingJob implements ShouldQueue
             if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
                 $transcript = $data['transcript'] ?? '';
                 $answer->transcript = $transcript;
-                $answer->review_ai = $resultText; // Store raw JSON for the frontend helper
+                $answer->review_ai = $resultText;
 
                 $answer->score_ai = (int) ($data['score'] ?? 0);
 
@@ -52,15 +54,12 @@ class EvaluateSpeakingJob implements ShouldQueue
                 $targetLanguage = strtolower($answer->question->part->test->language->name_en);
                 $detectedLanguage = strtolower($data['detected_language'] ?? '');
 
-                // Ensure score is 0 if language mismatch (excluding noise/silence which is handled below)
                 if ($detectedLanguage !== 'noise' && $detectedLanguage !== 'silence' && !empty($detectedLanguage)) {
-                    // Check if detected language contains target language or vice versa (e.g. "English" vs "English (US)")
                     if (!str_contains($detectedLanguage, $targetLanguage) && !str_contains($targetLanguage, $detectedLanguage)) {
                         $answer->score_ai = 0;
                     }
                 }
 
-                // 4. Relevance Enforcement: If AI says answer is not relevant to the question, force score to 0
                 $isRelevant = $data['is_relevant'] ?? true;
                 if ($isRelevant === false) {
                     $answer->score_ai = 0;
@@ -71,7 +70,6 @@ class EvaluateSpeakingJob implements ShouldQueue
                     $answer->score_ai = 0;
                 }
             } else {
-                // Fallback for non-JSON or weird output
                 if (preg_match('/"score"\s*:\s*(\d+)/', $resultText, $matches)) {
                     $answer->score_ai = (int) $matches[1];
                 }
@@ -121,51 +119,49 @@ class EvaluateSpeakingJob implements ShouldQueue
             $caption = "📝 *savol :* {$questionText}\n"
                 . "📊 *AI bahosi:* {$scoreAi}";
 
-            if (count($imageUrls) > 1) {
-                // Send as media group if multiple images
-                try {
-                    $media = [];
-                    foreach ($imageUrls as $i => $url) {
-                        $media[] = [
-                            'type' => 'photo',
-                            'media' => $url,
-                            'caption' => $i === 0 ? $caption : '',
-                            'parse_mode' => 'Markdown',
-                        ];
-                    }
+            if (count($imageUrls) > 0) {
+                foreach ($imageUrls as $index => $imgData) {
+                    try {
+                        $photo = $imgData['type'] === 'local' 
+                            ? InputFile::create($imgData['path'], basename($imgData['path'])) 
+                            : $imgData['path'];
 
-                    $telegram->sendMediaGroup([
-                        'chat_id' => $chatId,
-                        'media' => json_encode($media),
-                    ]);
-                    return;
-                } catch (\Exception $grpErr) {
-                    Log::warning("MediaGroup send failed, falling back to single text: " . $grpErr->getMessage());
+                        $telegram->sendPhoto([
+                            'chat_id' => $chatId,
+                            'photo' => $photo,
+                            'caption' => $index === 0 ? $caption : '',
+                            'parse_mode' => 'Markdown',
+                        ]);
+                    } catch (\Exception $imgErr) {
+                        Log::warning("Image send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
+                        if ($index === 0) {
+                            $this->sendFallbackText($telegram, $chatId, $caption);
+                        }
+                    }
                 }
-            } elseif (count($imageUrls) === 1) {
-                // Single image
-                try {
-                    $telegram->sendPhoto([
-                        'chat_id' => $chatId,
-                        'photo' => $imageUrls[0],
-                        'caption' => $caption,
-                        'parse_mode' => 'Markdown',
-                    ]);
-                    return;
-                } catch (\Exception $imgErr) {
-                    Log::warning("Image send failed, falling back to text: " . $imgErr->getMessage());
-                }
+            } else {
+                // Send as text message fallback
+                $this->sendFallbackText($telegram, $chatId, $caption);
             }
 
-            // Send as text message fallback
+        } catch (\Throwable $e) {
+            Log::error("sendPerQuestionTelegram failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Fallback text sender
+     */
+    protected function sendFallbackText(Api $telegram, $chatId, string $caption): void
+    {
+        try {
             $telegram->sendMessage([
                 'chat_id' => $chatId,
                 'text' => $caption,
                 'parse_mode' => 'Markdown',
             ]);
-
-        } catch (\Throwable $e) {
-            Log::error("sendPerQuestionTelegram failed: " . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error("Telegram fallback text error: " . $e->getMessage());
         }
     }
 
@@ -184,20 +180,34 @@ class EvaluateSpeakingJob implements ShouldQueue
     }
 
     /**
-     * Extract all image URLs from HTML.
+     * Extract all image URLs from HTML and convert to local paths if applicable.
      */
     protected function extractImageUrls(string $html): array
     {
-        $urls = [];
+        $images = [];
         if (preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
-            foreach ($matches[1] as $url) {
-                if (!str_starts_with($url, 'http')) {
-                    $url = url($url);
+            foreach ($matches[1] as $src) {
+                // If it's a relative /storage/ path
+                if (str_starts_with($src, '/storage/')) {
+                    $path = storage_path('app/public/' . substr($src, 9)); // removed /storage/
+                    if (file_exists($path)) {
+                        $images[] = ['type' => 'local', 'path' => $path];
+                    }
                 }
-                $urls[] = $url;
+                // If it's an absolute URL pointing to our app
+                elseif (str_starts_with($src, env('APP_URL') . '/storage/')) {
+                    $path = storage_path('app/public/' . substr(parse_url($src, PHP_URL_PATH), 9));
+                    if (file_exists($path)) {
+                        $images[] = ['type' => 'local', 'path' => $path];
+                    }
+                }
+                // external URL
+                elseif (str_starts_with($src, 'http')) {
+                    $images[] = ['type' => 'url', 'path' => $src];
+                }
             }
         }
-        return $urls;
+        return $images;
     }
 
     /**
