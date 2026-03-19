@@ -49,7 +49,7 @@ class SendResultTelegramJob implements ShouldQueue
             // Send summary message with donation info
             $message = "🎉 *Natijangiz tayyor!*\n\n"
                 . "👤 {$this->user->name}\n"
-                . "📊 *AI bahosi:* {$score} / 75\n\n"
+                . "📊 *AI o'rtacha bahosi:* {$score} / 75\n\n"
                 . "💳 *Bizni Qo'llab-quvvatlang:*\n\n"
                 . "`9860600402432220`\n\n"
                 . "Donat qilishingiz mumkin.";

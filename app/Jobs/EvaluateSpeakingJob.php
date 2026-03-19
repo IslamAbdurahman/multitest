@@ -116,8 +116,13 @@ class EvaluateSpeakingJob implements ShouldQueue
             $imageUrls = $this->extractImageUrls($question->textarea ?? '');
             $scoreAi = $answer->score_ai ?? 0;
 
-            $caption = "📝 *savol :* {$questionText}\n"
-                . "📊 *AI bahosi:* {$scoreAi}";
+            $caption = "🎉 *Natijangiz tayyor!*\n\n"
+                . "👤 {$user->name}\n"
+                . "📝 *Savol :* {$questionText}\n"
+                . "📊 *AI bahosi:* {$scoreAi}\n\n"
+                . "💳 *Bizni Qo'llab-quvvatlang:*\n\n"
+                . "`9860600402432220`\n\n"
+                . "Donat qilishingiz mumkin.";
 
             if (count($imageUrls) > 0) {
                 foreach ($imageUrls as $index => $imgData) {
@@ -251,8 +256,7 @@ class EvaluateSpeakingJob implements ShouldQueue
                 Log::info("All AI evaluations complete for attempt #{$attempt->id}. Sending notification to user {$user->id}.");
 
                 if ($user->telegram_id) {
-                    SendResultTelegramJob::dispatch($user, $attempt)->delay(now()->addSeconds(5));
-                    Log::info("Dispatched SendResultTelegramJob for user {$user->id}");
+                    Log::info("Telegram notifications were sent per-question, skipping final summary for user {$user->id}");
                 } elseif ($user->email) {
                     SendResultEmailJob::dispatch($user, $attempt)->delay(now()->addSeconds(5));
                     Log::info("Dispatched SendResultEmailJob for user {$user->id}");
