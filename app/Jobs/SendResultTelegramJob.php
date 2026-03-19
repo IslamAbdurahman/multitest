@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User\User;
 use App\Models\Attempt;
+use App\Models\AttemptAnswer;
 use Telegram\Bot\Api;
 use Illuminate\Support\Facades\Log;
 
@@ -40,74 +41,76 @@ class SendResultTelegramJob implements ShouldQueue
             $attempt = Attempt::query()
                 ->where('id', $this->attempt->id)
                 ->withAiScoreAvg()
-                ->with([
-                    'mock',
-                    'test',
-                    'attempt_parts.attempt_answers.question',
-                ])
+                ->with(['mock', 'test'])
                 ->firstOrFail();
 
-            $testName = $attempt->mock?->name ?? $attempt->test?->name ?? 'Test';
             $score = $attempt->ai_score_avg !== null ? number_format($attempt->ai_score_avg, 1) : '0.0';
 
-            // 1️⃣ Send header message
-            $header = "🎉 *Natijangiz tayyor!*\n\n"
+            // Load all answers for this attempt with their questions
+            $answers = AttemptAnswer::whereHas('attempt_part', function ($q) use ($attempt) {
+                $q->where('attempt_id', $attempt->id);
+            })
+                ->with('question')
+                ->orderBy('id')
+                ->get();
+
+            Log::info("SendResultTelegramJob: attempt #{$attempt->id} has {$answers->count()} answers.");
+
+            // Build single message with all questions
+            $message = "🎉 *Natijangiz tayyor!*\n\n"
                 . "👤 {$this->user->name}\n"
-                . "📊 *AI bahosi:* {$score} / 75\n";
+                . "📊 *AI bahosi:* {$score} / 75\n\n";
 
-            $this->safeSendMessage($telegram, $chatId, $header);
-
-            // 2️⃣ Send each question with its score
             $questionNumber = 1;
-            foreach ($attempt->attempt_parts as $part) {
-                foreach ($part->attempt_answers as $answer) {
-                    $question = $answer->question;
-                    if (!$question) continue;
+            $imageUrls = [];
 
-                    // Extract plain text from textarea HTML
-                    $questionText = $this->extractText($question->textarea ?? '');
-                    $answerScore = $answer->score_ai ?? 0;
-
-                    // Extract image URL from textarea HTML
-                    $imageUrl = $this->extractImageUrl($question->textarea ?? '');
-
-                    // If question has an image, send it as a photo
-                    if ($imageUrl) {
-                        try {
-                            $caption = "📝 *Savol {$questionNumber}:* {$questionText}\n"
-                                . "📊 *AI bahosi:* {$answerScore}";
-
-                            $telegram->sendPhoto([
-                                'chat_id' => $chatId,
-                                'photo' => $imageUrl,
-                                'caption' => $caption,
-                                'parse_mode' => 'Markdown',
-                            ]);
-                        } catch (\Exception $imgError) {
-                            // If image fails, send as text
-                            Log::warning("Image send failed for question {$questionNumber}: " . $imgError->getMessage());
-                            $msg = "📝 *Savol {$questionNumber}:* {$questionText}\n"
-                                . "📊 *AI bahosi:* {$answerScore}";
-                            $this->safeSendMessage($telegram, $chatId, $msg);
-                        }
-                    } else {
-                        $msg = "📝 *Savol {$questionNumber}:* {$questionText}\n"
-                            . "📊 *AI bahosi:* {$answerScore}";
-                        $this->safeSendMessage($telegram, $chatId, $msg);
-                    }
-
-                    $questionNumber++;
+            foreach ($answers as $answer) {
+                $question = $answer->question;
+                if (!$question) {
+                    Log::warning("SendResultTelegramJob: answer #{$answer->id} has no question.");
+                    continue;
                 }
+
+                $questionText = $this->extractText($question->textarea ?? '');
+                $answerScore = $answer->score_ai ?? 0;
+
+                $message .= "📝 *Savol {$questionNumber}:* {$questionText}\n"
+                    . "📊 *AI bahosi:* {$answerScore}\n\n";
+
+                // Collect image URLs for later
+                $imgUrl = $this->extractImageUrl($question->textarea ?? '');
+                if ($imgUrl) {
+                    $imageUrls[] = [
+                        'url' => $imgUrl,
+                        'number' => $questionNumber,
+                    ];
+                }
+
+                $questionNumber++;
             }
 
-            // 3️⃣ Send footer with donation info
-            $footer = "💳 *Bizni Qo'llab-quvvatlang:*\n\n"
+            // Add donation info
+            $message .= "💳 *Bizni Qo'llab-quvvatlang:*\n\n"
                 . "`9860600402432220`\n\n"
                 . "Donat qilishingiz mumkin.";
 
-            $this->safeSendMessage($telegram, $chatId, $footer);
+            // 1️⃣ Send the main text message
+            $this->safeSendMessage($telegram, $chatId, $message);
 
-            Log::info("Telegram result messages sent to user {$chatId} for attempt #{$attempt->id}");
+            // 2️⃣ Send question images separately (if any)
+            foreach ($imageUrls as $img) {
+                try {
+                    $telegram->sendPhoto([
+                        'chat_id' => $chatId,
+                        'photo' => $img['url'],
+                        'caption' => "📝 Savol {$img['number']} rasmi",
+                    ]);
+                } catch (\Exception $imgError) {
+                    Log::warning("Image send failed for question {$img['number']}: " . $imgError->getMessage());
+                }
+            }
+
+            Log::info("Telegram result sent to user {$chatId} for attempt #{$attempt->id}");
 
         } catch (\Exception $e) {
             Log::error("SendResultTelegramJob failed: " . $e->getMessage());
@@ -123,7 +126,6 @@ class SendResultTelegramJob implements ShouldQueue
         $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
         $text = trim(preg_replace('/\s+/', ' ', $text));
 
-        // Truncate very long text
         if (mb_strlen($text) > 200) {
             $text = mb_substr($text, 0, 200) . '...';
         }
@@ -138,15 +140,11 @@ class SendResultTelegramJob implements ShouldQueue
     {
         if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
             $url = $matches[1];
-
-            // Make relative URLs absolute
             if (!str_starts_with($url, 'http')) {
                 $url = url($url);
             }
-
             return $url;
         }
-
         return null;
     }
 
