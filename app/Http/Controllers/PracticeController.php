@@ -63,7 +63,7 @@ class PracticeController extends Controller
     {
         try {
             $data = $request->validate([
-                'answers' => ['required', 'array'],
+                'answers' => ['nullable', 'array'],
                 'answers.*.question_id' => ['required', 'integer', 'exists:questions,id'],
                 'answers.*.started_at' => ['nullable', 'date'],
                 'answers.*.finished_at' => ['nullable', 'date'],
@@ -73,7 +73,8 @@ class PracticeController extends Controller
 
             DB::beginTransaction();
 
-            foreach ($data['answers'] as $index => $answerData) {
+            $answers = $data['answers'] ?? [];
+            foreach ($answers as $index => $answerData) {
                 $audioPath = null;
 
                 // Access the file correctly from the nested array

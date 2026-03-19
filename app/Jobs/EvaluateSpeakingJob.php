@@ -116,6 +116,9 @@ class EvaluateSpeakingJob implements ShouldQueue
             $imageUrls = $this->extractImageUrls($question->textarea ?? '');
             $scoreAi = $answer->score_ai ?? 0;
 
+            $audioPath = $this->getAudioPhysicalPath($answer->audio_path);
+            $hasAudio = $audioPath && file_exists($audioPath);
+
             $caption = "🎉 *Natijangiz tayyor!*\n\n"
                 . "👤 {$user->name}\n"
                 . "📝 *Savol :* {$questionText}\n"
@@ -124,74 +127,68 @@ class EvaluateSpeakingJob implements ShouldQueue
                 . "`9860600402432220`\n\n"
                 . "Donat qilishingiz mumkin.";
 
-            Log::info("Telegram notify start for Answer #{$answer->id}. Images: " . count($imageUrls));
+            Log::info("Telegram notify start for Answer #{$answer->id}. Images: " . count($imageUrls) . ", Has Audio: " . ($hasAudio ? 'Yes' : 'No'));
 
-            if (count($imageUrls) > 1) {
-                // Send as media group (Album)
+            // 1. Send Images if any
+            if (count($imageUrls) > 0) {
                 try {
-                    Log::info("Sending MediaGroup for Answer #{$answer->id} with " . count($imageUrls) . " images.");
-                    $media = [];
-                    $attachments = [];
-
-                    foreach ($imageUrls as $index => $imgData) {
-                        $attachmentName = "photo{$index}";
-                        
-                        if ($imgData['type'] === 'local') {
-                            $attachments[$attachmentName] = InputFile::create($imgData['path'], basename($imgData['path']));
-                            $mediaId = "attach://{$attachmentName}";
-                        } else {
-                            $mediaId = $imgData['path'];
+                    if (count($imageUrls) > 1) {
+                        $media = [];
+                        $attachments = [];
+                        foreach ($imageUrls as $index => $imgData) {
+                            $attachmentName = "photo{$index}";
+                            if ($imgData['type'] === 'local') {
+                                $attachments[$attachmentName] = InputFile::create($imgData['path'], basename($imgData['path']));
+                                $mediaId = "attach://{$attachmentName}";
+                            } else {
+                                $mediaId = $imgData['path'];
+                            }
+                            $media[] = [
+                                'type' => 'photo',
+                                'media' => $mediaId,
+                                'parse_mode' => 'Markdown',
+                            ];
                         }
+                        $params = ['chat_id' => $chatId, 'media' => json_encode($media)];
+                        foreach ($attachments as $key => $file) {
+                            $params[$key] = $file;
+                        }
+                        $telegram->sendMediaGroup($params);
+                    } else {
+                        $imgData = $imageUrls[0];
+                        $photo = $imgData['type'] === 'local' 
+                            ? InputFile::create($imgData['path'], basename($imgData['path'])) 
+                            : $imgData['path'];
 
-                        $media[] = [
-                            'type' => 'photo',
-                            'media' => $mediaId,
-                            'caption' => $index === 0 ? $caption : '',
+                        $telegram->sendPhoto([
+                            'chat_id' => $chatId,
+                            'photo' => $photo,
                             'parse_mode' => 'Markdown',
-                        ];
+                        ]);
                     }
-
-                    $params = [
-                        'chat_id' => $chatId,
-                        'media' => json_encode($media),
-                    ];
-
-                    // Merge attachments directly into params for multipart upload
-                    foreach ($attachments as $key => $file) {
-                        $params[$key] = $file;
-                    }
-
-                    $telegram->sendMediaGroup($params);
-                    Log::info("MediaGroup sent successfully for Answer #{$answer->id}");
-                    return;
-                } catch (\Exception $grpErr) {
-                    Log::error("MediaGroup send failed for Answer #{$answer->id}: " . $grpErr->getMessage());
-                    // Fall through to fallback
-                }
-            } elseif (count($imageUrls) === 1) {
-                // Single image
-                try {
-                    Log::info("Sending single photo for Answer #{$answer->id}");
-                    $imgData = $imageUrls[0];
-                    $photo = $imgData['type'] === 'local' 
-                        ? InputFile::create($imgData['path'], basename($imgData['path'])) 
-                        : $imgData['path'];
-
-                    $telegram->sendPhoto([
-                        'chat_id' => $chatId,
-                        'photo' => $photo,
-                        'caption' => $caption,
-                        'parse_mode' => 'Markdown',
-                    ]);
-                    Log::info("Single photo sent successfully for Answer #{$answer->id}");
-                    return;
                 } catch (\Exception $imgErr) {
-                    Log::error("Single photo send failed for Answer #{$answer->id}: " . $imgErr->getMessage());
-                    // Fall through to fallback
+                    Log::error("Image sending failed for Answer #{$answer->id}: " . $imgErr->getMessage());
                 }
             }
 
-            // Ultimate fallback (text only)
+            // 2. Send Audio with Caption (Main message)
+            if ($hasAudio) {
+                try {
+                    $telegram->sendVoice([
+                        'chat_id' => $chatId,
+                        'voice' => InputFile::create($audioPath, 'answer.ogg'),
+                        'caption' => $caption,
+                        'parse_mode' => 'Markdown',
+                    ]);
+                    Log::info("Audio sent successfully for Answer #{$answer->id}");
+                    return;
+                } catch (\Exception $audErr) {
+                    Log::error("Audio send failed for Answer #{$answer->id}: " . $audErr->getMessage());
+                    // Fall back to text
+                }
+            }
+
+            // 3. Fallback (text only)
             Log::info("Falling back to text-only message for Answer #{$answer->id}");
             $this->sendFallbackText($telegram, $chatId, $caption);
 
@@ -370,6 +367,16 @@ class EvaluateSpeakingJob implements ShouldQueue
         }
 
         return false;
+    }
+
+    /**
+     * Get the physical path of the audio file.
+     */
+    protected function getAudioPhysicalPath(?string $path): ?string
+    {
+        if (!$path) return null;
+        $cleanPath = str_replace(['/storage/', 'storage/'], '', $path);
+        return storage_path('app/public/' . ltrim($cleanPath, '/'));
     }
 
 

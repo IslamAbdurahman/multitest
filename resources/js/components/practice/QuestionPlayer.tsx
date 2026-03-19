@@ -218,12 +218,6 @@ export default function QuestionPlayer({ attempt_part }: any) {
 
     const submit = () => {
         const form = new FormData();
-        answersRef.current.forEach((a, i) => {
-            form.append(`answers[${i}][question_id]`, a.question_id);
-            form.append(`answers[${i}][started_at]`, a.started_at);
-            form.append(`answers[${i}][finished_at]`, a.finished_at);
-            form.append(`answers[${i}][audio_path]`, a.audio, `q_${a.question_id}.${a.ext}`);
-        });
 
         const next = attempt_part.attempt.attempt_parts.find((p: any) => p.id > attempt_part.id);
         if (next) form.append('next_attempt_part_id', next.id);
