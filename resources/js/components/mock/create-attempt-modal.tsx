@@ -48,24 +48,57 @@ export default function CreateAttemptModal({ mock, test }: Props) {
             </button>
 
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="overflow-hidden rounded-[20px] border-none bg-white p-0 shadow-2xl md:rounded-[2.5rem] sm:max-w-[500px] dark:bg-slate-950">
-                    {/* 🌑 Header: Dark Themed for Focus */}
-                    <div className="bg-slate-900 p-6 text-white md:p-10 dark:bg-slate-900/50">
+                <DialogContent className="overflow-hidden rounded-[1.5rem] border-none bg-white p-0 shadow-2xl md:rounded-[2rem] sm:max-w-[450px] dark:bg-slate-950">
+                    {/* 🌑 Header: Compact & Focused */}
+                    <div className="bg-slate-900 p-5 text-white md:p-8 dark:bg-slate-900/50">
                         <DialogHeader>
-                            <div className="mb-4 md:mb-6 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-[1.25rem] border border-indigo-500/30 bg-indigo-500/20 text-indigo-400">
-                                <Headphones className="h-6 w-6 md:h-7 md:w-7" />
+                            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-500/30 bg-indigo-500/20 text-indigo-400">
+                                <Headphones className="h-5 w-5" />
                             </div>
-                            <DialogTitle className="text-xl md:text-3xl leading-tight font-black tracking-tight">{t('attempt_modal.ready_title')}</DialogTitle>
-                            <DialogDescription className="mt-2 text-base font-medium text-slate-400">
+                            <DialogTitle className="text-xl md:text-2xl leading-tight font-black tracking-tight">{t('attempt_modal.ready_title')}</DialogTitle>
+                            <DialogDescription className="mt-1 text-sm font-medium text-slate-400">
                                 {t('attempt_modal.mic_requirement')}
                             </DialogDescription>
                         </DialogHeader>
                     </div>
 
-                    <div className="space-y-4 p-5 sm:space-y-6 sm:p-6 md:space-y-8 md:p-10">
-                        {/* 🎙️ Mic Testing Area */}
-                        <div className="space-y-4">
-                            <div className="flex items-center justify-between">
+                    <div className="space-y-6 p-4 md:p-8">
+                        {/* 🚀 Primary Action (At the top for better UX) */}
+                        <form onSubmit={submit} className="w-full space-y-3">
+                            <Button
+                                type="submit"
+                                disabled={processing || !hasCheckedMic}
+                                className={`group h-14 w-full rounded-2xl text-xs font-black transition-all md:h-16 ${
+                                    hasCheckedMic
+                                        ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
+                                        : 'bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 border border-transparent dark:border-slate-800 cursor-not-allowed'
+                                }`}
+                            >
+                                {processing ? (
+                                    <span className="flex items-center gap-2">
+                                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                                        {t('common.preparing')}...
+                                    </span>
+                                ) : (
+                                    <span className="flex items-center justify-center gap-2 tracking-widest uppercase">
+                                        {t('attempt_modal.start_now')}
+                                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    </span>
+                                )}
+                            </Button>
+
+                            {!hasCheckedMic && (
+                                <div className="flex items-center justify-center gap-2 rounded-xl bg-amber-50/50 dark:bg-amber-900/10 py-2 border border-amber-100/50 dark:border-amber-900/20">
+                                    <span className="text-[9px] font-black tracking-tight text-amber-600 uppercase">
+                                        {t('attempt_modal.record_to_unlock')}
+                                    </span>
+                                </div>
+                            )}
+                        </form>
+
+                        {/* 🎙️ Mic Testing Area (Below the button as a prerequisite check) */}
+                        <div className="space-y-4 pt-2 border-t border-slate-50 dark:border-slate-900">
+                            <div className="flex items-center justify-between px-1">
                                 <span className="flex items-center gap-2 text-[10px] font-black tracking-[0.15em] text-slate-400 dark:text-slate-500 uppercase">
                                     <Mic2 className="h-3.5 w-3.5 text-indigo-500" />
                                     {t('attempt_modal.mic_check')}
@@ -94,41 +127,6 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                                 </div>
                             )}
                         </div>
-
-                        {/* 🚀 Action Area */}
-                        <DialogFooter className="pt-2">
-                            <form onSubmit={submit} className="w-full">
-                                <Button
-                                    type="submit"
-                                    disabled={processing || !hasCheckedMic}
-                                    className={`group h-12 w-full rounded-2xl text-xs font-black transition-all sm:h-14 md:h-16 ${
-                                        hasCheckedMic
-                                            ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
-                                            : 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-500 border border-transparent dark:border-slate-800'
-                                    }`}
-                                >
-                                    {processing ? (
-                                        <span className="flex items-center gap-2">
-                                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                                            {t('common.preparing')}...
-                                        </span>
-                                    ) : (
-                                        <span className="flex items-center justify-center gap-2 tracking-widest uppercase">
-                                            {t('attempt_modal.start_now')}
-                                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                        </span>
-                                    )}
-                                </Button>
-
-                                {!hasCheckedMic && (
-                                    <div className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-amber-50 py-2 dark:bg-amber-900/10">
-                                        <span className="text-[10px] font-black tracking-tight text-amber-600 uppercase">
-                                            {t('attempt_modal.record_to_unlock')}
-                                        </span>
-                                    </div>
-                                )}
-                            </form>
-                        </DialogFooter>
                     </div>
                 </DialogContent>
             </Dialog>
