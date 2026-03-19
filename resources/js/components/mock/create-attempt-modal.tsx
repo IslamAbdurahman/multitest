@@ -50,7 +50,7 @@ export default function CreateAttemptModal({ mock, test }: Props) {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="overflow-hidden rounded-[20px] border-none bg-white p-0 shadow-2xl md:rounded-[2.5rem] sm:max-w-[500px] dark:bg-slate-950">
                     {/* 🌑 Header: Dark Themed for Focus */}
-                    <div className="bg-slate-900 p-5 text-white sm:p-6 md:p-10 dark:bg-slate-900/50">
+                    <div className="bg-slate-900 p-6 text-white md:p-10 dark:bg-slate-900/50">
                         <DialogHeader>
                             <div className="mb-4 md:mb-6 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-[1.25rem] border border-indigo-500/30 bg-indigo-500/20 text-indigo-400">
                                 <Headphones className="h-6 w-6 md:h-7 md:w-7" />
@@ -62,11 +62,11 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                         </DialogHeader>
                     </div>
 
-                    <div className="space-y-4 p-4 sm:space-y-6 sm:p-6 md:space-y-8 md:p-10">
+                    <div className="space-y-4 p-5 sm:space-y-6 sm:p-6 md:space-y-8 md:p-10">
                         {/* 🎙️ Mic Testing Area */}
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="flex items-center gap-2 text-[10px] font-black tracking-[0.15em] text-slate-400 uppercase">
+                                <span className="flex items-center gap-2 text-[10px] font-black tracking-[0.15em] text-slate-400 dark:text-slate-500 uppercase">
                                     <Mic2 className="h-3.5 w-3.5 text-indigo-500" />
                                     {t('attempt_modal.mic_check')}
                                 </span>
@@ -87,10 +87,10 @@ export default function CreateAttemptModal({ mock, test }: Props) {
 
                             {audioUrl && (
                                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-                                    <div className="rounded-2xl border border-slate-100 bg-slate-50/50 p-3 dark:border-slate-800 dark:bg-slate-900/50">
+                                    <div className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-3 shadow-sm">
                                         <audio controls src={audioUrl} className="h-9 w-full opacity-80" />
                                     </div>
-                                    <p className="mt-2 text-center text-[10px] font-bold text-slate-400">{t('attempt_modal.ensure_clear')}</p>
+                                    <p className="mt-2 text-center text-[10px] font-bold text-slate-400 dark:text-slate-500">{t('attempt_modal.ensure_clear')}</p>
                                 </div>
                             )}
                         </div>
@@ -101,10 +101,10 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                                 <Button
                                     type="submit"
                                     disabled={processing || !hasCheckedMic}
-                                    className={`group h-12 w-full rounded-2xl text-sm font-black transition-all sm:h-14 md:h-16 ${
+                                    className={`group h-12 w-full rounded-2xl text-xs font-black transition-all sm:h-14 md:h-16 ${
                                         hasCheckedMic
                                             ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
-                                            : 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600'
+                                            : 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-500 border border-transparent dark:border-slate-800'
                                     }`}
                                 >
                                     {processing ? (
