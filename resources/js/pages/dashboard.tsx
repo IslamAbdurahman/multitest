@@ -17,6 +17,7 @@ interface DashboardProps {
     hourly_attempts: HourlyStatItem[];
     today_hourly_attempts: HourlyStatItem[];
     weekly_attempts: WeeklyStatItem[];
+    [key: string]: unknown;
 }
 
 export default function Dashboard() {
@@ -108,13 +109,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* 📈 Attempts + Skills Charts */}
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-                    <div className="lg:col-span-8">
-                        <AttemptsChart attempts={user.attempts ?? []} />
-                    </div>
-                    <div className="lg:col-span-4">
-                        <SkillsRadarChart />
-                    </div>
+                <div className="flex flex-col gap-8">
+                    <AttemptsChart attempts={user.attempts ?? []} />
+                    <SkillsRadarChart />
                 </div>
 
                 {/* 📊 Daily Stats Chart (admin-level data) */}
@@ -124,7 +121,7 @@ export default function Dashboard() {
 
                 {/* ⏰ Hourly Charts */}
                 {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
-                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    <div className="flex flex-col gap-8">
                         {today_hourly_attempts?.length > 0 && (
                             <HourlyAttemptsChart
                                 data={today_hourly_attempts}
