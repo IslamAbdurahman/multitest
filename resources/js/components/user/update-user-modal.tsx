@@ -28,6 +28,7 @@ export default function UpdateUserModal({ user }: UpdateUserModalProps) {
         phone: user.phone,
         email: user.email,
         password: '',
+        create_test_limit: user.create_test_limit || 0,
     });
 
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function UpdateUserModal({ user }: UpdateUserModalProps) {
                 email: user.email,
                 password: '',
                 role: user.roles?.[0]?.name ?? '',
+                create_test_limit: user.create_test_limit || 0,
             });
 
             const fetchRoles = async () => {
@@ -166,21 +168,42 @@ export default function UpdateUserModal({ user }: UpdateUserModalProps) {
                                 </div>
                             </div>
 
-                            {/* Email Input */}
-                            <div className="space-y-2">
-                                <Label
-                                    htmlFor="email"
-                                    className="flex items-center gap-2 pl-1 text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase"
-                                >
-                                    <Mail className="h-3 w-3" /> {t('common.email')}
-                                </Label>
-                                <Input
-                                    id="email"
-                                    className="h-12 rounded-xl border-slate-100 bg-slate-50 px-4 font-bold dark:border-slate-800 dark:bg-slate-900 dark:text-white"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                />
-                                <InputError message={errors.email} />
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                {/* Email Input */}
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="email"
+                                        className="flex items-center gap-2 pl-1 text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase"
+                                    >
+                                        <Mail className="h-3 w-3" /> {t('common.email')}
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        className="h-12 rounded-xl border-slate-100 bg-slate-50 px-4 font-bold dark:border-slate-800 dark:bg-slate-900 dark:text-white"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                    />
+                                    <InputError message={errors.email} />
+                                </div>
+
+                                {/* Limit Input */}
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="create_test_limit"
+                                        className="flex items-center gap-2 pl-1 text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase"
+                                    >
+                                        {t('user_management.create_test_limit', 'Test Limit')}
+                                    </Label>
+                                    <Input
+                                        id="create_test_limit"
+                                        type="number"
+                                        min="0"
+                                        className="h-12 rounded-xl border-slate-100 bg-slate-50 px-4 font-bold dark:border-slate-800 dark:bg-slate-900 dark:text-white"
+                                        value={data.create_test_limit}
+                                        onChange={(e) => setData('create_test_limit', Number(e.target.value))}
+                                    />
+                                    <InputError message={errors.create_test_limit} />
+                                </div>
                             </div>
 
                             {/* Password Input (Optional) */}

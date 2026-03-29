@@ -101,6 +101,15 @@ class TestController extends Controller
     public function store(StoreTestRequest $request)
     {
         try {
+            if (!Auth::user()->hasRole('Admin')) {
+                $userTestsCount = Auth::user()->tests()->count();
+                if ($userTestsCount >= Auth::user()->create_test_limit) {
+                    throw ValidationException::withMessages([
+                        'error' => ["You have reached your test creation limit."],
+                    ]);
+                }
+            }
+
             $data = $request->validated();
 
             if ($request->hasFile('audio_path')) {

@@ -36,6 +36,7 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($this->route('user')->id)
             ],
             'password' => 'nullable',
+            'create_test_limit' => ['nullable', 'integer', 'min:0'],
         ];
     }
 

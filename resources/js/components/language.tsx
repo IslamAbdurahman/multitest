@@ -25,7 +25,7 @@ const LanguageBar = () => {
     }, []);
 
     return (
-        <div className="flex justify-end relative" ref={dropdownRef}>
+        <div className="flex justify-start relative" ref={dropdownRef}>
             <button
                 onClick={() => setOpen(!open)}
                 className="text-sm px-3 py-1 rounded border border-gray-300 shadow bg-white hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700"
@@ -35,7 +35,7 @@ const LanguageBar = () => {
 
             {open && (
                 <div
-                    className="absolute right-0 mt-2 w-36 rounded shadow-lg border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 z-50">
+                    className="absolute left-0 mt-2 w-36 rounded shadow-lg border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 z-50">
                     <button
                         onClick={() => changeLanguage('uz')}
                         className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"

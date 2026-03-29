@@ -33,6 +33,7 @@ class User extends Authenticatable
         'google_id',
         'telegram_id',
         'ref_telegram_id',
+        'create_test_limit',
     ];
 
     protected $with = [

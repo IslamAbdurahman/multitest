@@ -181,6 +181,7 @@ export interface User {
     google_id: number;
     telegram_id: string;
     ref_telegram_id: string;
+    create_test_limit: number;
 
     roles?: Role[];
     created_at: string;
