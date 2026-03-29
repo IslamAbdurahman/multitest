@@ -268,3 +268,19 @@ export interface Role {
     created_at: string;
     updated_at: string;
 }
+
+export interface StatItem {
+    day_date: string;
+    items_count: number;
+    unique_users_count: number;
+}
+
+export interface HourlyStatItem {
+    hour: number;
+    items_count: number;
+}
+
+export interface WeeklyStatItem {
+    weekday: number; // 1=Mon..7=Sun
+    items_count: number;
+}

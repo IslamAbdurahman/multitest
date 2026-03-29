@@ -1,14 +1,27 @@
 import AttemptsChart from '@/components/attempt/attempt-chart';
+import DailyStatsChart from '@/components/dashboard/DailyStatsChart';
+import HourlyAttemptsChart from '@/components/dashboard/HourlyAttemptsChart';
 import SkillsRadarChart from '@/components/dashboard/SkillsRadarChart';
+import WeeklyAttemptsChart from '@/components/dashboard/WeeklyAttemptsChart';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, User } from '@/types';
+import { type BreadcrumbItem, type HourlyStatItem, type StatItem, type User, type WeeklyStatItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { LucideActivity, LucideTrendingUp, LucideUserCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+interface DashboardProps {
+    user: User;
+    daily_users: StatItem[];
+    daily_attempts: StatItem[];
+    hourly_attempts: HourlyStatItem[];
+    today_hourly_attempts: HourlyStatItem[];
+    weekly_attempts: WeeklyStatItem[];
+}
+
 export default function Dashboard() {
-    const { user } = usePage<{ user: User }>().props;
+    const { user, daily_users, daily_attempts, hourly_attempts, today_hourly_attempts, weekly_attempts } =
+        usePage<DashboardProps>().props;
     const { t } = useTranslation();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -94,7 +107,7 @@ export default function Dashboard() {
                     </Card>
                 </div>
 
-                {/* 📈 Charts Section */}
+                {/* 📈 Attempts + Skills Charts */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
                     <div className="lg:col-span-8">
                         <AttemptsChart attempts={user.attempts ?? []} />
@@ -103,6 +116,37 @@ export default function Dashboard() {
                         <SkillsRadarChart />
                     </div>
                 </div>
+
+                {/* 📊 Daily Stats Chart (admin-level data) */}
+                {(daily_users?.length > 0 || daily_attempts?.length > 0) && (
+                    <DailyStatsChart daily_users={daily_users ?? []} daily_attempts={daily_attempts ?? []} />
+                )}
+
+                {/* ⏰ Hourly Charts */}
+                {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
+                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                        {today_hourly_attempts?.length > 0 && (
+                            <HourlyAttemptsChart
+                                data={today_hourly_attempts}
+                                title={t('stats.today_hourly', "Today's hourly stats")}
+                            />
+                        )}
+                        {hourly_attempts?.length > 0 && (
+                            <HourlyAttemptsChart
+                                data={hourly_attempts}
+                                title={t('stats.alltime_hourly', 'All-time hourly stats')}
+                            />
+                        )}
+                    </div>
+                )}
+
+                {/* 📅 Weekly Chart */}
+                {weekly_attempts?.length > 0 && (
+                    <WeeklyAttemptsChart
+                        data={weekly_attempts}
+                        title={t('stats.weekly', 'Weekly attempt distribution')}
+                    />
+                )}
             </div>
         </AppLayout>
     );

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attempt;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -56,8 +58,57 @@ class HomeController extends Controller
             ])
             ->find(Auth::id());
 
+        // ── Daily users: last 30 days ──────────────────────────────────────
+        $daily_users = User::query()
+            ->selectRaw('DATE(created_at) as day_date, COUNT(*) as items_count, COUNT(DISTINCT id) as unique_users_count')
+            ->where('created_at', '>=', now()->subDays(30)->startOfDay())
+            ->groupBy('day_date')
+            ->having('items_count', '>', 0)
+            ->orderBy('day_date')
+            ->get();
+
+        // ── Daily attempts: last 30 days ───────────────────────────────────
+        $daily_attempts = Attempt::query()
+            ->selectRaw('DATE(created_at) as day_date, COUNT(*) as items_count, COUNT(DISTINCT user_id) as unique_users_count')
+            ->where('created_at', '>=', now()->subDays(30)->startOfDay())
+            ->groupBy('day_date')
+            ->having('items_count', '>', 0)
+            ->orderBy('day_date')
+            ->get();
+
+        // ── Hourly attempts: all-time ──────────────────────────────────────
+        $hourly_attempts = Attempt::query()
+            ->selectRaw('HOUR(created_at) as hour, COUNT(*) as items_count')
+            ->groupBy('hour')
+            ->having('items_count', '>', 0)
+            ->orderBy('hour')
+            ->get();
+
+        // ── Hourly attempts: today only ────────────────────────────────────
+        $today_hourly_attempts = Attempt::query()
+            ->selectRaw('HOUR(created_at) as hour, COUNT(*) as items_count')
+            ->whereDate('created_at', now()->toDateString())
+            ->groupBy('hour')
+            ->having('items_count', '>', 0)
+            ->orderBy('hour')
+            ->get();
+
+        // ── Weekly attempts: Monday=1 … Sunday=7 ──────────────────────────
+        // MySQL DAYOFWEEK: Sun=1…Sat=7  →  MOD(DAYOFWEEK+5,7)+1 = Mon=1…Sun=7
+        $weekly_attempts = Attempt::query()
+            ->selectRaw('MOD(DAYOFWEEK(created_at) + 5, 7) + 1 as weekday, COUNT(*) as items_count')
+            ->groupBy('weekday')
+            ->having('items_count', '>', 0)
+            ->orderBy('weekday')
+            ->get();
+
         return Inertia::render('dashboard', [
-            'user' => $user
+            'user'                  => $user,
+            'daily_users'           => $daily_users,
+            'daily_attempts'        => $daily_attempts,
+            'hourly_attempts'       => $hourly_attempts,
+            'today_hourly_attempts' => $today_hourly_attempts,
+            'weekly_attempts'       => $weekly_attempts,
         ]);
 
     }
