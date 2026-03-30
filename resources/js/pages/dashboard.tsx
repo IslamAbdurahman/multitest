@@ -109,9 +109,13 @@ export default function Dashboard() {
                 </div>
 
                 {/* 📈 Attempts + Skills Charts */}
-                <div className="flex flex-col gap-8">
-                    <AttemptsChart attempts={user.attempts ?? []} />
-                    <SkillsRadarChart />
+                <div className="flex flex-col gap-8 lg:flex-row">
+                    <div className="w-full lg:w-[70%]">
+                        <AttemptsChart attempts={user.attempts ?? []} />
+                    </div>
+                    <div className="w-full lg:w-[30%]">
+                        <SkillsRadarChart />
+                    </div>
                 </div>
 
                 {/* 📊 Daily Stats Chart (admin-level data) */}
