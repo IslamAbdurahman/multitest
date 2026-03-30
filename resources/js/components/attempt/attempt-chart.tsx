@@ -12,10 +12,12 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler);
 
-export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
+export default function AttemptsChart({ attempts, className }: { attempts: Attempt[]; className?: string }) {
     const { t } = useTranslation();
     const { appearance } = useAppearance();
 
@@ -88,18 +90,20 @@ export default function AttemptsChart({ attempts }: { attempts: Attempt[] }) {
     };
 
     return (
-        <div className="w-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-            <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-800 dark:text-white">
+        <Card className={cn("rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50", className)}>
+            <CardHeader>
+                <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">
                     {t('exam_attempts.performance')}
-                </h3>
-                <p className="text-sm text-slate-500">
+                </CardTitle>
+                <CardDescription>
                     {t('exam_attempts.track_and_review_student_performance')}
-                </p>
-            </div>
-            <div className="h-[240px] w-full">
-                <Line key={isDark ? 'dark' : 'light'} data={chartData} options={options} />
-            </div>
-        </div>
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="h-[300px] w-full">
+                    <Line key={isDark ? 'dark' : 'light'} data={chartData} options={options} />
+                </div>
+            </CardContent>
+        </Card>
     );
 }

@@ -109,12 +109,12 @@ export default function Dashboard() {
                 </div>
 
                 {/* 📈 Attempts + Skills Charts */}
-                <div className="flex flex-col gap-8 lg:flex-row">
-                    <div className="w-full lg:w-[70%]">
-                        <AttemptsChart attempts={user.attempts ?? []} />
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+                    <div className="lg:col-span-8">
+                        <AttemptsChart attempts={user.attempts ?? []} className="h-full" />
                     </div>
-                    <div className="w-full lg:w-[30%]">
-                        <SkillsRadarChart />
+                    <div className="lg:col-span-4">
+                        <SkillsRadarChart className="h-full" />
                     </div>
                 </div>
 

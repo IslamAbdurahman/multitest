@@ -3,8 +3,11 @@ import Chart from 'react-apexcharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { useAppearance } from '@/hooks/use-appearance';
+import { cn } from '@/lib/utils';
+import { CardDescription } from '@/components/ui/card';
 
 interface SkillsRadarChartProps {
+    className?: string;
     skills?: {
         fluency: number;
         vocabulary: number;
@@ -13,7 +16,7 @@ interface SkillsRadarChartProps {
     };
 }
 
-export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
+export default function SkillsRadarChart({ skills, className }: SkillsRadarChartProps) {
     const { t } = useTranslation();
     const { appearance } = useAppearance();
     
@@ -108,13 +111,16 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
     ];
 
     return (
-        <Card className="rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+        <Card className={cn("rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50 flex flex-col", className)}>
             <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">
                     {t('skills.skills_analysis')}
                 </CardTitle>
+                <CardDescription>
+                    {t('skills.skills_analysis_description', 'Detailed analysis of your language proficiency metrics.')}
+                </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1">
                 <div className="flex h-[300px] items-center justify-center">
                     <Chart key={isDark ? 'dark' : 'light'} options={options} series={series} type="radar" width="400" height="300" />
                 </div>
