@@ -134,6 +134,10 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
                 cornerRadius: 12,
                 callbacks: {
                     footer: (items: TooltipItem<'bar'>[]) => {
+                        // Only show total attempts if hovering over the attempts column
+                        const hasAttempts = items.some((item) => item.datasetIndex > 0);
+                        if (!hasAttempts) return;
+
                         const date = allDates[items[0].dataIndex] ?? '';
                         const total = attemptsByDate[date]?.items_count ?? 0;
                         return `Total attempts: ${total}`;
