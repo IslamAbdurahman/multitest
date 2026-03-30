@@ -35,7 +35,9 @@ const datalabelPlugin = {
             meta.data.forEach((bar, index) => {
                 const value = chart.data.datasets[datasetIndex].data[index] as number;
                 if (!value) return;
-                const { x, y } = bar.tooltipPosition(false);
+                const tooltipPos = bar.tooltipPosition(false);
+                if (!tooltipPos || tooltipPos.x == null || tooltipPos.y == null) return;
+                const { x, y } = tooltipPos;
                 ctx.save();
                 ctx.fillStyle = '#64748b';
                 ctx.font = '600 10px Inter, sans-serif';
@@ -89,7 +91,7 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
                 backgroundColor: 'rgba(99, 102, 241, 0.8)',
                 hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
                 borderRadius: 4,
-                stack: 'stack',
+                stack: 'stack0',
             },
             {
                 label: t('stats.unique_attempt_users', 'Unique Attempt Users'),
@@ -97,7 +99,7 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
                 backgroundColor: 'rgba(16, 185, 129, 0.8)',
                 hoverBackgroundColor: 'rgba(16, 185, 129, 1)',
                 borderRadius: 4,
-                stack: 'stack',
+                stack: 'stack1',
             },
             {
                 label: t('stats.repeat_attempts', 'Repeat Attempts'),
@@ -105,7 +107,7 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
                 backgroundColor: 'rgba(20, 184, 166, 0.6)',
                 hoverBackgroundColor: 'rgba(20, 184, 166, 0.85)',
                 borderRadius: 4,
-                stack: 'stack',
+                stack: 'stack1',
             },
         ],
     };
