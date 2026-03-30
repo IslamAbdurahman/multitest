@@ -70,11 +70,11 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-400 transition-all group-hover:bg-indigo-600 group-hover:text-white dark:bg-slate-800">
                                                     <UserCircle className="h-6 w-6" />
                                                 </div>
-                                                <div className="flex flex-col">
-                                                    <span className="font-bold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+                                                <div className="flex min-w-0 flex-1 flex-col">
+                                                    <span className="max-w-[150px] truncate font-bold text-slate-900 transition-colors group-hover:text-indigo-600 sm:max-w-[200px] md:max-w-[250px] dark:text-white dark:group-hover:text-indigo-400">
                                                         {item.name}
                                                     </span>
-                                                    <span className="text-[11px] font-medium text-slate-400 lowercase">{item.username}</span>
+                                                    <span className="truncate text-[11px] font-medium text-slate-400 lowercase">{item.username}</span>
                                                 </div>
                                             </Link>
                                         </td>
@@ -125,21 +125,21 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                         </td>
 
                                         <td className="px-6 py-4">
-                                            <div className="space-y-1">
-                                                <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
-                                                    <Phone className="h-3 w-3 text-slate-300" />
-                                                    {item.phone || '—'}
+                                            <div className="max-w-[150px] space-y-1">
+                                                <div className="flex items-center gap-2 truncate text-xs font-medium text-slate-600 dark:text-slate-400">
+                                                    <Phone className="h-3 w-3 shrink-0 text-slate-300" />
+                                                    <span className="truncate">{item.phone || '—'}</span>
                                                 </div>
 
                                                 {item.email ? (
-                                                    <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                                                        <Mail className="h-3 w-3 text-slate-300" />
-                                                        {item.email}
+                                                    <div className="flex items-center gap-2 truncate text-[11px] text-slate-400">
+                                                        <Mail className="h-3 w-3 shrink-0 text-slate-300" />
+                                                        <span className="truncate">{item.email}</span>
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                                                        <BsTelegram className="h-3 w-3 text-slate-300" />
-                                                        {item.username}
+                                                    <div className="flex items-center gap-2 truncate text-[11px] text-slate-400">
+                                                        <BsTelegram className="h-3 w-3 shrink-0 text-slate-300" />
+                                                        <span className="truncate">@{item.username}</span>
                                                     </div>
                                                 )}
                                             </div>
