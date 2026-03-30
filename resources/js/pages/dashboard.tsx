@@ -125,14 +125,16 @@ export default function Dashboard() {
 
                 {/* ⏰ Hourly Charts */}
                 {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
-                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                         <HourlyAttemptsChart
                             data={today_hourly_attempts ?? []}
                             title={t('stats.today_hourly', "Today's hourly stats")}
+                            className="h-full"
                         />
                         <HourlyAttemptsChart
                             data={hourly_attempts ?? []}
                             title={t('stats.alltime_hourly', 'All-time hourly stats')}
+                            className="h-full"
                         />
                     </div>
                 )}

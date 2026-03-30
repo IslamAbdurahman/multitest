@@ -1,5 +1,6 @@
 import { HourlyStatItem } from '@/types';
 import { useAppearance } from '@/hooks/use-appearance';
+import { cn } from '@/lib/utils';
 import {
     BarElement,
     CategoryScale,
@@ -17,9 +18,10 @@ const HOURS = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')
 interface Props {
     data: HourlyStatItem[];
     title: string;
+    className?: string;
 }
 
-export default function HourlyAttemptsChart({ data, title }: Props) {
+export default function HourlyAttemptsChart({ data, title, className }: Props) {
     const { appearance } = useAppearance();
     const isDark =
         appearance === 'dark' ||
@@ -87,7 +89,7 @@ export default function HourlyAttemptsChart({ data, title }: Props) {
     };
 
     return (
-        <div className="w-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+        <div className={cn("w-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50", className)}>
             <div className="h-[300px] w-full">
                 <Bar key={isDark ? 'dark' : 'light'} data={chartData} options={options} />
             </div>
