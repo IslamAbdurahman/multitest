@@ -125,19 +125,15 @@ export default function Dashboard() {
 
                 {/* ⏰ Hourly Charts */}
                 {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
-                    <div className="flex flex-col gap-8">
-                        {today_hourly_attempts?.length > 0 && (
-                            <HourlyAttemptsChart
-                                data={today_hourly_attempts}
-                                title={t('stats.today_hourly', "Today's hourly stats")}
-                            />
-                        )}
-                        {hourly_attempts?.length > 0 && (
-                            <HourlyAttemptsChart
-                                data={hourly_attempts}
-                                title={t('stats.alltime_hourly', 'All-time hourly stats')}
-                            />
-                        )}
+                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                        <HourlyAttemptsChart
+                            data={today_hourly_attempts ?? []}
+                            title={t('stats.today_hourly', "Today's hourly stats")}
+                        />
+                        <HourlyAttemptsChart
+                            data={hourly_attempts ?? []}
+                            title={t('stats.alltime_hourly', 'All-time hourly stats')}
+                        />
                     </div>
                 )}
 
