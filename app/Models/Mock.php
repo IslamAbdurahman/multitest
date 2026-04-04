@@ -19,10 +19,19 @@ class Mock extends Model
         'description',
         'audio_path',
         'starts_at',
+        'finished_at',
         'slug',
         'active',
         'open'
     ];
+
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'finished_at' => 'datetime',
+        'active' => 'boolean',
+        'open' => 'boolean',
+    ];
+
 
     public function user()
     {
