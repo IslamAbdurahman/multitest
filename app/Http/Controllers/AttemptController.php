@@ -78,13 +78,15 @@ class AttemptController extends Controller
                     $query->whereHas('mock', function ($query) {
                         $query->where('user_id', Auth::id());
                     })
+                        ->orWhereHas('test', function ($query) {
+                            $query->where('user_id', Auth::id());
+                        })
                         ->orWhere('user_id', Auth::id());
                 });
-            }
-
-            if (Auth::user()->hasRole('Student')) {
+            } elseif (Auth::user()->hasRole('Student')) {
                 $attempt->where('user_id', Auth::id());
             }
+
 
             $attempt = $attempt->paginate($per_page);
 

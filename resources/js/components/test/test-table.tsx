@@ -17,6 +17,8 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
     const { auth } = usePage().props as unknown as { auth?: Auth };
     const isAdmin = auth?.user?.roles?.some((role) => role.name === 'Admin');
     const isTeacher = auth?.user?.roles?.some((role) => role.name === 'Teacher');
+    const isStudent = auth?.user?.roles?.some((role) => role.name === 'Student');
+
 
     const { delete: deleteTest, reset, clearErrors } = useForm();
 
@@ -50,9 +52,43 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
             </div>
 
             {/* 🗃️ TEST CARDS GRID */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {test.data.map((item, index) => {
                     const globalIndex = (test.current_page - 1) * test.per_page + index + 1;
+
+                    if (isStudent) {
+                        return (
+                            <div
+                                key={item.id}
+                                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(79,70,229,0.08)] sm:rounded-[2rem] sm:p-5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50"
+                            >
+                                <div className="relative">
+                                    <Link
+                                        href={`/test/${item.id}`}
+                                        className="block text-sm leading-tight font-bold text-slate-800 transition-colors group-hover:text-indigo-600 sm:text-lg dark:text-slate-100 dark:group-hover:text-indigo-400"
+                                    >
+                                        <div className="line-clamp-2 min-h-[2.5rem]">
+                                            {item.name}
+                                        </div>
+                                        <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 sm:text-xs">
+                                            {item.language?.flag && <span>{item.language.flag}</span>}
+                                            {i18n.language === 'uz'
+                                                ? item.language?.name_uz
+                                                : i18n.language === 'ru'
+                                                  ? item.language?.name_ru
+                                                  : item.language?.name_en}
+                                        </div>
+                                    </Link>
+                                </div>
+
+                                <div className="mt-3">
+                                    <div className="transform transition-transform active:scale-95">
+                                        <CreateAttemptModal test={item} />
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }
 
                     return (
                         <div
@@ -138,6 +174,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                     );
                 })}
             </div>
+
 
             {/* 🔢 PAGINATION SECTION */}
             <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-transparent bg-slate-900/5 p-6 backdrop-blur-xl md:flex-row dark:border-slate-800 dark:bg-white/5">

@@ -65,12 +65,12 @@ class TestController extends Controller
                 });
             }
 
-            if (Auth::user()->hasRole('Student') || Auth::user()->hasRole('Teacher')) {
-                $testQuery->where(function ($query) {
-                    $query->where('is_public', true)
-                        ->orWhere('user_id', '=', Auth::id());
-                });
+            if (Auth::user()->hasRole('Teacher')) {
+                $testQuery->where('user_id', Auth::id());
+            } elseif (Auth::user()->hasRole('Student')) {
+                $testQuery->where('is_public', true);
             }
+
 
             $test = $testQuery->paginate($per_page);
 
