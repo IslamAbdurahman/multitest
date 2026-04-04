@@ -70,16 +70,22 @@ Essay: {$essayText}";
             $fullPath = $this->getPhysicalPath($relativePath);
             if (!file_exists($fullPath)) return json_encode(['error' => "File not found."]);
 
-            $mimeType = $this->getMimeType($fullPath);
+            $audioInfo = $this->getCompatibleAudio($fullPath);
+            $mimeType = $audioInfo['mimeType'];
+            $tempPath = $audioInfo['path'];
 
             $response = $this->client->generativeModel(model: $this->model)
                 ->generateContent([
                     'Please provide a word-for-word transcription of this audio.',
                     new Blob(
                         mimeType: $mimeType,
-                        data: base64_encode(file_get_contents($fullPath))
+                        data: base64_encode(file_get_contents($tempPath))
                     )
                 ]);
+
+            if ($tempPath !== $fullPath && file_exists($tempPath)) {
+                unlink($tempPath);
+            }
 
             return $response->text();
         } catch (\Exception $e) {
@@ -173,6 +179,10 @@ CRITICAL RULES:
 QUESTION:
 {$question->textarea}
 ";
+            $audioInfo = $this->getCompatibleAudio($fullPath);
+            $mimeType = $audioInfo['mimeType'];
+            $tempPath = $audioInfo['path'];
+
             $response = $this->client->generativeModel(model: $this->model)
                 ->withGenerationConfig(new GenerationConfig(
                     responseMimeType: ResponseMimeType::APPLICATION_JSON,
@@ -197,9 +207,13 @@ QUESTION:
                     $instruction,
                     new Blob(
                         mimeType: $mimeType,
-                        data: base64_encode(file_get_contents($fullPath))
+                        data: base64_encode(file_get_contents($tempPath))
                     )
                 ]);
+
+            if ($tempPath !== $fullPath && file_exists($tempPath)) {
+                unlink($tempPath);
+            }
 
             return $response->text();
         } catch (\Exception $e) {
@@ -221,8 +235,44 @@ QUESTION:
             'mp3' => MimeType::AUDIO_MP3,
             'wav' => MimeType::AUDIO_WAV,
             'ogg' => MimeType::AUDIO_OGG,
-            'webm' => MimeType::VIDEO_WEBM,
             default => MimeType::AUDIO_MP3,
         };
+    }
+
+    private function getCompatibleAudio(string $fullPath): array
+    {
+        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+        
+        // Preferred formats for Gemini
+        if (in_array($extension, ['mp3', 'wav'])) {
+            return [
+                'path' => $fullPath,
+                'mimeType' => $this->getMimeType($fullPath),
+            ];
+        }
+
+        // Convert to wav if not compatible (e.g. webm)
+        $tempDir = storage_path('app/public/temp_audio');
+        if (!file_exists($tempDir)) mkdir($tempDir, 0777, true);
+        
+        $tempPath = $tempDir . '/' . uniqid('audio_', true) . '.wav';
+        
+        // Use ffmpeg for conversion
+        $command = "ffmpeg -i " . escapeshellarg($fullPath) . " -ar 16000 -ac 1 " . escapeshellarg($tempPath) . " 2>&1";
+        exec($command, $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            \Illuminate\Support\Facades\Log::error("FFMPEG Conversion Failed: " . implode("\n", $output));
+            // Return original if conversion fails, hoping Gemini handles it
+            return [
+                'path' => $fullPath,
+                'mimeType' => $this->getMimeType($fullPath),
+            ];
+        }
+
+        return [
+            'path' => $tempPath,
+            'mimeType' => MimeType::AUDIO_WAV,
+        ];
     }
 }
