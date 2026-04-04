@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('mocks', function (Blueprint $table) {
             $table->dateTime('finished_at')->nullable()->after('starts_at');
         });
+
     }
 
     /**
@@ -24,6 +25,6 @@ return new class extends Migration
         Schema::table('mocks', function (Blueprint $table) {
             $table->dropColumn('finished_at');
         });
-    }
 
+    }
 };

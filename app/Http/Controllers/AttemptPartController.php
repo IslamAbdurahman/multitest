@@ -69,6 +69,12 @@ class AttemptPartController extends Controller
 
         foreach ($attemptPart->attempt_answers as $answer) {
             if ($answer->audio_path) {
+                // Reset AI results to allow the job to run (since it checks for score_ai !== null)
+                $answer->score_ai = null;
+                $answer->transcript = null;
+                $answer->review_ai = null;
+                $answer->save();
+
                 \App\Jobs\EvaluateSpeakingJob::dispatch($answer->id);
             }
         }

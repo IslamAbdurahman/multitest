@@ -28,8 +28,6 @@ class Mock extends Model
     protected $casts = [
         'starts_at' => 'datetime',
         'finished_at' => 'datetime',
-        'active' => 'boolean',
-        'open' => 'boolean',
     ];
 
 

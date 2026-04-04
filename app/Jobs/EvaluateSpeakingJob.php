@@ -29,22 +29,17 @@ class EvaluateSpeakingJob implements ShouldQueue
         $this->answerId = $answerId;
     }
 
-    public function handle(GeminiAiService $gemini, OpenAIService $openai, NotificationService $notifications)
+    public function handle(GeminiAiService $gemini, NotificationService $notifications)
     {
         $answer = AttemptAnswer::find($this->answerId);
-        if (!$answer || !$answer->audio_path || $answer->score_ai !== null) return;
+        if (!$answer || !$answer->audio_path) return;
+
+        // Note: score_ai check removed to allow re-evaluation triggered from controller
 
         try {
-            // 1. Primary: Gemini AI
-            try {
-                $resultText = $gemini->evaluateSpeakingDirectly($answer->audio_path, $answer->question);
-                Log::info("AI Evaluation #{$answer->id}: Gemini successful.");
-            } catch (\Throwable $e) {
-                Log::warning("AI Evaluation #{$answer->id}: Gemini failed. Falling back to OpenAI. Error: " . $e->getMessage());
-                // 2. Fallback: OpenAI
-                $resultText = $openai->evaluateSpeakingDirectly($answer->audio_path, $answer->question);
-                Log::info("AI Evaluation #{$answer->id}: OpenAI fallback successful.");
-            }
+            // Evaluated ONLY with Gemini as requested by user
+            $resultText = $gemini->evaluateSpeakingDirectly($answer->audio_path, $answer->question);
+            Log::info("AI Evaluation #{$answer->id}: Gemini successful.");
 
             // 3. Parse Result
             $data = json_decode($resultText, true);

@@ -214,13 +214,14 @@ QUESTION:
         return storage_path('app/public/' . ltrim($cleanPath, '/'));
     }
 
-    private function getMimeType(string $filePath): MimeType
+    private function getMimeType(string $filePath): MimeType|string
     {
         $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
         return match ($extension) {
             'mp3' => MimeType::AUDIO_MP3,
             'wav' => MimeType::AUDIO_WAV,
             'ogg' => MimeType::AUDIO_OGG,
+            'webm' => 'audio/webm',
             default => MimeType::AUDIO_MP3,
         };
     }
