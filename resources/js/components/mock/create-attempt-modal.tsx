@@ -11,9 +11,10 @@ import { toast } from 'sonner';
 interface Props {
     mock?: Mock;
     test?: Test;
+    label?: string;
 }
 
-export default function CreateAttemptModal({ mock, test }: Props) {
+export default function CreateAttemptModal({ mock, test, label }: Props) {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [hasCheckedMic, setHasCheckedMic] = useState(false);
@@ -44,7 +45,7 @@ export default function CreateAttemptModal({ mock, test }: Props) {
                 className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-indigo-600 px-6 py-4 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 dark:shadow-none"
             >
                 <CirclePlay className="h-5 w-5 transition-transform group-hover:scale-110" />
-                <span className="text-xs tracking-widest uppercase">{t('attempt_modal.start_practice')}</span>
+                <span className="text-xs tracking-widest uppercase">{label || t('attempt_modal.start_practice')}</span>
             </button>
 
             <Dialog open={open} onOpenChange={setOpen}>

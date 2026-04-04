@@ -83,7 +83,8 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
 
                                 <div className="mt-3">
                                     <div className="transform transition-transform active:scale-95">
-                                        <CreateAttemptModal test={item} />
+                                        <CreateAttemptModal test={item} label="Start" />
+
                                     </div>
                                 </div>
                             </div>
@@ -159,8 +160,9 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
 
                             <div className="mt-8 space-y-4">
                                 <div className="transform transition-transform active:scale-95">
-                                    <CreateAttemptModal test={item} />
+                                    <CreateAttemptModal test={item} label="Start" />
                                 </div>
+
 
                                 {(isAdmin || auth?.user.id == item.user_id) && (
                                     <div className="flex items-center justify-center gap-2 border-t border-slate-50 pt-4 dark:border-slate-800/60">
