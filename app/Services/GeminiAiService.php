@@ -14,7 +14,8 @@ class GeminiAiService
 {
     protected $client;
     // Update this to the current stable model (e.g., gemini-2.0-flash or gemini-2.5-flash)
-    protected string $model = 'gemini-2.5-flash-lite';
+    protected string $model = 'gemini-1.5-flash';
+
 
     public function __construct()
     {
@@ -123,7 +124,8 @@ Transcript: {$transcript}";
     {
         try {
             $fullPath = $this->getPhysicalPath($audioPath);
-            if (!file_exists($fullPath)) return json_encode(['error' => "Error: File not found."]);
+            if (!file_exists($fullPath)) throw new \Exception("Audio file not found at path: {$fullPath}");
+
 
             $mimeType = $this->getMimeType($fullPath);
 
@@ -201,8 +203,9 @@ QUESTION:
 
             return $response->text();
         } catch (\Exception $e) {
-            return json_encode(['error' => $e->getMessage()]);
+            throw $e;
         }
+
     }
 
     private function getPhysicalPath(string $path): string

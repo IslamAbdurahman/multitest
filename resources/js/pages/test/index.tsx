@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Test() {
-    const { test } = usePage<{ test: TestPaginate }>().props;
+    const { test, seoData } = usePage<{ test: TestPaginate; seoData?: { title?: string; description?: string; og_image?: string } }>().props;
     const { t } = useTranslation();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -39,7 +39,13 @@ export default function Test() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={t('nav.tests')} />
+            <Head title={seoData?.title || t('nav.tests')}>
+                <meta name="description" content={seoData?.description} />
+                <meta property="og:title" content={seoData?.title} />
+                <meta property="og:description" content={seoData?.description} />
+                <meta property="og:image" content={seoData?.og_image} />
+            </Head>
+
             <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
                 {/* Search and Per-Page Selection */}
                 <div className="flex items-center justify-end">

@@ -119,54 +119,59 @@ EOT;
     }
 
     // Note: This requires the latest OpenAI PHP client version
-    public function evaluateSpeakingDirectly(string $audioPath, string $questionText): string
+    public function evaluateSpeakingDirectly(string $audioPath, object $question): string
     {
         try {
             $cleanPath = str_replace(['/storage/', 'storage/'], '', $audioPath);
             $fullPath = storage_path('app/public/' . ltrim($cleanPath, '/'));
 
-            if (!file_exists($fullPath)) return "Error: File not found.";
+            if (!file_exists($fullPath)) throw new \Exception("Audio file not found: " . $fullPath);
 
             $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
             if (!in_array($extension, ['mp3', 'wav'])) {
-                return "Error: Unsupported format [$extension].";
+                throw new \Exception("Unsupported format [$extension].");
             }
 
             $audioData = base64_encode(file_get_contents($fullPath));
-            $audioData = str_replace(["\r", "\n"], '', $audioData);
-
+            /**
+             * Note: OpenAI gpt-4o-audio-preview is a multimodal model.
+             * It can handle audio input directly.
+             */
             $response = $this->client->chat()->create([
                 'model' => 'gpt-4o-audio-preview',
                 'messages' => [
                     [
                         'role' => 'system',
                         'content' => "You are an official Uzbekistan Multilevel (CEFR) Speaking Examiner.
-                                 CRITICAL: Do not ask follow-up questions. Do not ask for more audio.
-                                 Evaluate ONLY the audio provided. If the response is too short, give a low score.
-                                 Criteria: Fluency, Vocabulary, Grammar, Pronunciation.
-                                 Scale: 0-75 total points.
-                                 End with JSON: ```json {\"score\": X, \"level\": \"B1/B2/C1\"} ```"
+                            Evaluate the provided audio response based on CEFR criteria.
+                            TARGET LANGUAGE: {$question->part->test->language->name_en}
+                            SCORING CRITERIA (0-75 total, 15 each): Fluency, Vocabulary, Grammar, Pronunciation, Interaction.
+                            RELEVANCE CHECK: Is the answer relevant to the question?
+                            If wrong language or silence, score 0.
+                            OUTPUT: You MUST return a JSON object with: fluency, vocabulary, grammar, pronunciation, interaction, score, level, transcript, detected_language, is_relevant."
                     ],
                     [
                         'role' => 'user',
                         'content' => [
-                            ['type' => 'text', 'text' => "Evaluate this specific answer to the question: '$questionText'"],
+                            ['type' => 'text', 'text' => "Evaluate this answer to the question: '{$question->textarea}'"],
                             [
                                 'type' => 'input_audio',
                                 'input_audio' => [
                                     'data' => $audioData,
-                                    'format' => $extension
+                                    'format' => $extension === 'mp3' ? 'mp3' : 'wav'
                                 ]
                             ],
                         ],
                     ],
                 ],
                 'modalities' => ['text'],
+                'response_format' => ['type' => 'json_get'], // Use structured output if possible, but for simplicity let's stick to JSON request
             ]);
 
             return $response->choices[0]->message->content ?? '';
         } catch (\Exception $e) {
-            return "Evaluation Error: " . $e->getMessage();
+            throw $e;
         }
     }
+
 }

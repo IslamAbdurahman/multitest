@@ -5,6 +5,8 @@ namespace App\Jobs;
 use App\Models\AttemptAnswer;
 use App\Services\GeminiAiService;
 use App\Services\OpenAIService;
+use App\Services\NotificationService;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,30 +29,32 @@ class EvaluateSpeakingJob implements ShouldQueue
         $this->answerId = $answerId;
     }
 
-    public function handle()
+    public function handle(GeminiAiService $gemini, OpenAIService $openai, NotificationService $notifications)
     {
         $answer = AttemptAnswer::find($this->answerId);
         if (!$answer || !$answer->audio_path || $answer->score_ai !== null) return;
 
-        $aiService = new GeminiAiService();
-
         try {
-            // 1. Evaluate speaking directly
-            $resultText = $aiService->evaluateSpeakingDirectly(
-                $answer->audio_path,
-                $answer->question
-            );
+            // 1. Primary: Gemini AI
+            try {
+                $resultText = $gemini->evaluateSpeakingDirectly($answer->audio_path, $answer->question);
+                Log::info("AI Evaluation #{$answer->id}: Gemini successful.");
+            } catch (\Throwable $e) {
+                Log::warning("AI Evaluation #{$answer->id}: Gemini failed. Falling back to OpenAI. Error: " . $e->getMessage());
+                // 2. Fallback: OpenAI
+                $resultText = $openai->evaluateSpeakingDirectly($answer->audio_path, $answer->question);
+                Log::info("AI Evaluation #{$answer->id}: OpenAI fallback successful.");
+            }
 
-            // 2. Parse Result
+            // 3. Parse Result
             $data = json_decode($resultText, true);
             if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
                 $transcript = $data['transcript'] ?? '';
                 $answer->transcript = $transcript;
                 $answer->review_ai = $resultText;
-
                 $answer->score_ai = (int) ($data['score'] ?? 0);
 
-                // 3. Language & Silence Enforcement
+                // Language & Relevance Checks
                 $targetLanguage = strtolower($answer->question->part->test->language->name_en);
                 $detectedLanguage = strtolower($data['detected_language'] ?? '');
 
@@ -60,16 +64,15 @@ class EvaluateSpeakingJob implements ShouldQueue
                     }
                 }
 
-                $isRelevant = $data['is_relevant'] ?? true;
-                if ($isRelevant === false) {
+                if (($data['is_relevant'] ?? true) === false) {
                     $answer->score_ai = 0;
-                    Log::info("Answer #{$answer->id}: Score set to 0 due to irrelevant response.");
                 }
 
                 if ($this->isNonSpeechResponse($transcript) || $detectedLanguage === 'noise' || $detectedLanguage === 'silence') {
                     $answer->score_ai = 0;
                 }
             } else {
+                // Regex fallback if JSON is messy
                 if (preg_match('/"score"\s*:\s*(\d+)/', $resultText, $matches)) {
                     $answer->score_ai = (int) $matches[1];
                 }
@@ -78,22 +81,18 @@ class EvaluateSpeakingJob implements ShouldQueue
 
             $answer->save();
 
-            // Send per-question Telegram notification immediately
-            $this->sendPerQuestionTelegram($answer);
-
-            // Check if all answers for this attempt are now AI-evaluated
-            $this->checkAndNotifyIfComplete($answer);
+            // 4. Notifications
+            $notifications->sendPerQuestionTelegram($answer);
+            $this->checkAndNotifyIfComplete($answer, $notifications);
 
         } catch (\Throwable $e) {
+            Log::error("AI Evaluation #{$answer->id} fatal failure: " . $e->getMessage());
             $answer->review_ai = 'AI Error: ' . $e->getMessage();
             $answer->save();
         }
     }
 
-    /**
-     * Send Telegram notification for this specific question right after AI evaluation.
-     */
-    protected function sendPerQuestionTelegram(AttemptAnswer $answer): void
+    protected function checkAndNotifyIfComplete(AttemptAnswer $answer, NotificationService $notifications): void
     {
         try {
             $attemptPart = $answer->attempt_part;
@@ -102,176 +101,6 @@ class EvaluateSpeakingJob implements ShouldQueue
             $attempt = $attemptPart->attempt;
             if (!$attempt) return;
 
-            $user = $attempt->user;
-            if (!$user || !$user->telegram_id) return;
-
-            $question = $answer->question;
-            if (!$question) return;
-
-            $telegram = new Api(env('MultitestUzBot_TOKEN'));
-            $chatId = $user->telegram_id;
-
-            // Extract text and images from question
-            $questionText = $this->extractText($question->textarea ?? '');
-            $imageUrls = $this->extractImageUrls($question->textarea ?? '');
-            $scoreAi = $answer->score_ai ?? 0;
-
-            $audioPath = $this->getAudioPhysicalPath($answer->audio_path);
-            $hasAudio = $audioPath && file_exists($audioPath);
-
-            $caption = "🎉 *Natijangiz tayyor!*\n\n"
-                . "👤 {$user->name}\n"
-                . "📝 *Savol :* {$questionText}\n"
-                . "📊 *AI bahosi:* {$scoreAi}\n\n"
-                . "💳 *Bizni Qo'llab-quvvatlang:*\n\n"
-                . "`9860600402432220`\n\n"
-                . "Donat qilishingiz mumkin.";
-
-            Log::info("Telegram notify start for Answer #{$answer->id}. Images: " . count($imageUrls) . ", Has Audio: " . ($hasAudio ? 'Yes' : 'No'));
-
-            // 1. Send Images if any
-            if (count($imageUrls) > 0) {
-                try {
-                    if (count($imageUrls) > 1) {
-                        $media = [];
-                        $attachments = [];
-                        foreach ($imageUrls as $index => $imgData) {
-                            $attachmentName = "photo{$index}";
-                            if ($imgData['type'] === 'local') {
-                                $attachments[$attachmentName] = InputFile::create($imgData['path'], basename($imgData['path']));
-                                $mediaId = "attach://{$attachmentName}";
-                            } else {
-                                $mediaId = $imgData['path'];
-                            }
-                            $media[] = [
-                                'type' => 'photo',
-                                'media' => $mediaId,
-                                'parse_mode' => 'Markdown',
-                            ];
-                        }
-                        $params = ['chat_id' => $chatId, 'media' => json_encode($media)];
-                        foreach ($attachments as $key => $file) {
-                            $params[$key] = $file;
-                        }
-                        $telegram->sendMediaGroup($params);
-                    } else {
-                        $imgData = $imageUrls[0];
-                        $photo = $imgData['type'] === 'local' 
-                            ? InputFile::create($imgData['path'], basename($imgData['path'])) 
-                            : $imgData['path'];
-
-                        $telegram->sendPhoto([
-                            'chat_id' => $chatId,
-                            'photo' => $photo,
-                            'parse_mode' => 'Markdown',
-                        ]);
-                    }
-                } catch (\Exception $imgErr) {
-                    Log::error("Image sending failed for Answer #{$answer->id}: " . $imgErr->getMessage());
-                }
-            }
-
-            // 2. Send Audio with Caption (Main message)
-            if ($hasAudio) {
-                try {
-                    $telegram->sendVoice([
-                        'chat_id' => $chatId,
-                        'voice' => InputFile::create($audioPath, 'answer.ogg'),
-                        'caption' => $caption,
-                        'parse_mode' => 'Markdown',
-                    ]);
-                    Log::info("Audio sent successfully for Answer #{$answer->id}");
-                    return;
-                } catch (\Exception $audErr) {
-                    Log::error("Audio send failed for Answer #{$answer->id}: " . $audErr->getMessage());
-                    // Fall back to text
-                }
-            }
-
-            // 3. Fallback (text only)
-            Log::info("Falling back to text-only message for Answer #{$answer->id}");
-            $this->sendFallbackText($telegram, $chatId, $caption);
-
-        } catch (\Throwable $e) {
-            Log::error("sendPerQuestionTelegram fatal failure for Answer #{$answer->id}: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Fallback text sender
-     */
-    protected function sendFallbackText(Api $telegram, $chatId, string $caption): void
-    {
-        try {
-            $telegram->sendMessage([
-                'chat_id' => $chatId,
-                'text' => $caption,
-                'parse_mode' => 'Markdown',
-            ]);
-        } catch (\Exception $e) {
-            Log::error("Telegram fallback text error: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Extract plain text from HTML.
-     */
-    protected function extractText(string $html): string
-    {
-        $text = strip_tags($html);
-        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-        $text = trim(preg_replace('/\s+/', ' ', $text));
-        if (mb_strlen($text) > 200) {
-            $text = mb_substr($text, 0, 200) . '...';
-        }
-        return $text ?: '—';
-    }
-
-    /**
-     * Extract all image URLs from HTML and convert to local paths if applicable.
-     */
-    protected function extractImageUrls(string $html): array
-    {
-        $images = [];
-        if (preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $html, $matches)) {
-            foreach ($matches[1] as $src) {
-                // If it's a relative /storage/ path
-                if (str_starts_with($src, '/storage/')) {
-                    $path = storage_path('app/public/' . substr($src, 9)); // removed /storage/
-                    if (file_exists($path)) {
-                        $images[] = ['type' => 'local', 'path' => $path];
-                    }
-                }
-                // If it's an absolute URL pointing to our app
-                elseif (str_starts_with($src, env('APP_URL') . '/storage/')) {
-                    $path = storage_path('app/public/' . substr(parse_url($src, PHP_URL_PATH), 9));
-                    if (file_exists($path)) {
-                        $images[] = ['type' => 'local', 'path' => $path];
-                    }
-                }
-                // external URL
-                elseif (str_starts_with($src, 'http')) {
-                    $images[] = ['type' => 'url', 'path' => $src];
-                }
-            }
-        }
-        return $images;
-    }
-
-    /**
-     * Check if all answers for the parent attempt have been AI-evaluated.
-     * If yes, dispatch notification to the user (Telegram or Email).
-     */
-    protected function checkAndNotifyIfComplete(AttemptAnswer $answer): void
-    {
-        try {
-            $attemptPart = $answer->attempt_part;
-            if (!$attemptPart) return;
-
-            $attempt = $attemptPart->attempt;
-            if (!$attempt) return;
-
-            // Count total answers with audio and unevaluated ones
             $totalAudioAnswers = AttemptAnswer::whereHas('attempt_part', function ($q) use ($attempt) {
                 $q->where('attempt_id', $attempt->id);
             })->whereNotNull('audio_path')->count();
@@ -280,12 +109,8 @@ class EvaluateSpeakingJob implements ShouldQueue
                 $q->where('attempt_id', $attempt->id);
             })->whereNotNull('audio_path')->whereNull('score_ai')->count();
 
-            // Only proceed if there were audio answers and all are now evaluated
-            if ($totalAudioAnswers === 0 || $unevaluatedAnswers > 0) {
-                return;
-            }
+            if ($totalAudioAnswers === 0 || $unevaluatedAnswers > 0) return;
 
-            // Use cache lock to prevent duplicate notifications from concurrent jobs
             $lockKey = "attempt_notification_{$attempt->id}";
             $lock = Cache::lock($lockKey, 60);
 
@@ -296,21 +121,15 @@ class EvaluateSpeakingJob implements ShouldQueue
                     return;
                 }
 
-                Log::info("All AI evaluations complete for attempt #{$attempt->id}. Sending notification to user {$user->id}.");
-
-                if ($user->telegram_id) {
-                    Log::info("Telegram notifications were sent per-question, skipping final summary for user {$user->id}");
-                } elseif ($user->email) {
-                    SendResultEmailJob::dispatch($user, $attempt)->delay(now()->addSeconds(5));
-                    Log::info("Dispatched SendResultEmailJob for user {$user->id}");
-                } else {
-                    Log::info("User {$user->id} has neither telegram_id nor email. No notification sent.");
+                if (!$user->telegram_id && $user->email) {
+                    $notifications->sendFinalResultEmail($user, $attempt);
                 }
             }
         } catch (\Throwable $e) {
             Log::error("checkAndNotifyIfComplete failed: " . $e->getMessage());
         }
     }
+
 
     public function isMostlyEnglish(string $text): bool
     {
