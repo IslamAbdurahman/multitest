@@ -2,7 +2,8 @@ import AttemptPartAccordion from '@/components/attempt/AttemptPartAccordion';
 import EvaluateAttemptModal from '@/components/attempt/evaluate-attempt-modal';
 import AppLayout from '@/layouts/app-layout';
 import { type Attempt, Auth, type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function AttemptShow() {
@@ -56,6 +57,19 @@ export default function AttemptShow() {
                                         </svg>
                                         {t('attempt_show.download_pdf')}
                                     </a>
+                                )}
+                                {isAdmin && (
+                                    <button
+                                        onClick={() => {
+                                            if (confirm(t('common.are_you_sure'))) {
+                                                router.post(route('attempt.re_evaluate', { attempt: attempt.id }));
+                                            }
+                                        }}
+                                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-500/10 px-6 py-3 text-sm font-bold text-indigo-300 transition-all hover:bg-indigo-500/20"
+                                    >
+                                        <Sparkles className="h-4 w-4" />
+                                        {t('attempt_details.re_evaluate')} (All)
+                                    </button>
                                 )}
                                 {(isAdmin || isTeacher) && <EvaluateAttemptModal attempt={attempt} />}
                             </div>

@@ -238,4 +238,35 @@ class AttemptController extends Controller
             ]);
         }
     }
+
+    public function reEvaluate(Attempt $attempt)
+    {
+        try {
+            if (!auth()->user()->hasRole('Admin')) {
+                abort(403);
+            }
+
+            $attempt->load('attempt_parts.attempt_answers');
+
+            foreach ($attempt->attempt_parts as $attemptPart) {
+                foreach ($attemptPart->attempt_answers as $answer) {
+                    if ($answer->audio_path) {
+                        $answer->score_ai = null;
+                        $answer->transcript = null;
+                        $answer->review_ai = null;
+                        $answer->save();
+
+                        \App\Jobs\EvaluateSpeakingJob::dispatch($answer->id);
+                    }
+                }
+            }
+
+            return redirect()->back()->with('success', 'Full re-evaluation started. All questions are being re-processed.');
+
+        } catch (\Exception $exception) {
+            throw ValidationException::withMessages([
+                'error' => [$exception->getMessage()],
+            ]);
+        }
+    }
 }
