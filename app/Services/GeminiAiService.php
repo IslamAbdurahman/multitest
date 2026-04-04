@@ -14,7 +14,7 @@ class GeminiAiService
 {
     protected $client;
     // Update this to the current stable model (e.g., gemini-2.0-flash or gemini-2.5-flash)
-    protected string $model = 'gemini-1.5-flash';
+    protected string $model = 'gemini-2.5-flash-lite';
 
 
     public function __construct()
