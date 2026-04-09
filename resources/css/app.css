@@ -243,8 +243,9 @@
 
 /* Glassmorphism Utilities */
 .glass-effect {
-    @apply backdrop-blur-md bg-opacity-70 border-white/10 dark:border-black/10;
+    @apply backdrop-blur-md border-white/10 dark:border-black/10 bg-background/80;
 }
+
 
 .tma-card {
     @apply rounded-2xl border bg-card p-4 transition-all active:scale-[0.98];
