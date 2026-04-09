@@ -64,14 +64,13 @@
         "edit": "Tahrirlash",
         "public": "Ochiq",
         "private": "Shaxsiy",
+        "code": "Kod",
         "exam": "Imtihon",
         "passive": "passiv",
         "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
-        "are_you_sure": "Ishonchingiz komilmi?",
-        "student": "O'quvchi",
-        "code": "Kod"
+        "student": "Talaba",
+        "are_you_sure": "Ishonchingiz komilmi?"
     },
-
     "landing": {
         "trusted_companies": "Barcha o'lchamdagi kompaniyalar tomonidan ishonch bildirilgan",
         "newsletter_title": "Yangiliklar",
@@ -81,23 +80,23 @@
         "courses_title": "Kurslar",
         "free": "Bepul",
         "steps": "qadam",
-        "students": "o'quvchi"
+        "students": "tarafdor"
     },
-
     "nav": {
         "home": "Bosh sahifa",
         "tests": "Amaliyot testlari",
         "contact": "Biz bilan bog'lanish",
         "submenu_example": "Boshqa variantlar",
         "dashboard": "Boshqaruv paneli",
-        "test_details": "Test tafsilotlari"
+        "test_details": "Test tafsilotlari",
+        "users": "Foydalanuvchilar"
     },
     "navigation": {
         "close": "Yopish",
         "nav_menu": "Navigatsiya menyusi"
     },
     "hero": {
-        "badge": "Birinchi Multilevel (CEFR) simulyatsiyasini oling",
+        "badge": "Birinchi Multilevel (CEFR) simulyatorini sinab ko'ring",
         "title": "Haqiqiy simulyatorda Multilevel Speaking.",
         "ai_title": "Speaking AI tomonidan baholanadi",
         "ai_alt": "AI bilan ishlaydi",
@@ -129,7 +128,7 @@
         "remember": "Meni 30 kun davomida eslab qol",
         "forgot": "Parolni unutdingizmi?",
         "submit": "Kirish",
-        "no_account": "'Multitest'da yangimisiz?",
+        "no_account": "Multitest'da yangimisiz?",
         "signup": "Hisob yaratish",
         "register": "Bepul ro'yxatdan o'ting",
         "or": "YOKI",
@@ -183,6 +182,7 @@
         "email_address": "Email manzili",
         "save": "Saqlash",
         "saved": "Saqlandi",
+        "username": "Foydalanuvchi nomi",
         "unverified_email": "Email manzilingiz tasdiqlanmagan.",
         "resend_verification_email": "Tasdiqlash xatini qayta yuborish uchun bu yerga bosing.",
         "verification_link_sent": "Yangi tasdiqlash havolasi email manzilingizga yuborildi."
@@ -230,7 +230,7 @@
         "attempt": "Urinish",
         "firm": "Firma",
         "worker": "Ishchi",
-        "salary_report": "Oylik hisoboti",
+        "salary_report": "Ish haqi hisoboti",
         "report": "Hisobot",
         "attendance": "Davomat",
         "salary": "Ish haqi",
@@ -283,7 +283,7 @@
         "evaluate_submission": "Topshiriqni baholash",
         "title": "Baholash",
         "final_score": "Yakuniy ball",
-        "teacher_feedback": "O'qituvchi fikri",
+        "teacher_feedback": "O'qituvchi fikr-mulohazasi",
         "feedback_placeholder": "Talaba natijasi haqida batafsil fikr-mulohaza yozing...",
         "complete": "Baholashni yakunlash",
         "success": "Baholash muvaffaqiyatli saqlandi!",
@@ -311,7 +311,6 @@
         "deleted": "Muvaffaqiyatli o'chirildi",
         "evaluated": "Baholash muvaffaqiyatli yuborildi!"
     },
-
     "error": {
         "create_failed": "Yaratishda xatolik",
         "update_failed": "Yangilashda xatolik",
@@ -345,7 +344,7 @@
         "ready_title": "Boshlashga tayyormisiz?",
         "mic_requirement": "Boshlashdan oldin, gapirish javoblaringizni yozib olish uchun mikrofoningiz to'g'ri ishlayotganiga ishonch hosil qiling.",
         "mic_check": "Mikrofonni tekshirish",
-        "ensure_clear": "Ovozingiz aniq ekanligiga ishonch hosil qilish uchun yozuvni tinglang.",
+        "ensure_clear": "Ovozingiz aniq eshitilayotganiga ishonch hosil qilish uchun yozuvni tinglang.",
         "start_now": "Hozir boshlash",
         "record_to_unlock": "Boshlash tugmasini ochish uchun sinov audiosini yozing",
         "good_luck": "Omad yor bo'lsin! Imtihonga yo'naltirilmoqda..."
@@ -414,11 +413,12 @@
         "evaluate_submission": "Topshiriqni baholash",
         "grading": "Baholanmoqda, foydalanuvchi:",
         "final_score": "Yakuniy ball",
-        "teacher_feedback": "O'qituvchi fikri",
+        "teacher_feedback": "O'qituvchi fikr-mulohazasi",
         "write_detailed_feedback": "Batafsil fikr-mulohaza va yaxshilash kerak bo'lgan jihatlarni yozing...",
         "complete_evaluation": "Baholashni yakunlash"
     },
     "test_table": {
+        "select_language": "Tilni tanlang",
         "test_library": "Testlar kutubxonasi",
         "browse_description": "Mock imtihonlaringiz uchun alohida test komponentlarini ko'ring va boshqaring.",
         "create_title": "Yangi test yaratish",
@@ -461,7 +461,7 @@
         "update_question_description": "Ushbu savolning mazmuni, vaqti yoki audiosini o'zgartiring."
     },
     "user_management": {
-        "description": "Barcha ro'yxatdan o'tgan foydalanuvchilarni ko'ring va boshqaring (jami {{count}} ta hisob).",
+        "description": "Barcha ro'yxatdan o'tgan foydalanuvchilarni ko'rish va boshqarish (jami {{count}} ta hisob).",
         "role_filter": "Rol bo'yicha filtr",
         "per_page": "Sahifada",
         "user_profile": "Foydalanuvchi profili",
@@ -521,7 +521,7 @@
         "part_label": "Qism",
         "question_counter": "{{total}} tadan {{current}}-savol",
         "status": "Holat",
-        "status_listening": "Ko'rsatmani tinglash",
+        "status_listening": "Ko'rsatmalarni tinglash",
         "status_preparing": "Javobga tayyorlanish",
         "status_capturing": "Ovoz yozilmoqda...",
         "mic_active": "Mikrofon faol",
@@ -534,11 +534,10 @@
         "processing": "Bo'limga ishlov berilmoqda...",
         "mic_error": "Mikrofonga ruxsat talab qilinadi.",
         "introduction": "Kirish",
-        "part_intro": "Qism kirishi",
-        "status_intro": "Kirish tinglanyapti",
+        "part_intro": "Bo'lim kirish qismi",
+        "status_intro": "Kirish qismi tinglanmoqda",
         "phase_intro": "Kirish bosqichi",
         "saving_results": "Yakunlanmoqda",
-
         "phase_saving": "Jarayonni saqlash",
         "uploading_title": "Javoblaringiz qayta ishlanmoqda",
         "uploading_desc": "Iltimos, audio yozuvlar yuklanguncha kuting. Bu biroz vaqt olishi mumkin.",
@@ -579,16 +578,5 @@
         "pronunciation": "Talaffuz",
         "interaction": "Muloqot",
         "overall_level": "Umumiy daraja"
-    },
-    "stats": {
-        "daily_activity": "Kunlik faollik (oxirgi 30 kun)",
-        "users_and_attempts": "Foydalanuvchilar ro'yxatdan o'tishi va urinishlar statistikasi",
-        "new_users": "Yangi foydalanuvchilar",
-        "unique_attempt_users": "Noyob urinuvchilar",
-        "repeat_attempts": "Takroriy urinishlar"
-    },
-    "pagination": {
-        "previous": "Oldingi",
-        "next": "Keyingi"
     }
 }
