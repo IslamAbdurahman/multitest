@@ -580,16 +580,5 @@
         "pronunciation": "Pronunciation",
         "interaction": "Interaction",
         "overall_level": "Overall Level"
-    },
-    "stats": {
-        "daily_activity": "Daily Activity (Last 30 Days)",
-        "users_and_attempts": "Users registrations and attempt stats",
-        "new_users": "New Users",
-        "unique_attempt_users": "Unique Attempt Users",
-        "repeat_attempts": "Repeat Attempts"
-    },
-    "pagination": {
-        "previous": "Previous",
-        "next": "Next"
     }
 }
