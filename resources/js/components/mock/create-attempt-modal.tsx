@@ -42,7 +42,7 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
         <>
             <button
                 onClick={() => setOpen(true)}
-                className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-indigo-600 px-6 py-4 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 dark:shadow-none"
+                className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-indigo-600 px-4 py-4 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 dark:shadow-none"
             >
                 <CirclePlay className="h-5 w-5 transition-transform group-hover:scale-110" />
                 <span className="text-xs tracking-widest uppercase">{label || t('attempt_modal.start_practice')}</span>

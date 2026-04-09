@@ -17,7 +17,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     return (
         <AppShell variant={isMobile ? "header" : "sidebar"}>
             {!isMobile && <AppSidebar />}
-            <AppContent variant={isMobile ? "header" : "sidebar"} className={`${isMobile ? 'pb-20 pt-16' : 'pb-14 md:pb-0'} w-100`}>
+            <AppContent variant={isMobile ? "header" : "sidebar"} className={`${isMobile ? 'pb-20 pt-16 overflow-x-hidden' : 'pb-14 md:pb-0'} w-full`}>
 
                 {!isMobile && (
                     <div className={'mb-14'}>

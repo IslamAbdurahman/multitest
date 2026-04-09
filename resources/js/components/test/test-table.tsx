@@ -185,7 +185,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                     {t('common.showing', { from: test.from, to: test.to, total: test.total })}
                 </div>
 
-                <nav className="flex items-center gap-1.5">
+                <nav className="flex flex-wrap items-center justify-center gap-1.5">
                     {test.links.map((link, idx) => (
                         <Link
                             key={idx}
