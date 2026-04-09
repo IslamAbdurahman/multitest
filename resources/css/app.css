@@ -167,79 +167,73 @@
 }
 
 :root {
-    /* Telegram WebApp Theme Variables (Fallbacks) */
-    --tg-theme-bg-color: oklch(1 0 0);
-    --tg-theme-text-color: oklch(0.145 0 0);
-    --tg-theme-hint-color: oklch(0.556 0 0);
-    --tg-theme-link-color: oklch(0.488 0.243 264.376);
-    --tg-theme-button-color: oklch(0.488 0.243 264.376);
-    --tg-theme-button-text-color: oklch(1 0 0);
-    --tg-theme-secondary-bg-color: oklch(0.97 0 0);
-    --tg-theme-accent-text-color: oklch(0.488 0.243 264.376);
-    --tg-theme-header-bg-color: oklch(1 0 0);
-    --tg-theme-section-bg-color: oklch(1 0 0);
-    --tg-theme-section-header-text-color: oklch(0.488 0.243 264.376);
-
-    --background: var(--tg-theme-bg-color);
-    --foreground: var(--tg-theme-text-color);
-    --card: var(--tg-theme-section-bg-color);
-    --card-foreground: var(--tg-theme-text-color);
-    --popover: var(--tg-theme-section-bg-color);
-    --popover-foreground: var(--tg-theme-text-color);
-    --primary: var(--tg-theme-button-color);
-    --primary-foreground: var(--tg-theme-button-text-color);
-    --secondary: var(--tg-theme-secondary-bg-color);
-    --secondary-foreground: var(--tg-theme-text-color);
-    --muted: var(--tg-theme-hint-color);
-    --muted-foreground: var(--tg-theme-hint-color);
-    --accent: var(--tg-theme-secondary-bg-color);
-    --accent-foreground: var(--tg-theme-accent-text-color);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: var(--tg-theme-secondary-bg-color);
-    --input: var(--tg-theme-secondary-bg-color);
-    --ring: var(--tg-theme-accent-text-color);
+    /* 🏛️ Light Theme - Neutral & Clean */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.15 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.15 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.15 0 0);
+    --primary: oklch(0.488 0.243 264.38);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.15 0 0);
+    --muted: oklch(0.92 0 0);
+    --muted-foreground: oklch(0.45 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.488 0.243 264.38);
+    --destructive: oklch(0.577 0.245 27.32);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.92 0 0);
+    --input: oklch(0.92 0 0);
+    --ring: oklch(0.488 0.243 264.38);
 
     --radius: 0.75rem;
-    --sidebar: var(--tg-theme-bg-color);
-    --sidebar-foreground: var(--tg-theme-text-color);
-    --sidebar-primary: var(--tg-theme-button-color);
-    --sidebar-primary-foreground: var(--tg-theme-button-text-color);
-    --sidebar-accent: var(--tg-theme-secondary-bg-color);
-    --sidebar-accent-foreground: var(--tg-theme-accent-text-color);
-    --sidebar-border: var(--tg-theme-secondary-bg-color);
-    --sidebar-ring: var(--tg-theme-accent-text-color);
+
+    /* Sidebar Light */
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.15 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.38);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.945 0 0);
+    --sidebar-accent-foreground: oklch(0.15 0 0);
+    --sidebar-border: oklch(0.92 0 0);
+    --sidebar-ring: oklch(0.488 0.243 264.38);
 }
 
 .dark {
-    --background: var(--tg-theme-bg-color);
-    --foreground: var(--tg-theme-text-color);
-    --card: var(--tg-theme-section-bg-color);
-    --card-foreground: var(--tg-theme-text-color);
-    --popover: var(--tg-theme-section-bg-color);
-    --popover-foreground: var(--tg-theme-text-color);
-    --primary: var(--tg-theme-button-color);
-    --primary-foreground: var(--tg-theme-button-text-color);
-    --secondary: var(--tg-theme-secondary-bg-color);
-    --secondary-foreground: var(--tg-theme-text-color);
-    --muted: var(--tg-theme-hint-color);
-    --muted-foreground: var(--tg-theme-hint-color);
-    --accent: var(--tg-theme-secondary-bg-color);
-    --accent-foreground: var(--tg-theme-accent-text-color);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: var(--tg-theme-secondary-bg-color);
-    --input: var(--tg-theme-secondary-bg-color);
-    --ring: var(--tg-theme-accent-text-color);
-    --sidebar: var(--tg-theme-bg-color);
-    --sidebar-foreground: var(--tg-theme-text-color);
-    --sidebar-primary: var(--tg-theme-button-color);
-    --sidebar-primary-foreground: var(--tg-theme-button-text-color);
-    --sidebar-accent: var(--tg-theme-secondary-bg-color);
-    --sidebar-accent-foreground: var(--tg-theme-accent-text-color);
-    --sidebar-border: var(--tg-theme-secondary-bg-color);
-    --sidebar-ring: var(--tg-theme-accent-text-color);
+    /* 🌑 Dark Theme - Deep & Immersive */
+    --background: oklch(0.08 0 0); /* Near Black */
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.1 0 0); /* Slightly lighter than background */
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.1 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.55 0.2 264.38); /* Electric Indigo */
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.15 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.18 0 0);
+    --muted-foreground: oklch(0.6 0 0);
+    --accent: oklch(0.18 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.72);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.15 0 0);
+    --input: oklch(0.15 0 0);
+    --ring: oklch(0.55 0.2 264.38);
+
+    /* Sidebar Dark */
+    --sidebar: oklch(0.08 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.55 0.2 264.38);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.15 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.15 0 0);
+    --sidebar-ring: oklch(0.55 0.2 264.38);
 }
+
 
 /* Glassmorphism Utilities */
 .glass-effect {

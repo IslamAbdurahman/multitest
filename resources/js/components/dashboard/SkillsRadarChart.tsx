@@ -107,7 +107,8 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
     ];
 
     return (
-        <Card className={cn("rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50 flex flex-col", className)}>
+        <Card className={cn("rounded-[2rem] border-border bg-card shadow-sm flex flex-col", className)}>
+
             <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">
                     {t('skills.skills_analysis')}

@@ -163,7 +163,8 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
     };
 
     return (
-        <div className="w-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+        <div className="w-full rounded-[2rem] border border-border bg-card p-6 shadow-sm">
+
             <div className="mb-6">
                 <h3 className="text-lg font-bold text-slate-800 dark:text-white">
                     {t('stats.daily_activity', 'Daily Activity (Last 30 Days)')}

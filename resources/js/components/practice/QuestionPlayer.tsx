@@ -281,8 +281,9 @@ export default function QuestionPlayer({ attempt_part }: any) {
     }, []);
 
     return (
-        <div ref={playerRef} className={`mx-auto w-full overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 px-4 py-3 md:px-8 md:py-4">
+        <div ref={playerRef} className={`mx-auto w-full overflow-hidden border border-border bg-card shadow-2xl transition-all duration-300 ${isFullscreen ? 'rounded-none' : 'rounded-2xl md:rounded-[2.5rem]'}`}>
+            <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3 md:px-8 md:py-4">
+
                 <div className="flex items-center gap-3">
                     <span className="rounded-md bg-indigo-600 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white uppercase">
                         {t('question_player.part_label')}
@@ -299,7 +300,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
             </div>
 
             <div className="grid min-h-[500px] grid-cols-1 md:grid-cols-12">
-                <div className="border-r border-slate-100 dark:border-slate-800 p-4 md:p-10 md:col-span-8">
+                <div className="border-r border-border p-4 md:p-10 md:col-span-8">
+
                     <div className="mb-6 flex items-center justify-between">
                         <span className="text-[10px] md:text-[11px] font-black tracking-[0.15em] text-slate-400 dark:text-slate-500 uppercase leading-none">
                             {phase === 'introduction'
@@ -333,7 +335,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/10 p-4 md:p-10 text-center md:col-span-4">
+                <div className="flex flex-col items-center justify-center bg-muted/30 p-4 md:p-10 text-center md:col-span-4">
+
                     {/* Timer on top, larger and prominent */}
                     <div className="mb-4">
                         <CircularTimer timeLeft={timer} totalTime={totalTime} phase={phase} />
@@ -341,7 +344,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
                     {/* Smaller mic pod below */}
                     <RecordingPod phase={phase} />
                     <div className="mt-6 w-full space-y-3">
-                        <div className="rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 shadow-sm">
+                        <div className="rounded-xl border border-border bg-card p-2.5 shadow-sm">
+
                             <p className="mb-1 text-[10px] font-semibold tracking-widest text-slate-400 dark:text-slate-500 uppercase">{t('question_player.status')}</p>
                             <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                                 {phase === 'introduction'
@@ -418,7 +422,8 @@ function RecordingPod({ phase }: { phase: string }) {
     }
     return (
         <div className="flex flex-col items-center">
-            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-2 border-slate-200 bg-white text-slate-400 shadow-sm">
+            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-2 border-border bg-card text-muted-foreground shadow-sm">
+
                 <Volume2 size={28} />
             </div>
             <span className="text-xs font-black tracking-[0.2em] text-slate-400 uppercase">{t('question_player.playing_audio')}</span>

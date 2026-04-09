@@ -89,7 +89,8 @@ export default function HourlyAttemptsChart({ data, title, className }: Props) {
     };
 
     return (
-        <div className={cn("w-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50", className)}>
+        <div className={cn("w-full rounded-[2rem] border border-border bg-card p-6 shadow-sm", className)}>
+
             <div className="h-[300px] w-full">
                 <Bar key={isDark ? 'dark' : 'light'} data={chartData} options={options} />
             </div>

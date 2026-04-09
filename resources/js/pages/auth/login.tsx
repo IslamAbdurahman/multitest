@@ -65,7 +65,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             {/* Password Management & Status */}
             <div className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
                 <div className="flex items-center justify-between">
-                    <Label className="text-slate-600 dark:text-slate-400">{t('login.password')}</Label>
+                    <Label className="text-muted-foreground">{t('login.password')}</Label>
+
 
                     {canResetPassword && (
                         <TextLink
@@ -86,7 +87,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 )}
 
                 {/* Registration Link */}
-                <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-center text-sm text-muted-foreground">
+
                     {t('login.no_account')}{' '}
                     <TextLink href={route('register')} className="font-bold text-indigo-600 hover:underline">
                         {t('login.register')}

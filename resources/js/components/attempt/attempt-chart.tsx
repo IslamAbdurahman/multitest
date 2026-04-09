@@ -90,7 +90,8 @@ export default function AttemptsChart({ attempts, className }: { attempts: Attem
     };
 
     return (
-        <Card className={cn("rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50", className)}>
+        <Card className={cn("rounded-[2rem] border-border bg-card shadow-sm", className)}>
+
             <CardHeader>
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">
                     {t('exam_attempts.performance')}

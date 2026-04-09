@@ -60,7 +60,8 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                         return (
                             <div
                                 key={item.id}
-                                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(79,70,229,0.08)] sm:rounded-[2rem] sm:p-5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50"
+                                className="group relative flex flex-col justify-between rounded-2xl border border-border bg-card p-3 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(79,70,229,0.08)] sm:rounded-[2rem] sm:p-5"
+
                             >
                                 <div className="relative">
                                     <Link
@@ -94,7 +95,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                     return (
                         <div
                             key={item.id}
-                            className="group relative flex flex-col justify-between rounded-[2rem] border border-slate-200 bg-white p-6 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(79,70,229,0.1)] dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50 dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                            className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 dark:hover:border-indigo-500/50 dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
                         >
                             {/* Status Indicator Bar */}
                             <div
@@ -178,8 +179,8 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
             </div>
 
 
-            {/* 🔢 PAGINATION SECTION */}
-            <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-transparent bg-slate-900/5 p-6 backdrop-blur-xl md:flex-row dark:border-slate-800 dark:bg-white/5">
+            <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-border bg-muted/30 p-6 backdrop-blur-xl md:flex-row">
+
                 <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
                     <span className="h-2 w-2 rounded-full bg-indigo-500" />
                     {t('common.showing', { from: test.from, to: test.to, total: test.total })}

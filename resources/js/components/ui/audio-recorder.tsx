@@ -88,7 +88,8 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
     };
 
     return (
-        <div className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 shadow-sm">
+        <div className="rounded-2xl border border-border bg-card p-3 shadow-sm">
+
             {micAllowed === null ? (
                 <Button
                     type="button"
@@ -117,7 +118,8 @@ export default function AudioRecorder({ onRecorded }: AudioRecorderProps) {
                     </div>
 
                     {/* Equalizer Box */}
-                    <div className={`h-11 w-full rounded-xl flex items-center justify-center border-2 border-dashed transition-colors ${recording ? 'border-indigo-200 bg-indigo-50/30 dark:border-indigo-900/40 dark:bg-indigo-900/20' : 'border-slate-100 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50'}`}>
+                    <div className={`h-11 w-full rounded-xl flex items-center justify-center border-2 border-dashed transition-colors ${recording ? 'border-indigo-200 bg-indigo-50/30 dark:border-indigo-900/40 dark:bg-indigo-900/20' : 'border-border bg-muted/30'}`}>
+
                         {recording ? (
                             <AudioEqualizer analyser={analyserRef.current} active={recording} />
                         ) : (

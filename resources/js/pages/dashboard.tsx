@@ -62,7 +62,8 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Last Attempt Card */}
-                    <Card className="relative overflow-hidden rounded-[2rem] border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900/50">
+                    <Card className="relative overflow-hidden rounded-[2rem] border-border bg-card shadow-sm transition-all hover:shadow-md">
+
                         <CardContent className="flex items-center justify-between p-6">
                             <div>
                                 <p className="text-sm font-medium text-slate-500">{t('lastAttempt')}</p>
@@ -81,7 +82,8 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Profile Card */}
-                    <Card className="rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                    <Card className="rounded-[2rem] border-border bg-card shadow-sm">
+
                         <CardContent className="flex h-full items-center gap-4 p-6">
                             <div className="relative">
                                 {user.avatar ? (

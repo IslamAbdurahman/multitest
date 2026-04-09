@@ -138,7 +138,8 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                 </div>
             ) : (
                 /* 💻 DESKTOP TABLE VIEW */
-                <div className="overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
+
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-slate-50/50 text-[10px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/50">
@@ -159,7 +160,8 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                         return (
                                             <tr 
                                                 key={item.id} 
-                                                className="group cursor-pointer transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30"
+                                                className="group cursor-pointer transition-colors hover:bg-muted/30"
+
                                                 onClick={() => item.id && router.get(route('attempt.show', { attempt: item.id }))}
                                             >
                                                 <td className="px-6 py-4">
@@ -244,7 +246,8 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                     <div className="flex items-center justify-end gap-2">
                                                         {(isAdmin || isTeacher) && (
                                                             <div 
-                                                                className="flex items-center gap-2 rounded-2xl bg-slate-50 p-1.5 dark:bg-slate-800/50"
+                                                                className="flex items-center gap-2 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50"
+
                                                                 onClick={(e) => e.stopPropagation()}
                                                             >
                                                                 <EvaluateAttemptModal attempt={item} />
@@ -278,7 +281,8 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
 
 
             {/* 📟 PAGINATION */}
-            <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-slate-50 p-4 md:flex-row dark:bg-slate-900/50">
+            <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-muted/30 p-4 md:flex-row">
+
                 <div className="pl-4 text-[10px] font-black tracking-widest text-slate-400 uppercase">
                     {t('common.showing', {
                         from: attempt.from || 0,

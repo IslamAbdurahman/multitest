@@ -119,7 +119,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                 </div>
             ) : (
                 /* 💻 DESKTOP TABLE VIEW */
-                <div className="overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
+
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-slate-50/50 text-[10px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/50">
@@ -137,7 +138,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                 {user.data.map((item, index) => {
                                     const globalIndex = (user.current_page - 1) * user.per_page + index + 1;
                                     return (
-                                        <tr key={item.id} className="group transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                                        <tr key={item.id} className="group transition-colors hover:bg-muted/30">
+
                                             <td className="px-6 py-4">
                                                 <span className="font-black text-slate-300 dark:text-slate-600">
                                                     {globalIndex.toString().padStart(2, '0')}
@@ -226,7 +228,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
 
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <div className="flex items-center gap-1 rounded-2xl bg-slate-50 p-1.5 dark:bg-slate-800/50">
+                                                    <div className="flex items-center gap-1 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50">
+
                                                         <UpdateUserModal user={item} />
                                                         <div className="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
                                                         <DeleteItemModal item={item} onDelete={handleDelete} />
@@ -244,7 +247,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
 
 
             {/* Pagination */}
-            <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-slate-50 p-4 md:flex-row dark:bg-slate-900/50">
+            <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-muted/30 p-4 md:flex-row">
+
                 <div className="pl-4 text-[10px] font-black tracking-widest text-slate-400 uppercase">
                     {t('common.pagination_info', { from: user.from, to: user.to, total: user.total })}
                 </div>
