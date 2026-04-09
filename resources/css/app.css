@@ -250,6 +250,15 @@
 .tma-card {
     @apply rounded-2xl border bg-card p-4 transition-all active:scale-[0.98];
 }
+ 
+/* Utility for handling long words on narrow screens */
+.tma-break-text {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
 
 
 @layer base {

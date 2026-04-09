@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { CardDescription } from '@/components/ui/card';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SkillsRadarChartProps {
     className?: string;
@@ -19,12 +20,11 @@ interface SkillsRadarChartProps {
 export default function SkillsRadarChart({ skills, className }: SkillsRadarChartProps) {
     const { t } = useTranslation();
     const { appearance } = useAppearance();
+    const isMobile = useIsMobile();
     
-    // Determine if we are in dark mode reactively
     const isDark = appearance === 'dark' || 
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-    // Default data if no skills are provided
     const data = skills || {
         fluency: 65,
         vocabulary: 70,
@@ -43,12 +43,10 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
                 top: 1,
                 opacity: isDark ? 0.3 : 0.1,
             },
+            offsetY: isMobile ? 10 : 0,
         },
         theme: {
             mode: isDark ? 'dark' : 'light',
-        },
-        title: {
-            show: false,
         },
         stroke: {
             width: 2,
@@ -59,7 +57,7 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
             colors: ['#6366f1'],
         },
         markers: {
-            size: 4,
+            size: isMobile ? 3 : 4,
             colors: ['#6366f1'],
             strokeColor: isDark ? '#1e293b' : '#fff',
             strokeWidth: 2,
@@ -74,9 +72,10 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
             labels: {
                 style: {
                     colors: Array(4).fill(isDark ? '#94a3b8' : '#64748b'),
-                    fontSize: '11px',
+                    fontSize: isMobile ? '9px' : '11px',
                     fontWeight: 700,
                 },
+                offsetY: 5,
             },
         },
         yaxis: {
@@ -86,6 +85,7 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
         },
         plotOptions: {
             radar: {
+                size: isMobile ? 85 : 110,
                 polygons: {
                     strokeColors: isDark ? '#334155' : '#e2e8f0',
                     fill: {
@@ -95,12 +95,8 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
             },
         },
         colors: ['#6366f1'],
-        legend: {
-            show: false,
-        },
-        grid: {
-            show: false,
-        },
+        legend: { show: false },
+        grid: { show: false },
     };
 
     const series = [
@@ -116,13 +112,20 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">
                     {t('skills.skills_analysis')}
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-xs">
                     {t('skills.skills_analysis_description', 'Detailed analysis of your language proficiency metrics.')}
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex-1">
-                <div className="flex h-[300px] items-center justify-center">
-                    <Chart key={isDark ? 'dark' : 'light'} options={options} series={series} type="radar" width="400" height="300" />
+            <CardContent className="flex-1 p-0 sm:p-6">
+                <div className="flex h-[280px] sm:h-[300px] items-center justify-center overflow-hidden">
+                    <Chart 
+                        key={`${isDark ? 'dark' : 'light'}-${isMobile ? 'mobile' : 'desktop'}`} 
+                        options={options} 
+                        series={series} 
+                        type="radar" 
+                        width="100%" 
+                        height="100%" 
+                    />
                 </div>
             </CardContent>
         </Card>

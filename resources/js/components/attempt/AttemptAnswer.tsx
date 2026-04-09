@@ -159,13 +159,16 @@ function AIReviewHelper({ review }: { review: string }) {
                         <div key={c.key} className="p-4 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
                             <div className="mb-1 flex items-center gap-2">
                                 <span className="text-xs">{c.icon}</span>
-                                <span className="text-[10px] font-black tracking-wider text-slate-400 uppercase">{c.label}</span>
+                                <span className="text-[10px] font-black tracking-wider text-slate-400 uppercase break-words leading-tight">
+                                    {c.label}
+                                </span>
                             </div>
                             <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                                 {data[c.key]}
                             </p>
                         </div>
                     ))}
+
                 </div>
 
                 {/* Fallback for general feedback if exists */}
