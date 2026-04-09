@@ -2,27 +2,53 @@ export {};
 
 declare global {
     interface Window {
-        Telegram: {
+        Telegram?: {
             WebApp: {
                 initData: string;
-                initDataUnsafe: any;
-                version: string;
-                platform: string;
+                initDataUnsafe: {
+                    user?: {
+                        id: number;
+                        first_name: string;
+                        last_name?: string;
+                        username?: string;
+                        language_code?: string;
+                        photo_url?: string;
+                    };
+                    query_id?: string;
+                    auth_date?: string;
+                    hash?: string;
+                };
+                themeParams: {
+                    bg_color?: string;
+                    text_color?: string;
+                    hint_color?: string;
+                    link_color?: string;
+                    button_color?: string;
+                    button_text_color?: string;
+                    secondary_bg_color?: string;
+                    header_bg_color?: string;
+                    accent_text_color?: string;
+                    section_bg_color?: string;
+                    section_header_text_color?: string;
+                    subtitle_text_color?: string;
+                    destructive_text_color?: string;
+                };
                 colorScheme: 'light' | 'dark';
-                themeParams: any;
                 isExpanded: boolean;
                 viewportHeight: number;
                 viewportStableHeight: number;
                 headerColor: string;
                 backgroundColor: string;
-                isClosingConfirmationEnabled: boolean;
-                BackButton: {
-                    isVisible: boolean;
-                    show: () => void;
-                    hide: () => void;
-                    onClick: (callback: () => void) => void;
-                    offClick: (callback: () => void) => void;
-                };
+                ready: () => void;
+                expand: () => void;
+                close: () => void;
+                sendData: (data: string) => void;
+                setHeaderColor: (color: string) => void;
+                setBackgroundColor: (color: string) => void;
+                enableClosingConfirmation: () => void;
+                disableClosingConfirmation: () => void;
+                onEvent: (eventType: string, eventHandler: (...args: any[]) => void) => void;
+                offEvent: (eventType: string, eventHandler: (...args: any[]) => void) => void;
                 MainButton: {
                     text: string;
                     color: string;
@@ -30,32 +56,35 @@ declare global {
                     isVisible: boolean;
                     isActive: boolean;
                     isProgressVisible: boolean;
-                    setText: (text: string) => void;
-                    onClick: (callback: () => void) => void;
-                    offClick: (callback: () => void) => void;
                     show: () => void;
                     hide: () => void;
                     enable: () => void;
                     disable: () => void;
                     showProgress: (leaveActive: boolean) => void;
                     hideProgress: () => void;
-                    setParams: (params: any) => void;
+                    onClick: (callback: () => void) => void;
+                    offClick: (callback: () => void) => void;
+                    setText: (text: string) => void;
+                    setParams: (params: {
+                        text?: string;
+                        color?: string;
+                        text_color?: string;
+                        is_active?: boolean;
+                        is_visible?: boolean;
+                    }) => void;
+                };
+                BackButton: {
+                    isVisible: boolean;
+                    show: () => void;
+                    hide: () => void;
+                    onClick: (callback: () => void) => void;
+                    offClick: (callback: () => void) => void;
                 };
                 HapticFeedback: {
                     impactOccurred: (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft') => void;
                     notificationOccurred: (type: 'error' | 'success' | 'warning') => void;
                     selectionChanged: () => void;
                 };
-                ready: () => void;
-                expand: () => void;
-                close: () => void;
-                sendData: (data: string) => void;
-                enableClosingConfirmation: () => void;
-                disableClosingConfirmation: () => void;
-                onEvent: (eventType: string, eventHandler: (params: any) => void) => void;
-                offEvent: (eventType: string, eventHandler: (params: any) => void) => void;
-                showAlert: (message: string, callback?: () => void) => void;
-                showConfirm: (message: string, callback?: (confirmed: boolean) => void) => void;
             };
         };
     }

@@ -5,23 +5,30 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren } from 'react';
 import { AppBottomNav } from '@/components/app-bottom-nav';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWithChildren<{
     breadcrumbs?: BreadcrumbItem[]
 }>) {
+    const isMobile = useIsMobile();
+
     return (
-        <AppShell variant="sidebar">
-            <AppSidebar />
-            <AppContent variant="sidebar" className="pb-14 md:pb-0 w-100" >
+        <AppShell variant={isMobile ? "header" : "sidebar"}>
+            {!isMobile && <AppSidebar />}
+            <AppContent variant={isMobile ? "header" : "sidebar"} className="pb-14 md:pb-0 w-100" >
 
-                <div className={'mb-14'}>
-                    <AppSidebarHeader breadcrumbs={breadcrumbs} />
+                {!isMobile && (
+                    <div className={'mb-14'}>
+                        <AppSidebarHeader breadcrumbs={breadcrumbs} />
+                    </div>
+                )}
+
+                <div className={isMobile ? 'pt-4 px-4' : ''}>
+                    {children}
                 </div>
-
-                {children}
             </AppContent>
 
-            <AppBottomNav />
+            {isMobile && <AppBottomNav />}
 
         </AppShell>
     );

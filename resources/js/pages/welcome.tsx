@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Hero from '@/components/Home/Hero';
 import CreateAttemptModal from '@/components/mock/create-attempt-modal';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Mock, User } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
@@ -14,7 +15,8 @@ export default function Welcome() {
         mock: Mock;
     }>().props;
 
-    const { t } = useTranslation(); // Using the translation hook
+    const { t } = useTranslation();
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
@@ -23,7 +25,6 @@ export default function Welcome() {
 
         const user = tg?.initDataUnsafe?.user;
 
-        // ✅ Prevent multiple login attempts if user already logged in
         if (!auth?.user && user) {
             fetch('/webapp-login', {
                 method: 'POST',
@@ -55,58 +56,53 @@ export default function Welcome() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <div>
-                <div>
-                    <Header />
-                    {!mock && (
-                        <div>
-                            <Hero />
-                        </div>
-                    )}
+            
+            <div className="min-h-screen bg-background text-foreground">
+                {!isMobile && <Header />}
+                
+                <main>
+                    {!mock && <Hero />}
 
                     {mock && (
-                        <div className={'mt-50 flex items-center justify-center'}>
-                            <div className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900">
-                                {/* Card Header Background */}
-                                <div className="absolute top-0 h-24 w-full bg-gradient-to-br from-indigo-500/10 to-transparent" />
-
-                                <div className="relative flex flex-1 flex-col p-6">
-                                    {/* Top Line: Index & Status */}
-                                    <div className="mb-4 flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            {mock.active && (
-                                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-emerald-700 uppercase dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                    {t('common.active')}
-                                                </span>
-                                            )}
-                                            {mock.open && (
-                                                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:bg-blue-900/30 dark:text-blue-400">
-                                                    {t('common.open')}
-                                                </span>
-                                            )}
-                                        </div>
+                        <div className={`flex items-center justify-center ${isMobile ? 'p-4' : 'mt-20'}`}>
+                            <div className="tma-card w-full max-w-sm relative overflow-hidden group">
+                                {/* Decorative Gradient */}
+                                <div className="absolute top-0 right-0 -mr-16 -mt-16 h-32 w-32 rounded-full bg-primary/10 blur-3xl transition-all group-hover:bg-primary/20" />
+                                
+                                <div className="relative flex flex-col">
+                                    {/* Status Badges */}
+                                    <div className="mb-4 flex gap-2">
+                                        {mock.active && (
+                                            <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-500 border border-emerald-500/20">
+                                                {t('common.active')}
+                                            </span>
+                                        )}
+                                        {mock.open && (
+                                            <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-primary border border-primary/20">
+                                                {t('common.open')}
+                                            </span>
+                                        )}
                                     </div>
 
                                     {/* Mock Info */}
-                                    <div className="mb-4">
-                                        <h3 className="line-clamp-1 text-xl font-bold text-slate-900 dark:text-white">{mock.name}</h3>
-                                        <p className="mt-2 line-clamp-2 min-h-[40px] text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                                    <div className="mb-6">
+                                        <h3 className="text-xl font-bold text-foreground mb-2">{mock.name}</h3>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
                                             {mock.description || t('common.no_description')}
                                         </p>
                                     </div>
 
-                                    {/* 🚀 Actions */}
-                                    <div className="space-y-3 pt-4">
+                                    {/* Actions */}
+                                    <div className="mt-auto">
                                         <CreateAttemptModal mock={mock} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )}
-                </div>
+                </main>
 
-                <Footer />
-
+                {!isMobile && <Footer />}
                 <AppBottomNav />
             </div>
         </>

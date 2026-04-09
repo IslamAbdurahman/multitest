@@ -11,6 +11,8 @@ import { Toaster } from 'sonner';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+import { TelegramThemeProvider } from './components/telegram-theme-provider';
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
@@ -18,16 +20,17 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <>
+            <TelegramThemeProvider>
                 <App {...props} />
                 <Toaster richColors position="bottom-right" />
-            </>
+            </TelegramThemeProvider>
         );
     },
     progress: {
         color: '#4B5563'
     }
 });
+
 
 // This will set light / dark mode on load...
 initializeTheme();
