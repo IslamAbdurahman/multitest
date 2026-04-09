@@ -67,8 +67,11 @@
         "passive": "пассивный",
         "showing": "Показано с {{from}} по {{to}} из {{total}} результатов",
         "private": "Приватный",
-        "are_you_sure": "Вы уверены, что хотите продолжить?"
+        "are_you_sure": "Вы уверены, что хотите продолжить?",
+        "student": "Студент",
+        "code": "Код"
     },
+
     "landing": {
         "trusted_companies": "Нам доверяют компании всех размеров",
         "newsletter_title": "Рассылка",
@@ -303,11 +306,13 @@
         "assign_tests_description": "Выберите практические тесты для включения в этот пакет мок-экзамена."
     },
     "success": {
+        "found": "Успешно найдено",
         "created": "Успешно создано",
         "updated": "Успешно обновлено",
         "deleted": "Успешно удалено",
         "evaluated": "Оценка успешно отправлена!"
     },
+
     "error": {
         "create_failed": "Ошибка при создании",
         "update_failed": "Ошибка при обновлении",
@@ -381,12 +386,40 @@
         "description": "Это защищенная область приложения. Пожалуйста, подтвердите свой пароль перед продолжением.",
         "submit": "Подтвердить пароль"
     },
+    "response_card": {
+        "question_details": "Детали вопроса",
+        "preparation_time": "Время на подготовку",
+        "speaking_time": "Время ответа",
+        "student_response": "Ответ студента",
+        "ai_score": "Балл AI",
+        "audio_not_supported": "Ваш браузер не поддерживает аудио.",
+        "no_audio": "Аудиозапись ответа отсутствует",
+        "transcript": "Транскрипт",
+        "ai_analysis": "AI анализ и обратная связь",
+        "fluency": "Беглость речи",
+        "vocabulary": "Словарный запас",
+        "grammar": "Грамматика",
+        "pronunciation": "Произношение",
+        "estimated_level": "Предполагаемый уровень",
+        "general_feedback": "Общий отзыв",
+        "interaction": "Взаимодействие / Актуальность"
+    },
+    "evaluation": {
+        "evaluate": "Оценить",
+        "evaluate_submission": "Оценить работу",
+        "grading": "Оценка попытки от",
+        "final_score": "Итоговый балл",
+        "teacher_feedback": "Отзыв учителя",
+        "write_detailed_feedback": "Напишите подробный отзыв и рекомендации по улучшению...",
+        "complete_evaluation": "Завершить оценку"
+    },
     "attempt_details": {
         "questions_answered": "Отвечено на вопросы",
         "part_score": "Балл за часть",
         "response_details": "Детали ответа",
         "re_evaluate": "Переоценить"
     },
+
     "attempt_show": {
         "assessment_report": "Отчет об оценке",
         "performance_analysis": "Детальный анализ успеваемости и отзывы",
@@ -441,6 +474,10 @@
         "phase_answering": "Ответ",
         "processing": "Обработка части...",
         "mic_error": "Требуется доступ к микрофону.",
+        "introduction": "Введение",
+        "part_intro": "Введение к части",
+        "status_intro": "Прослушивание введения",
+        "phase_intro": "Вступительная фаза",
         "saving_results": "Завершение",
         "phase_saving": "Сохранение прогресса",
         "uploading_title": "Обработка ваших ответов",
@@ -449,6 +486,7 @@
         "status_uploading": "Сохранение на сервере",
         "upload_active": "Передача данных"
     },
+
     "search_form": {
         "search": "Поиск...",
         "from": "С (дата)",
@@ -482,5 +520,16 @@
         "pronunciation": "Произношение",
         "interaction": "Взаимодействие",
         "overall_level": "Общий уровень"
+    },
+    "stats": {
+        "daily_activity": "Ежедневная активность (последние 30 дней)",
+        "users_and_attempts": "Регистрации пользователей и статистика попыток",
+        "new_users": "Новые пользователи",
+        "unique_attempt_users": "Уникальные участники",
+        "repeat_attempts": "Повторные попытки"
+    },
+    "pagination": {
+        "previous": "Назад",
+        "next": "Вперёд"
     }
 }

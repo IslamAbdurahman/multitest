@@ -67,8 +67,11 @@
         "exam": "Imtihon",
         "passive": "passiv",
         "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
-        "are_you_sure": "Ishonchingiz komilmi?"
+        "are_you_sure": "Ishonchingiz komilmi?",
+        "student": "O'quvchi",
+        "code": "Kod"
     },
+
     "landing": {
         "trusted_companies": "Barcha o'lchamdagi kompaniyalar tomonidan ishonch bildirilgan",
         "newsletter_title": "Yangiliklar",
@@ -78,8 +81,9 @@
         "courses_title": "Kurslar",
         "free": "Bepul",
         "steps": "qadam",
-        "students": "tarafdor"
+        "students": "o'quvchi"
     },
+
     "nav": {
         "home": "Bosh sahifa",
         "tests": "Amaliyot testlari",
@@ -301,11 +305,13 @@
         "assign_tests_description": "Ushbu mock imtihon to'plamiga kiritiladigan testlarni tanlang."
     },
     "success": {
+        "found": "Muvaffaqiyatli topildi",
         "created": "Muvaffaqiyatli yaratildi",
         "updated": "Muvaffaqiyatli yangilandi",
         "deleted": "Muvaffaqiyatli o'chirildi",
         "evaluated": "Baholash muvaffaqiyatli yuborildi!"
     },
+
     "error": {
         "create_failed": "Yaratishda xatolik",
         "update_failed": "Yangilashda xatolik",
@@ -527,7 +533,12 @@
         "phase_answering": "Javob berish",
         "processing": "Bo'limga ishlov berilmoqda...",
         "mic_error": "Mikrofonga ruxsat talab qilinadi.",
+        "introduction": "Kirish",
+        "part_intro": "Qism kirishi",
+        "status_intro": "Kirish tinglanyapti",
+        "phase_intro": "Kirish bosqichi",
         "saving_results": "Yakunlanmoqda",
+
         "phase_saving": "Jarayonni saqlash",
         "uploading_title": "Javoblaringiz qayta ishlanmoqda",
         "uploading_desc": "Iltimos, audio yozuvlar yuklanguncha kuting. Bu biroz vaqt olishi mumkin.",
@@ -568,5 +579,16 @@
         "pronunciation": "Talaffuz",
         "interaction": "Muloqot",
         "overall_level": "Umumiy daraja"
+    },
+    "stats": {
+        "daily_activity": "Kunlik faollik (oxirgi 30 kun)",
+        "users_and_attempts": "Foydalanuvchilar ro'yxatdan o'tishi va urinishlar statistikasi",
+        "new_users": "Yangi foydalanuvchilar",
+        "unique_attempt_users": "Noyob urinuvchilar",
+        "repeat_attempts": "Takroriy urinishlar"
+    },
+    "pagination": {
+        "previous": "Oldingi",
+        "next": "Keyingi"
     }
 }
