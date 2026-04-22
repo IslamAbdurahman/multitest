@@ -84,7 +84,7 @@ function SidebarProvider({
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
 
       // Dispatch a resize event during and after the transition to ensure charts redraw smoothly
-      [100, 200, 300, 400].forEach((t) => {
+      ;[100, 200, 300, 400].forEach((t) => {
         setTimeout(() => window.dispatchEvent(new Event("resize")), t)
       })
     },
