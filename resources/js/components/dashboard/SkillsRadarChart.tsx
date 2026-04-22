@@ -82,7 +82,7 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
         },
         plotOptions: {
             radar: {
-                size: isMobile ? 85 : 110,
+                size: isMobile ? 75 : 90,
                 polygons: {
                     strokeColors: isDark ? '#334155' : '#e2e8f0',
                     fill: {
