@@ -20,6 +20,7 @@ interface SkillsRadarChartProps {
 export default function SkillsRadarChart({ skills, className }: SkillsRadarChartProps) {
     const { t } = useTranslation();
     const isDark = useIsDarkMode();
+    const isMobile = useIsMobile();
 
     const data = skills || {
         fluency: 65,
