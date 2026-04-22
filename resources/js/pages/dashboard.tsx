@@ -112,41 +112,49 @@ export default function Dashboard() {
 
                 {/* 📈 Attempts + Skills Charts */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-                    <div className="lg:col-span-8">
+                    <div className="min-w-0 lg:col-span-8">
                         <AttemptsChart attempts={user.attempts ?? []} className="h-full" />
                     </div>
-                    <div className="lg:col-span-4">
+                    <div className="min-w-0 lg:col-span-4">
                         <SkillsRadarChart className="h-full" />
                     </div>
                 </div>
 
                 {/* 📊 Daily Stats Chart (admin-level data) */}
                 {(daily_users?.length > 0 || daily_attempts?.length > 0) && (
-                    <DailyStatsChart daily_users={daily_users ?? []} daily_attempts={daily_attempts ?? []} />
+                    <div className="min-w-0">
+                        <DailyStatsChart daily_users={daily_users ?? []} daily_attempts={daily_attempts ?? []} />
+                    </div>
                 )}
 
                 {/* ⏰ Hourly Charts */}
                 {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                        <HourlyAttemptsChart
-                            data={today_hourly_attempts ?? []}
-                            title={t('stats.today_hourly', "Today's hourly stats")}
-                            className="h-full"
-                        />
-                        <HourlyAttemptsChart
-                            data={hourly_attempts ?? []}
-                            title={t('stats.alltime_hourly', 'All-time hourly stats')}
-                            className="h-full"
-                        />
+                        <div className="min-w-0">
+                            <HourlyAttemptsChart
+                                data={today_hourly_attempts ?? []}
+                                title={t('stats.today_hourly', "Today's hourly stats")}
+                                className="h-full"
+                            />
+                        </div>
+                        <div className="min-w-0">
+                            <HourlyAttemptsChart
+                                data={hourly_attempts ?? []}
+                                title={t('stats.alltime_hourly', 'All-time hourly stats')}
+                                className="h-full"
+                            />
+                        </div>
                     </div>
                 )}
 
                 {/* 📅 Weekly Chart */}
                 {weekly_attempts?.length > 0 && (
-                    <WeeklyAttemptsChart
-                        data={weekly_attempts}
-                        title={t('stats.weekly', 'Weekly attempt distribution')}
-                    />
+                    <div className="min-w-0">
+                        <WeeklyAttemptsChart
+                            data={weekly_attempts}
+                            title={t('stats.weekly', 'Weekly attempt distribution')}
+                        />
+                    </div>
                 )}
             </div>
         </AppLayout>
