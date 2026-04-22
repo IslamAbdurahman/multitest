@@ -39,6 +39,7 @@ declare global {
                 viewportStableHeight: number;
                 headerColor: string;
                 backgroundColor: string;
+                platform: string;
                 ready: () => void;
                 expand: () => void;
                 close: () => void;

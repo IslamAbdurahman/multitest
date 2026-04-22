@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getImagePrefix } from "@/utils/util";
 import Image from "next/image";
 

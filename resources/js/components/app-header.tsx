@@ -16,6 +16,12 @@ import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
+interface AppHeaderProps {
+    breadcrumbs?: BreadcrumbItem[];
+}
+
+const activeItemStyles = 'text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800';
+
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const { t } = useTranslation();
     const page = usePage<SharedData>();

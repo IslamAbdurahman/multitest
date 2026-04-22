@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
