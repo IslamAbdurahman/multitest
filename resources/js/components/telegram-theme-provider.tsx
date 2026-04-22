@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export function TelegramThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
-        if (!tg) return;
+        if (!tg || tg.platform === 'unknown') return;
 
         const updateTheme = () => {
             const theme = tg.themeParams;

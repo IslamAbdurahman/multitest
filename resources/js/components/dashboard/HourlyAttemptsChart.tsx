@@ -1,5 +1,5 @@
 import { HourlyStatItem } from '@/types';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode';
 import { cn } from '@/lib/utils';
 import {
     BarElement,
@@ -22,12 +22,7 @@ interface Props {
 }
 
 export default function HourlyAttemptsChart({ data, title, className }: Props) {
-    const { appearance } = useAppearance();
-    const isDark =
-        appearance === 'dark' ||
-        (appearance === 'system' &&
-            typeof window !== 'undefined' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = useIsDarkMode();
 
     // Fill all 24 hours with 0 by default
     const counts = Array(24).fill(0);

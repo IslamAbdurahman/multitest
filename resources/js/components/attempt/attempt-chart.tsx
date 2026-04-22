@@ -1,5 +1,5 @@
 import { Attempt } from '@/types';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode';
 import {
     CategoryScale,
     Chart as ChartJS,
@@ -19,13 +19,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 export default function AttemptsChart({ attempts, className }: { attempts: Attempt[]; className?: string }) {
     const { t } = useTranslation();
-    const { appearance } = useAppearance();
-
-    const isDark =
-        appearance === 'dark' ||
-        (appearance === 'system' &&
-            typeof window !== 'undefined' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = useIsDarkMode();
 
     const labels = attempts.map((a) =>
         new Date(a.finished_at || a.started_at).toLocaleDateString(undefined, {

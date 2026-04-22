@@ -82,6 +82,11 @@ function SidebarProvider({
 
       // This sets the cookie to keep the sidebar state.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+
+      // Dispatch a resize event to ensure charts redraw correctly
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"))
+      }, 250)
     },
     [setOpenProp, open]
   )

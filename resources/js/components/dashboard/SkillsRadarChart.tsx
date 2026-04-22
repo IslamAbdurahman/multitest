@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode';
 import { cn } from '@/lib/utils';
 import { CardDescription } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -19,11 +19,7 @@ interface SkillsRadarChartProps {
 
 export default function SkillsRadarChart({ skills, className }: SkillsRadarChartProps) {
     const { t } = useTranslation();
-    const { appearance } = useAppearance();
-    const isMobile = useIsMobile();
-    
-    const isDark = appearance === 'dark' || 
-        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = useIsDarkMode();
 
     const data = skills || {
         fluency: 65,

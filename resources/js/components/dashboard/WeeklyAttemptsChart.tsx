@@ -1,5 +1,5 @@
 import { WeeklyStatItem } from '@/types';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode';
 import {
     BarElement,
     CategoryScale,
@@ -20,12 +20,7 @@ interface Props {
 }
 
 export default function WeeklyAttemptsChart({ data, title }: Props) {
-    const { appearance } = useAppearance();
-    const isDark =
-        appearance === 'dark' ||
-        (appearance === 'system' &&
-            typeof window !== 'undefined' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = useIsDarkMode();
 
     // Fill Mon–Sun (1–7) with 0 by default
     const counts = Array(7).fill(0);

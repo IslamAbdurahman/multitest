@@ -1,5 +1,5 @@
 import { StatItem } from '@/types';
-import { useAppearance } from '@/hooks/use-appearance';
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode';
 import {
     BarElement,
     CategoryScale,
@@ -52,12 +52,7 @@ const datalabelPlugin = {
 
 export default function DailyStatsChart({ daily_users, daily_attempts }: Props) {
     const { t } = useTranslation();
-    const { appearance } = useAppearance();
-    const isDark =
-        appearance === 'dark' ||
-        (appearance === 'system' &&
-            typeof window !== 'undefined' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = useIsDarkMode();
 
     // Merge all dates from both datasets
     const allDates = Array.from(
