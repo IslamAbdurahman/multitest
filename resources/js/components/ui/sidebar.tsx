@@ -83,10 +83,10 @@ function SidebarProvider({
       // This sets the cookie to keep the sidebar state.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
 
-      // Dispatch a resize event to ensure charts redraw correctly
-      setTimeout(() => {
-        window.dispatchEvent(new Event("resize"))
-      }, 250)
+      // Dispatch a resize event during and after the transition to ensure charts redraw smoothly
+      [100, 200, 300, 400].forEach((t) => {
+        setTimeout(() => window.dispatchEvent(new Event("resize")), t)
+      })
     },
     [setOpenProp, open]
   )
@@ -309,7 +309,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "bg-background relative flex max-w-full min-h-svh flex-1 flex-col",
+        "bg-background relative flex min-w-0 max-w-full min-h-svh flex-1 flex-col",
         "peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-0",
         className
       )}

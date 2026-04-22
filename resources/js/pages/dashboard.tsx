@@ -36,7 +36,7 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('sidebar.dashboard')} />
 
-            <div className="flex h-full flex-1 flex-col gap-8 p-6">
+            <div className="flex h-full min-w-0 flex-1 flex-col gap-8 p-6">
                 {/* 🌈 Welcome Header Section */}
                 <div className="flex flex-col gap-1">
                     <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
