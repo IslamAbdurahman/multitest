@@ -69,7 +69,13 @@
         "exam": "Exam",
         "passive": "passive",
         "showing": "Showing {{from}} to {{to}} of {{total}} results",
-        "student": "Student"
+        "student": "Student",
+        "no_data": "No data available",
+        "loading": "Loading...",
+        "exit_fullscreen": "Exit Fullscreen",
+        "fullscreen": "Fullscreen",
+        "language": "Language",
+        "pagination_info": "Showing {{from}} to {{to}} of {{total}} results"
     },
     "landing": {
         "trusted_companies": "Trusted by companies of all sizes",
@@ -114,7 +120,8 @@
         "google": "Google",
         "github": "GitHub",
         "telegram_login": "Login with Telegram",
-        "social_sign_in": "Social Sign In"
+        "social_sign_in": "Social Sign In",
+        "sign_up_with": "Sign up with"
     },
     "login": {
         "title": "Welcome Back",
@@ -162,7 +169,8 @@
     "appearance_toggle": {
         "light": "Light",
         "dark": "Dark",
-        "system": "System"
+        "system": "System",
+        "toggle_theme": "Toggle theme"
     },
     "settings_layout": {
         "title": "Settings",
@@ -304,7 +312,6 @@
         "assign_tests": "Assign Tests",
         "assign_tests_description": "Select practice tests to include in this mock exam bundle."
     },
-
     "success": {
         "found": "Found successfully",
         "created": "Created successfully",
@@ -317,7 +324,8 @@
         "update_failed": "Update failed",
         "delete_failed": "Deletion failed",
         "evaluation_failed": "Failed to submit evaluation. Please check your inputs.",
-        "browser_audio_unsupported": "Your browser does not support the audio element."
+        "browser_audio_unsupported": "Your browser does not support the audio element.",
+        "search_failed": "Search failed"
     },
     "mock_table": {
         "title": "Mock Exams",
@@ -348,7 +356,8 @@
         "ensure_clear": "Please listen to your recording to ensure your voice is clear.",
         "start_now": "Start Now",
         "record_to_unlock": "Record a test audio to unlock the start button",
-        "good_luck": "Good luck! Redirecting to your exam..."
+        "good_luck": "Good luck! Redirecting to your exam...",
+        "select_parts": "Select Parts"
     },
     "audio_recorder": {
         "verify_microphone": "Verify Microphone",
@@ -478,7 +487,8 @@
         "reset_password": "Reset Password",
         "leave_blank_to_keep": "Leave blank to keep current password",
         "joined": "Joined",
-        "activity": "Activity"
+        "activity": "Activity",
+        "create_test_limit": "Create Test Limit"
     },
     "attempt_show": {
         "assessment_report": "Assessment Report",
@@ -503,7 +513,8 @@
         "listen_to_intro_instruction": "Please listen to the introduction and instructions carefully before the first part begins.",
         "playing_audio": "Playing Audio",
         "test_introduction": "Test Introduction",
-        "skip_to_first_part": "Skip to First Part"
+        "skip_to_first_part": "Skip to First Part",
+        "no_audio_available": "No audio available"
     },
     "practice_show": {
         "auto_save": "Auto-Save",
@@ -538,7 +549,6 @@
         "part_intro": "Part Introduction",
         "status_intro": "Listening to Introduction",
         "phase_intro": "Introduction Phase",
-
         "saving_results": "Finishing Up",
         "phase_saving": "Saving Progress",
         "uploading_title": "Processing Your Answers",
@@ -579,6 +589,22 @@
         "grammar": "Grammar",
         "pronunciation": "Pronunciation",
         "interaction": "Interaction",
-        "overall_level": "Overall Level"
-    }
+        "overall_level": "Overall Level",
+        "skills_analysis_description": "Detailed breakdown of speaking skills."
+    },
+    "stats": {
+        "new_users": "New Users",
+        "unique_attempt_users": "Unique Attempt Users",
+        "repeat_attempts": "Repeat Attempts",
+        "daily_activity": "Daily Activity",
+        "users_and_attempts": "Users & Attempts",
+        "today_hourly": "Today (Hourly)",
+        "alltime_hourly": "All Time (Hourly)",
+        "weekly": "Weekly"
+    },
+    "deleted_successfully": "Deleted successfully",
+    "delete_failed": "Delete failed",
+    "part": "Part",
+    "no_description": "No description",
+    "your_browser_does_not_support_audio": "Your browser does not support audio"
 }

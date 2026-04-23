@@ -67,6 +67,8 @@ class StoreAttemptRequest extends FormRequest
             'started_at' => ['required', 'date'],
             'finished_at' => ['nullable', 'date', 'after_or_equal:started_at'],
             'score' => ['nullable', 'integer', 'min:0'],
+            'part_ids' => ['nullable', 'array'],
+            'part_ids.*' => ['exists:parts,id'],
         ];
     }
 }

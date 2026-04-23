@@ -128,8 +128,20 @@ class AttemptController extends Controller
                 throw new \Exception('The selected test has no parts defined.');
             }
 
+            // Filter parts if part_ids are provided
+            $partIds = $request->input('part_ids');
+            $partsToAttempt = $attempt->test->parts;
+            
+            if (is_array($partIds) && count($partIds) > 0) {
+                $partsToAttempt = $partsToAttempt->whereIn('id', $partIds);
+            }
+
+            if ($partsToAttempt->isEmpty()) {
+                throw new \Exception('No valid parts selected for the attempt.');
+            }
+
             // Create attempt parts
-            $attemptParts = $attempt->test->parts->map(function ($part) {
+            $attemptParts = $partsToAttempt->map(function ($part) {
                 return [
                     'part_id' => $part->id,
                     'started_at' => now(),

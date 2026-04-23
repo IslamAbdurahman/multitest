@@ -23,10 +23,10 @@ export default function UpdateUserModal({ user }: UpdateUserModalProps) {
     const [roles, setRoles] = useState<Role[]>([]);
 
     const { data, setData, put, processing, reset, errors, clearErrors } = useForm({
-        name: user.name,
+        name: user.name || '',
         role: user.roles?.[0]?.name ?? '',
-        phone: user.phone,
-        email: user.email,
+        phone: user.phone || '',
+        email: user.email || '',
         password: '',
         create_test_limit: user.create_test_limit || 0,
     });
@@ -34,9 +34,9 @@ export default function UpdateUserModal({ user }: UpdateUserModalProps) {
     useEffect(() => {
         if (open) {
             setData({
-                name: user.name,
-                phone: user.phone,
-                email: user.email,
+                name: user.name || '',
+                phone: user.phone || '',
+                email: user.email || '',
                 password: '',
                 role: user.roles?.[0]?.name ?? '',
                 create_test_limit: user.create_test_limit || 0,

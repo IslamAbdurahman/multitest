@@ -34,7 +34,7 @@ export default function UpdateMockModal({ mock }: UpdateMockModalProps) {
     const [open, setOpen] = useState(false);
 
     const { data, setData, post, processing, reset, errors, clearErrors } = useForm<MockUpdateForm>({
-        name: mock.name,
+        name: mock.name || '',
         description: mock.description ?? '',
         audio_path: '',
         starts_at: mock.starts_at ?? '',
@@ -47,7 +47,7 @@ export default function UpdateMockModal({ mock }: UpdateMockModalProps) {
     useEffect(() => {
         if (open) {
             setData({
-                name: mock.name,
+                name: mock.name || '',
                 description: mock.description ?? '',
                 audio_path: '',
                 starts_at: mock.starts_at ?? '',

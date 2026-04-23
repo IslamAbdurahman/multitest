@@ -57,7 +57,7 @@ export default function UpdateTestModal({ test }: UpdateTestModalProps) {
         is_public: number;
         _method: 'PUT';
     }>({
-        name: test.name,
+        name: test.name || '',
         language_id: test.language_id, // This ensures the current ID is selected on init
         description: test.description || '',
         audio_path: '',
@@ -68,7 +68,7 @@ export default function UpdateTestModal({ test }: UpdateTestModalProps) {
     // Ensure form data stays synced if the 'test' prop updates
     useEffect(() => {
         setData({
-            name: test.name,
+            name: test.name || '',
             language_id: test.language_id,
             description: test.description || '',
             audio_path: '',

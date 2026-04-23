@@ -69,7 +69,13 @@
         "passive": "passiv",
         "showing": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda",
         "student": "Talaba",
-        "are_you_sure": "Ishonchingiz komilmi?"
+        "are_you_sure": "Ishonchingiz komilmi?",
+        "no_data": "Ma'lumot mavjud emas",
+        "loading": "Yuklanmoqda...",
+        "exit_fullscreen": "To'liq ekrandan chiqish",
+        "fullscreen": "To'liq ekran",
+        "language": "Til",
+        "pagination_info": "{{total}} tadan {{from}}-{{to}} gacha natijalar ko'rsatilmoqda"
     },
     "landing": {
         "trusted_companies": "Barcha o'lchamdagi kompaniyalar tomonidan ishonch bildirilgan",
@@ -114,7 +120,8 @@
         "google": "Google",
         "github": "GitHub",
         "telegram_login": "Telegram orqali kirish",
-        "social_sign_in": "Ijtimoiy tarmoqlar orqali kirish"
+        "social_sign_in": "Ijtimoiy tarmoqlar orqali kirish",
+        "sign_up_with": "Orqali ro'yxatdan o'tish"
     },
     "login": {
         "title": "Xush kelibsiz",
@@ -162,7 +169,8 @@
     "appearance_toggle": {
         "light": "Yorug'",
         "dark": "To'q",
-        "system": "Tizim"
+        "system": "Tizim",
+        "toggle_theme": "Mavzuni o'zgartirish"
     },
     "settings_layout": {
         "title": "Sozlamalar",
@@ -316,7 +324,8 @@
         "update_failed": "Yangilashda xatolik",
         "delete_failed": "O'chirishda xatolik",
         "evaluation_failed": "Baholashni yuborib bo'lmadi. Ma'lumotlarni tekshiring.",
-        "browser_audio_unsupported": "Sizning brauzeringiz audio elementni qo'llab-quvvatlamaydi."
+        "browser_audio_unsupported": "Sizning brauzeringiz audio elementni qo'llab-quvvatlamaydi.",
+        "search_failed": "Qidiruvda xatolik"
     },
     "mock_table": {
         "title": "Mock imtihonlari",
@@ -347,7 +356,8 @@
         "ensure_clear": "Ovozingiz aniq eshitilayotganiga ishonch hosil qilish uchun yozuvni tinglang.",
         "start_now": "Hozir boshlash",
         "record_to_unlock": "Boshlash tugmasini ochish uchun sinov audiosini yozing",
-        "good_luck": "Omad yor bo'lsin! Imtihonga yo'naltirilmoqda..."
+        "good_luck": "Omad yor bo'lsin! Imtihonga yo'naltirilmoqda...",
+        "select_parts": "Qismlarni tanlang"
     },
     "audio_recorder": {
         "verify_microphone": "Mikrofonni tekshirish",
@@ -477,7 +487,8 @@
         "reset_password": "Parolni tiklash",
         "leave_blank_to_keep": "Hozirgi parolni saqlab qolish uchun bo'sh qoldiring",
         "joined": "Qo'shilgan",
-        "activity": "Faollik"
+        "activity": "Faollik",
+        "create_test_limit": "Test yaratish chegarasi"
     },
     "attempt_show": {
         "assessment_report": "Baholash hisoboti",
@@ -502,7 +513,8 @@
         "listen_to_intro_instruction": "Birinchi qism boshlanishidan oldin kirish va ko'rsatmalarni diqqat bilan tinglang.",
         "playing_audio": "Audio ijro etilmoqda",
         "test_introduction": "Testga kirish",
-        "skip_to_first_part": "Birinchi qismga o'tish"
+        "skip_to_first_part": "Birinchi qismga o'tish",
+        "no_audio_available": "Audio mavjud emas"
     },
     "practice_show": {
         "auto_save": "Avtomatik saqlash",
@@ -577,6 +589,22 @@
         "grammar": "Grammatika",
         "pronunciation": "Talaffuz",
         "interaction": "Muloqot",
-        "overall_level": "Umumiy daraja"
-    }
+        "overall_level": "Umumiy daraja",
+        "skills_analysis_description": "Speaking ko'nikmalarining batafsil tahlili."
+    },
+    "stats": {
+        "new_users": "Yangi foydalanuvchilar",
+        "unique_attempt_users": "Noyob urinish qilganlar",
+        "repeat_attempts": "Takroriy urinishlar",
+        "daily_activity": "Kunlik faollik",
+        "users_and_attempts": "Foydalanuvchilar va urinishlar",
+        "today_hourly": "Bugun (Soatma-soat)",
+        "alltime_hourly": "Barcha vaqt (Soatma-soat)",
+        "weekly": "Haftalik"
+    },
+    "deleted_successfully": "Muvaffaqiyatli o'chirildi",
+    "delete_failed": "O'chirishda xatolik",
+    "part": "Qism",
+    "no_description": "Tavsif yo'q",
+    "your_browser_does_not_support_audio": "Brauzeringiz audioni qo'llab-quvvatlamaydi"
 }

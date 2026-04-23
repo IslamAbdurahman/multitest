@@ -28,7 +28,7 @@ export default function UpdatePartModal({ part }: UpdatePartModalProps) {
         audio_path: string | File;
         _method: 'PUT' | 'POST';
     }>({
-        name: part.name,
+        name: part.name || '',
         description: part.description || '',
         audio_path: '',
         _method: 'PUT',
@@ -37,7 +37,7 @@ export default function UpdatePartModal({ part }: UpdatePartModalProps) {
     useEffect(() => {
         if (open) {
             setData({
-                name: part.name,
+                name: part.name || '',
                 description: part.description || '',
                 audio_path: '',
                 _method: 'PUT',

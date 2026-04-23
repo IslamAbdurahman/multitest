@@ -17,13 +17,13 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar" className={`${isMobile ? 'pb-20 pt-16 overflow-x-hidden' : 'pb-14 md:pb-0'} w-full`}>
+            <AppContent variant="sidebar" className="w-full overflow-x-hidden pb-[calc(5rem+env(safe-area-inset-bottom))] pt-16 md:pb-0 md:pt-0">
 
-                <div className={'mb-14'}>
+                <div className="md:mb-14">
                     <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 </div>
 
-                <div className={isMobile ? 'px-4' : ''}>
+                <div className="px-4 md:px-0">
                     {children}
                 </div>
             </AppContent>

@@ -63,7 +63,7 @@ export default function TestShow() {
                             <div className="rounded-xl bg-indigo-600 p-2 text-white shadow-lg shadow-indigo-200 dark:shadow-none">
                                 <BookOpen className="h-6 w-6" />
                             </div>
-                            <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">{test.name}</h1>
+                            <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">{test.name}</h1>
                         </div>
                     </div>
 

@@ -192,7 +192,7 @@
     --radius: 0.75rem;
 
     /* Sidebar Light */
-    --sidebar: oklch(0.985 0 0);
+    --sidebar: oklch(1 0 0); /* Pure white to stand out against 0.985 background */
     --sidebar-foreground: oklch(0.15 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.38);
     --sidebar-primary-foreground: oklch(1 0 0);
@@ -226,13 +226,13 @@
 
 
     /* Sidebar Dark */
-    --sidebar: oklch(0.08 0 0);
+    --sidebar: oklch(0.16 0 0); /* Noticeably lighter than background */
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.55 0.2 264.38);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.15 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.15 0 0);
+    --sidebar-border: oklch(0.22 0 0); /* Brighter than background for glassy edge */
     --sidebar-ring: oklch(0.55 0.2 264.38);
 }
 

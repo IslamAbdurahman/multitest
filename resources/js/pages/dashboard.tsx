@@ -36,10 +36,10 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('sidebar.dashboard')} />
 
-            <div className="flex h-full min-w-0 flex-1 flex-col gap-8 p-6">
+            <div className="flex h-full min-w-0 flex-1 flex-col gap-6 p-4 sm:p-6 md:gap-8">
                 {/* 🌈 Welcome Header Section */}
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                         {t('welcome_back')}, {user.name.split(' ')[0]}! 👋
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400">{t('check_your_progress_and_scores')}</p>

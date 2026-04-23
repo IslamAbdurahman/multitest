@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Mock, Test } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { ArrowRight, CirclePlay, Headphones, Mic2, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CirclePlay, Headphones, Mic2, ShieldCheck, Check } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -20,9 +20,14 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
     const [hasCheckedMic, setHasCheckedMic] = useState(false);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
-    const { post, processing } = useForm({
+    const { data, setData, post, processing } = useForm<{
+        mock_id: number | null;
+        test_id: number | null;
+        part_ids: number[];
+    }>({
         mock_id: mock?.id || null,
         test_id: test?.id || null,
+        part_ids: test?.parts?.map((p) => p.id) || [],
     });
 
     const submit: FormEventHandler = (e) => {
@@ -66,6 +71,48 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
                     <div className="space-y-4 p-4 md:p-6">
                         {/* 🚀 Primary Action (Micro-Compact) */}
                         <form onSubmit={submit} className="w-full space-y-2.5">
+                            {test?.parts && test.parts.length > 0 && (
+                                <div className="space-y-2 mb-4">
+                                    <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                        {t('attempt_modal.select_parts', 'Select Parts')}
+                                    </span>
+                                    <div className="grid gap-2 grid-cols-2">
+                                        {test.parts.map((part) => (
+                                            <label
+                                                key={part.id}
+                                                className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition-all ${
+                                                    data.part_ids.includes(part.id)
+                                                        ? 'border-indigo-500/50 bg-indigo-50/50 dark:border-indigo-500/30 dark:bg-indigo-500/10'
+                                                        : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/50'
+                                                }`}
+                                            >
+                                                <div className="flex flex-col">
+                                                    <span className={`text-xs font-bold ${data.part_ids.includes(part.id) ? 'text-indigo-700 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'}`}>
+                                                        {part.name}
+                                                    </span>
+                                                </div>
+                                                <div className={`flex h-4 w-4 items-center justify-center rounded-md border ${data.part_ids.includes(part.id) ? 'border-indigo-500 bg-indigo-500' : 'border-slate-300 dark:border-slate-700'}`}>
+                                                    {data.part_ids.includes(part.id) && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
+                                                </div>
+                                                <input
+                                                    type="checkbox"
+                                                    className="hidden"
+                                                    checked={data.part_ids.includes(part.id)}
+                                                    onChange={(e) => {
+                                                        const current = data.part_ids;
+                                                        if (e.target.checked) {
+                                                            setData('part_ids', [...current, part.id]);
+                                                        } else {
+                                                            setData('part_ids', current.filter((id) => id !== part.id));
+                                                        }
+                                                    }}
+                                                />
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             <Button
                                 type="submit"
                                 disabled={processing || !hasCheckedMic}

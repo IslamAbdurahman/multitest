@@ -39,10 +39,10 @@ export default function Test() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={seoData?.title || t('nav.tests')}>
-                <meta name="description" content={seoData?.description} />
-                <meta property="og:title" content={seoData?.title} />
-                <meta property="og:description" content={seoData?.description} />
+            <Head title={data.search ? `${data.search} - ${t('test_table.test_library')}` : t('test_table.test_library')}>
+                <meta name="description" content={t('test_table.browse_description')} />
+                <meta property="og:title" content={data.search ? `${data.search} - ${t('test_table.test_library')}` : t('test_table.test_library')} />
+                <meta property="og:description" content={t('test_table.browse_description')} />
                 <meta property="og:image" content={seoData?.og_image} />
             </Head>
 

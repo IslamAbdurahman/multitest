@@ -39,7 +39,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
             {/* 🏷️ HEADER SECTION */}
             <div className="flex flex-col gap-4 border-b border-slate-200/60 pb-8 sm:flex-row sm:items-end sm:justify-between dark:border-slate-800/60">
                 <div>
-                    <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-50">{t('test_table.test_library')}</h2>
+                    <h2 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-slate-50">{t('test_table.test_library')}</h2>
                     <p className="mt-2 font-medium text-slate-500 dark:text-slate-400">{t('test_table.browse_description')}</p>
                 </div>
                 <div className="flex items-center">
@@ -52,7 +52,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
             </div>
 
             {/* 🗃️ TEST CARDS GRID */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {test.data.map((item, index) => {
                     const globalIndex = (test.current_page - 1) * test.per_page + index + 1;
 
@@ -68,7 +68,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                                         href={`/test/${item.id}`}
                                         className="block text-sm leading-tight font-bold text-slate-800 transition-colors group-hover:text-indigo-600 sm:text-lg dark:text-slate-100 dark:group-hover:text-indigo-400"
                                     >
-                                        <div className="line-clamp-2 min-h-[2.5rem]">
+                                        <div className="line-clamp-2 min-h-[2.5rem] break-words">
                                             {item.name}
                                         </div>
                                         <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 sm:text-xs">

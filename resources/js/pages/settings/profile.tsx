@@ -31,10 +31,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.name,
-        username: auth.user.username,
-        phone: auth.user.phone,
-        email: auth.user.email,
+        name: auth.user.name || '',
+        username: auth.user.username || '',
+        phone: auth.user.phone || '',
+        email: auth.user.email || '',
     });
 
     const { t } = useTranslation();  // Using the translation hook

@@ -54,7 +54,8 @@ class TestController extends Controller
 
             $testQuery = Test::query()
                 ->with([
-                    'language'
+                    'language',
+                    'parts'
                 ]);
 
             if ($request->search) {
@@ -75,8 +76,6 @@ class TestController extends Controller
             $test = $testQuery->paginate($per_page);
 
             $seoData = [
-                'title' => $request->search ? $request->search . ' - ' . __('test_table.test_library') : __('test_table.test_library'),
-                'description' => __('test_table.browse_description'),
                 'og_image' => url('/images/og-image.png'), // Replace with actual OG image if available
             ];
 

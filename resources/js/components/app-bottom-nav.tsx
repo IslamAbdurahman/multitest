@@ -32,8 +32,8 @@ export function AppBottomNav() {
     ];
 
     return (
-        <div className="fixed right-0 bottom-0 left-0 z-50 glass-effect bg-background/80 border-t md:hidden pb-safe">
-            <div className="flex items-center justify-around py-2 h-16">
+        <div className="fixed right-3 left-3 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 md:hidden">
+            <div className="flex h-16 items-center justify-around rounded-3xl border border-sidebar-border bg-sidebar/95 py-2 shadow-2xl backdrop-blur-2xl dark:shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)]">
                 {mainNavItems.map((item) => {
                     const isActive = page.url.startsWith(item.href);
 
