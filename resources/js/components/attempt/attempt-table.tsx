@@ -52,9 +52,9 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                     }`}>
                         <Star className={`h-2.5 w-2.5 ${(item.score ?? item?.ai_score_avg) ? 'fill-current' : ''}`} />
                         {item?.score != null
-                            ? Number(item.score.toFixed(2))
+                            ? Number(item.score).toFixed(2)
                             : item?.ai_score_avg != null
-                              ? Number(item.ai_score_avg.toFixed(2))
+                              ? Number(item.ai_score_avg).toFixed(2)
                               : t('exam_attempts.pending')}
                     </div>
                     {item.review && (
@@ -229,9 +229,9 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                         >
                                                             <Star className={`h-3 w-3 ${(item.score ?? item?.ai_score_avg) ? 'fill-current' : ''}`} />
                                                             {item?.score != null
-                                                                ? Number(item.score.toFixed(2))
+                                                                ? Number(item.score).toFixed(2)
                                                                 : item?.ai_score_avg != null
-                                                                  ? Number(item.ai_score_avg.toFixed(2))
+                                                                  ? Number(item.ai_score_avg).toFixed(2)
                                                                   : t('exam_attempts.pending')}
                                                         </div>
                                                         {item.review && (

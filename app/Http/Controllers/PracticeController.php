@@ -9,8 +9,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
+use App\Services\FileUploadService;
+
 class PracticeController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
     public function index(Attempt $attempt)
     {
         try {
@@ -77,11 +85,8 @@ class PracticeController extends Controller
             foreach ($answers as $index => $answerData) {
                 $audioPath = null;
 
-                // Access the file correctly from the nested array
                 if ($request->hasFile("answers.$index.audio_path")) {
-                    $file = $request->file("answers.$index.audio_path");
-                    $filename = time() . '_' . $file->getClientOriginalName();
-                    $audioPath = $file->storeAs('attempt_answers_audio', $filename, 'public');
+                    $audioPath = $this->fileUploadService->uploadAudio($request->file("answers.$index.audio_path"), 'attempt_answers_audio');
                 }
 
                 \App\Models\AttemptAnswer::updateOrCreate(
@@ -92,7 +97,7 @@ class PracticeController extends Controller
                     [
                         'started_at' => $answerData['started_at'] ?? null,
                         'finished_at' => $answerData['finished_at'] ?? null,
-                        'audio_path' => '/storage/' . $audioPath,
+                        'audio_path' => $audioPath,
                     ]
                 );
             }

@@ -1,24 +1,12 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useKeenSlider } from 'keen-slider/react';
-import 'keen-slider/keen-slider.min.css';
-import { Icon } from '@iconify/react';
+import { Star, StarHalf, BookOpen, Users } from 'lucide-react';
 import { Test } from '@/types';
 import CreateAttemptModal from '@/components/attempt/create-attempt-modal';
 
 const Courses: React.FC = () => {
     const { t } = useTranslation();
     const [tests, setTests] = useState<Test[]>([]);
-
-    const [sliderRef] = useKeenSlider<HTMLDivElement>({
-        loop: true,
-        slides: { perView: 3, spacing: 20 },
-        breakpoints: {
-            '(max-width: 1200px)': { slides: { perView: 2, spacing: 15 } },
-            '(max-width: 600px)': { slides: { perView: 1, spacing: 10 } },
-        },
-    });
 
     useEffect(() => {
         fetch(route('landing-page-tests'))
@@ -35,105 +23,51 @@ const Courses: React.FC = () => {
         return (
             <>
                 {Array.from({ length: fullStars }, (_, i) => (
-                    <Icon key={`full-${i}`} icon="tabler:star-filled" className="text-yellow-500 text-xl inline-block" />
+                    <Star key={`full-${i}`} className="text-yellow-500 fill-yellow-500 w-5 h-5 inline-block" />
                 ))}
                 {halfStars > 0 && (
-                    <Icon key="half" icon="tabler:star-half-filled" className="text-yellow-500 text-xl inline-block" />
+                    <StarHalf key="half" className="text-yellow-500 fill-yellow-500 w-5 h-5 inline-block" />
                 )}
                 {Array.from({ length: emptyStars }, (_, i) => (
-                    <Icon key={`empty-${i}`} icon="tabler:star-filled" className="text-gray-400 dark:text-gray-600 text-xl inline-block" />
+                    <Star key={`empty-${i}`} className="text-gray-400 dark:text-gray-600 fill-gray-400 dark:fill-gray-600 w-5 h-5 inline-block" />
                 ))}
             </>
         );
     };
 
-    // fallback for 1-2 tests
-    if (tests.length <= 2) {
-        return (
-            <div className="flex justify-center gap-6 flex-wrap">
-                {tests.map(items => (
-                    <div key={items.id} className="w-full sm:w-1/2 lg:w-1/3">
-                        <div className="bg-white dark:bg-gray-900 m-3 px-3 pt-3 shadow-course-shadow dark:shadow-gray-800/50 rounded-2xl h-full">
-                            <div className="relative rounded-3xl">
-                                <img
-                                    src={`/images/courses/coursethree.png`}
-                                    alt="course"
-                                    className="m-auto clipPath"
-                                    width={389}
-                                    height={262}
-                                />
-                                <div className="absolute right-5 -bottom-2 rounded-full">
-                                    <CreateAttemptModal test={items} />
-                                </div>
-                            </div>
-                            <div className="px-3 pt-6">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white max-w-[75%] inline-block">
-                                    {items.folder.name} : {items.name}
-                                </h3>
-
-
-                                <div
-                                    className="flex justify-between items-center py-6 border-b border-gray-200 dark:border-gray-700">
-                                    <div className="flex items-center gap-4">{renderStars(5)}</div>
-                                    <h3 className="text-3xl font-medium text-gray-900 dark:text-white">{t('landing.free')}</h3>
-                                </div>
-
-                                <div className="flex justify-between pt-6">
-                                    <div className="flex gap-2 items-center">
-                                        <Icon icon="solar:notebook-minimalistic-outline"
-                                              className="text-primary text-xl" />
-                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} {t('landing.steps')}</h3>
-                                    </div>
-                                    <div className="flex gap-2 items-center">
-                                        <Icon icon="solar:users-group-rounded-linear"
-                                              className="text-primary text-xl" />
-                                        <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} {t('landing.students')}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
     return (
-        <div ref={sliderRef} className="keen-slider">
-            {tests.map(items => (
-                <div key={items.id} className="keen-slider__slide">
-                    <div
-                        className="bg-white dark:bg-gray-900 m-3 px-3 pt-3 pb-12 shadow-course-shadow dark:shadow-gray-800/50 rounded-2xl h-full">
-                        <div className="relative rounded-3xl">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 hide-scrollbar py-4 px-2">
+            {tests.map((items: any) => (
+                <div key={items.id} className="min-w-[320px] sm:min-w-[380px] snap-center flex-shrink-0">
+                    <div className="bg-white dark:bg-gray-900 px-3 pt-3 pb-8 shadow-md dark:shadow-gray-800/50 rounded-2xl h-full border border-gray-100 dark:border-gray-800">
+                        <div className="relative rounded-xl overflow-hidden h-48 bg-gray-100">
                             <img
                                 src={`/images/courses/coursethree.png`}
                                 alt="course"
-                                className="m-auto clipPath"
-                                width={389}
-                                height={262}
+                                className="w-full h-full object-cover"
                             />
-                            <div className="absolute right-5 -bottom-2 rounded-full">
+                            <div className="absolute right-4 -bottom-4">
                                 <CreateAttemptModal test={items} />
                             </div>
                         </div>
-                        <div className="px-3 pt-6">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white max-w-[75%] inline-block">
-                            {items.folder.name} : {items.name}
+                        <div className="px-3 pt-8">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-2 min-h-[56px]">
+                            {items.folder?.name ? `${items.folder.name} : ` : ''}{items.name}
                             </h3>
 
-                            <div className="flex justify-between items-center py-6 border-b border-gray-200 dark:border-gray-700">
-                                <div className="flex items-center gap-4">{renderStars(5)}</div>
-                                <h3 className="text-3xl font-medium text-gray-900 dark:text-white">{t('landing.free')}</h3>
+                            <div className="flex justify-between items-center py-5 border-b border-gray-200 dark:border-gray-700">
+                                <div className="flex items-center gap-1">{renderStars(5)}</div>
+                                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{t('landing.free')}</h3>
                             </div>
 
-                            <div className="flex justify-between pt-6">
-                                <div className="flex gap-2 items-center">
-                                    <Icon icon="solar:notebook-minimalistic-outline" className="text-primary text-xl" />
-                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.types.length} {t('landing.steps')}</h3>
+                            <div className="flex justify-between pt-5">
+                                <div className="flex gap-2 items-center text-primary">
+                                    <BookOpen className="w-5 h-5" />
+                                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-200">{items.types?.length || 0} {t('landing.steps')}</h3>
                                 </div>
-                                <div className="flex gap-2 items-center">
-                                    <Icon icon="solar:users-group-rounded-linear" className="text-primary text-xl" />
-                                    <h3 className="text-base font-medium text-gray-700 dark:text-gray-200">{items.attempts_count} {t('landing.students')}</h3>
+                                <div className="flex gap-2 items-center text-primary">
+                                    <Users className="w-5 h-5" />
+                                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-200">{items.attempts_count || 0} {t('landing.students')}</h3>
                                 </div>
                             </div>
                         </div>

@@ -32,8 +32,8 @@ export function AppBottomNav() {
     ];
 
     return (
-        <div className="fixed right-3 left-3 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 md:hidden">
-            <div className="flex h-16 items-center justify-around rounded-3xl border border-sidebar-border bg-sidebar/95 py-2 shadow-2xl backdrop-blur-2xl dark:shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)]">
+        <div className="fixed right-4 left-4 bottom-[calc(1.2rem+env(safe-area-inset-bottom))] z-50 md:hidden">
+            <div className="flex p-1.5 items-center justify-around rounded-[2.5rem] border border-slate-200/80 bg-white/90 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl dark:border-white/15 dark:bg-slate-900/90 dark:shadow-[0_12px_48px_rgba(0,0,0,0.5)] gap-1">
                 {mainNavItems.map((item) => {
                     const isActive = page.url.startsWith(item.href);
 
@@ -44,14 +44,14 @@ export function AppBottomNav() {
                                 impact('light');
                                 router.visit(item.href);
                             }}
-                            className={`flex flex-1 flex-col items-center justify-center transition-all duration-200 active:scale-90 ${
-                                isActive ? 'text-primary' : 'text-muted-foreground'
+                            className={`flex flex-1 flex-col items-center justify-center transition-all duration-300 py-2 px-1 rounded-[1.8rem] ${
+                                isActive 
+                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30' 
+                                    : 'text-slate-400 hover:text-slate-600'
                             }`}
                         >
-                            <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-primary/10' : ''}`}>
-                                <item.icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                            </div>
-                            <span className="text-[10px] font-medium mt-0.5 uppercase tracking-tighter tracking-widest leading-none">
+                            <item.icon size={isActive ? 20 : 22} strokeWidth={isActive ? 2.5 : 2} />
+                            <span className={`text-[9px] font-black mt-1 tracking-tight leading-none uppercase ${isActive ? 'text-white' : 'text-slate-400'}`}>
                                 {item.title}
                             </span>
                         </button>

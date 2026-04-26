@@ -8,10 +8,17 @@ use App\Http\Requests\UpdateMockRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Services\FileUploadService;
 use Inertia\Inertia;
 
 class MockController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -91,10 +98,7 @@ class MockController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('audio_path')) {
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('tests/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'mocks/audio');
             } else {
                 $data['audio_path'] = '/en/audio/test-intro.mp3';
             }
@@ -134,14 +138,12 @@ class MockController extends Controller
     {
         try {
 
+            $this->authorize('update', $mock);
             $data = $request->validated();
             $oldFilePath = null;
             if ($request->hasFile('audio_path')) {
-                $oldFilePath = str_replace('/storage/', '', $mock->audio_path);
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('mocks/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $oldFilePath = $mock->audio_path;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'mocks/audio');
             } else {
                 $data['audio_path'] = $mock->audio_path;
             }
@@ -149,7 +151,7 @@ class MockController extends Controller
             $mock->update($data);
 
             if ($oldFilePath) {
-                \Storage::disk('public')->delete($oldFilePath);
+                $this->fileUploadService->deleteFile($oldFilePath);
             }
 
             return redirect()->back()->with('success', 'Mock updated successfully.');
@@ -168,11 +170,11 @@ class MockController extends Controller
     public function destroy(Mock $mock)
     {
         try {
+            $this->authorize('delete', $mock);
             $mock->delete();
 
             if ($mock->audio_path) {
-                $filePath = str_replace('/storage/', '', $mock->audio_path);
-                \Storage::disk('public')->delete($filePath);
+                $this->fileUploadService->deleteFile($mock->audio_path);
             }
 
             return redirect()->back()->with('success', 'Mock deleted successfully.');

@@ -33,5 +33,9 @@ class AppServiceProvider extends ServiceProvider
         AttemptAnswer::observe(AttemptAnswerObserver::class);
         Test::observe(TestObserver::class);
         Question::observe(QuestionObserver::class);
+
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+            return $user->hasRole('Admin') ? true : null;
+        });
     }
 }

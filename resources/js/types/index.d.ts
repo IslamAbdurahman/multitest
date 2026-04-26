@@ -83,6 +83,9 @@ export interface Test {
     updated_at: string;
     parts?: Part[];
     language?: Language;
+    folder?: { name: string };
+    types?: any[];
+    attempts_count?: number;
 }
 
 export interface TestPaginate {

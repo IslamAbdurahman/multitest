@@ -6,10 +6,12 @@ use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Attempt extends Model
 {
     /** @use HasFactory<\Database\Factories\AttemptFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected static function booted()
     {
         static::deleting(function ($attempt) {

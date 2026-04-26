@@ -40,4 +40,16 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+    ],
+
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+    ],
+
+    'telegram' => [
+        'bot_token' => env('MultitestUzBot_TOKEN'),
+    ],
+
 ];

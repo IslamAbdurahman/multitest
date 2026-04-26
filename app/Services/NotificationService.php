@@ -29,7 +29,7 @@ class NotificationService
             $question = $answer->question;
             if (!$question) return;
 
-            $telegram = new Api(env('MultitestUzBot_TOKEN'));
+            $telegram = new Api(config('services.telegram.bot_token'));
             $chatId = $user->telegram_id;
 
             $questionText = $this->extractText($question->textarea ?? '');
@@ -145,7 +145,7 @@ class NotificationService
                     if (file_exists($path)) {
                         $images[] = ['type' => 'local', 'path' => $path];
                     }
-                } elseif (str_starts_with($src, env('APP_URL') . '/storage/')) {
+                } elseif (str_starts_with($src, config('app.url') . '/storage/')) {
                     $path = storage_path('app/public/' . substr(parse_url($src, PHP_URL_PATH), 9));
                     if (file_exists($path)) {
                         $images[] = ['type' => 'local', 'path' => $path];

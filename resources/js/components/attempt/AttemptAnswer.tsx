@@ -22,7 +22,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                     >
                         <div className="flex flex-col lg:flex-row">
                             {/* 📝 LEFT SIDE: THE QUESTION */}
-                            <div className="flex-1 p-8 lg:border-r lg:border-slate-50 lg:dark:border-slate-800">
+                            <div className="flex-1 p-8 lg:border-r lg:border-slate-100 dark:lg:border-slate-800">
                                 <div className="mb-6 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-xs font-black text-slate-500 dark:bg-slate-800">
@@ -53,7 +53,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                             </div>
 
                             {/* 🎙️ RIGHT SIDE: THE RESPONSE */}
-                            <div className="flex-1 bg-slate-50/50 p-8 dark:bg-slate-800/20">
+                            <div className="flex-1 bg-slate-50/30 p-8 dark:bg-slate-900/40">
                                 <div className="mb-6 flex items-center justify-between">
                                     <span className="flex items-center gap-2 text-[10px] font-black tracking-widest text-indigo-500 uppercase">
                                         <Volume2 className="h-3.5 w-3.5" />
@@ -63,7 +63,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                                     {/* AI Score Badge */}
                                     <div className="flex items-center gap-2 rounded-xl border border-purple-100 bg-white px-3 py-1.5 shadow-sm dark:border-purple-900/30 dark:bg-slate-800">
                                         <Sparkles className="h-3.5 w-3.5 text-purple-500" />
-                                        <span className="text-xs font-black text-slate-700 dark:text-slate-200">
+                                        <span className="text-xs font-black text-slate-700 dark:text-slate-300">
                                             {t('response_card.ai_score')}: {item.score_ai ?? '0.0'}
                                         </span>
                                     </div>
@@ -89,7 +89,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                                                 <FileText className="h-3 w-3" />
                                                 {t('response_card.transcript')}
                                             </div>
-                                            <div className="rounded-2xl border border-slate-100 bg-white/80 p-4 text-sm leading-relaxed text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
+                                            <div className="rounded-2xl border border-slate-100 bg-white/80 p-4 text-sm leading-relaxed text-slate-600 shadow-sm dark:border-slate-700/50 dark:bg-slate-950/50 dark:text-slate-300">
                                                 {item.transcript}
                                             </div>
                                         </div>
@@ -134,7 +134,7 @@ function AIReviewHelper({ review }: { review: string }) {
             <div className="relative overflow-hidden rounded-2xl border border-purple-100 bg-white shadow-sm dark:border-purple-900/20 dark:bg-slate-900">
                 {/* Score & Level Header */}
                 {(data.score || data.level) && (
-                    <div className="flex items-center justify-between border-b border-purple-50 bg-purple-50/30 px-4 py-3 dark:border-purple-900/20 dark:bg-purple-900/10">
+                    <div className="flex items-center justify-between border-b border-purple-50 bg-purple-50/30 px-4 py-3 dark:border-purple-900/30 dark:bg-purple-900/20">
                         <div className="flex items-center gap-3">
                             {data.level && (
                                 <span className="rounded-lg bg-purple-600 px-2.5 py-1 text-xs font-black text-white">
@@ -156,14 +156,14 @@ function AIReviewHelper({ review }: { review: string }) {
                 {/* Criteria Details */}
                 <div className="divide-y divide-slate-50 dark:divide-slate-800">
                     {criteria.map((c) => data[c.key] && (
-                        <div key={c.key} className="p-4 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
+                        <div key={c.key} className="p-4 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                             <div className="mb-1 flex items-center gap-2">
                                 <span className="text-xs">{c.icon}</span>
                                 <span className="text-[10px] font-black tracking-wider text-slate-400 uppercase break-words leading-tight">
                                     {c.label}
                                 </span>
                             </div>
-                            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                                 {data[c.key]}
                             </p>
                         </div>
@@ -173,11 +173,11 @@ function AIReviewHelper({ review }: { review: string }) {
 
                 {/* Fallback for general feedback if exists */}
                 {data.feedback && (
-                    <div className="border-t border-purple-50 bg-slate-50/30 p-4 dark:border-purple-900/20 dark:bg-slate-800/10">
+                    <div className="border-t border-purple-50 bg-slate-50/30 p-4 dark:border-purple-900/30 dark:bg-slate-800/30">
                         <div className="mb-1 text-[10px] font-black tracking-wider text-purple-400 uppercase">
                             {t('response_card.general_feedback')}
                         </div>
-                        <p className="text-sm italic leading-relaxed text-slate-600 dark:text-slate-400">
+                        <p className="text-sm italic leading-relaxed text-slate-600 dark:text-slate-300">
                             {data.feedback}
                         </p>
                     </div>

@@ -6,9 +6,16 @@ use App\Models\Part;
 use App\Models\Question;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
+use App\Services\FileUploadService;
 
 class QuestionController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -32,12 +39,10 @@ class QuestionController extends Controller
     {
         try {
             $data = $request->validated();
+            $this->authorize('update', Part::findOrFail($data['part_id']));
 
             if ($request->hasFile('audio_path')) {
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('parts/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'questions/audio');
             } else {
                 $data['audio_path'] = null;
             }
@@ -72,14 +77,12 @@ class QuestionController extends Controller
     public function update(UpdateQuestionRequest $request, Question $question)
     {
         try {
+            $this->authorize('update', $question);
             $data = $request->validated();
             $oldFilePath = null;
             if ($request->hasFile('audio_path')) {
-                $oldFilePath = str_replace('/storage/', '', $question->audio_path);
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('questions/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $oldFilePath = $question->audio_path;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'questions/audio');
             } else {
                 $data['audio_path'] = $question->audio_path;
             }
@@ -87,7 +90,7 @@ class QuestionController extends Controller
             $question->update($data);
 
             if ($oldFilePath) {
-                \Storage::disk('public')->delete($oldFilePath);
+                $this->fileUploadService->deleteFile($oldFilePath);
             }
 
             return redirect()->back()->with('success', 'Question updated successfully.');
@@ -103,11 +106,11 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         try {
+            $this->authorize('delete', $question);
             $question->delete();
 
             if ($question->audio_path) {
-                $filePath = str_replace('/storage/', '', $question->audio_path);
-                \Storage::disk('public')->delete($filePath);
+                $this->fileUploadService->deleteFile($question->audio_path);
             }
 
             return redirect()->back()->with('success', 'Question deleted successfully.');

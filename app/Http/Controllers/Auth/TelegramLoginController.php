@@ -42,7 +42,7 @@ class TelegramLoginController extends Controller
 
     private function isTelegramDataValid(array $data): bool
     {
-        $botToken = env('MultitestUzBot_TOKEN');
+        $botToken = config('services.telegram.bot_token');
         if (!isset($data['hash'])) {
             return false;
         }

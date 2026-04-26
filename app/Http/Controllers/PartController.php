@@ -6,9 +6,16 @@ use App\Models\Part;
 use App\Http\Requests\StorePartRequest;
 use App\Http\Requests\UpdatePartRequest;
 use Illuminate\Validation\ValidationException;
+use App\Services\FileUploadService;
 
 class PartController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -32,12 +39,10 @@ class PartController extends Controller
     {
         try {
             $data = $request->validated();
+            $this->authorize('update', \App\Models\Test::findOrFail($data['test_id']));
 
             if ($request->hasFile('audio_path')) {
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('parts/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'parts/audio');
             } else {
                 $data['audio_path'] = null;
             }
@@ -75,14 +80,12 @@ class PartController extends Controller
     public function update(UpdatePartRequest $request, Part $part)
     {
         try {
+            $this->authorize('update', $part);
             $data = $request->validated();
             $oldFilePath = null;
             if ($request->hasFile('audio_path')) {
-                $oldFilePath = str_replace('/storage/', '', $part->audio_path);
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('parts/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $oldFilePath = $part->audio_path;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'parts/audio');
             } else {
                 $data['audio_path'] = $part->audio_path;
             }
@@ -90,7 +93,7 @@ class PartController extends Controller
             $part->update($data);
 
             if ($oldFilePath) {
-                \Storage::disk('public')->delete($oldFilePath);
+                $this->fileUploadService->deleteFile($oldFilePath);
             }
 
             return redirect()->back()->with('success', 'Part updated successfully.');
@@ -109,11 +112,11 @@ class PartController extends Controller
     public function destroy(Part $part)
     {
         try {
+            $this->authorize('delete', $part);
             $part->delete();
 
             if ($part->audio_path) {
-                $filePath = str_replace('/storage/', '', $part->audio_path);
-                \Storage::disk('public')->delete($filePath);
+                $this->fileUploadService->deleteFile($part->audio_path);
             }
 
             return redirect()->back()->with('success', 'Part deleted successfully.');

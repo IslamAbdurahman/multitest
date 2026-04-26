@@ -26,7 +26,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                 const globalIndex = index + 1;
 
                 // Calculate total score for this specific part
-                const partScore = item?.ai_score_avg ?? 0;
+                const partScore = Number(item?.ai_score_avg ?? 0);
                 const totalQuestions = item.attempt_answers?.length || 0;
 
                 return (
@@ -35,7 +35,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                         className={`overflow-hidden rounded-[2rem] border transition-all duration-500 ease-in-out ${
                             isOpen
                                 ? 'border-indigo-200 bg-white shadow-2xl shadow-indigo-500/10 dark:border-indigo-500/30 dark:bg-slate-900'
-                                : 'border-slate-100 bg-slate-50/50 hover:bg-white dark:border-slate-800 dark:bg-slate-900/40'
+                                : 'border-slate-100 bg-slate-50/50 hover:bg-white dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900'
                         }`}
                     >
                         {/* Accordion Header */}
@@ -50,7 +50,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-black transition-all duration-300 ${
                                         isOpen
                                             ? 'scale-110 bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-none'
-                                            : 'border border-slate-100 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800'
+                                            : 'border border-slate-100 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-500'
                                     }`}
                                 >
                                     {globalIndex.toString().padStart(2, '0')}
@@ -88,7 +88,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                 </div>
 
                                 <div
-                                    className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? 'rotate-180 bg-indigo-50 text-indigo-600' : 'bg-slate-100 text-slate-400'}`}
+                                    className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? 'rotate-180 bg-indigo-50 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'}`}
                                 >
                                     <ChevronDown className="h-5 w-5" />
                                 </div>
@@ -145,7 +145,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                             <span className="text-[10px] font-black tracking-[0.25em] whitespace-nowrap text-slate-400 uppercase">
                                                 {t('attempt_details.response_details')}
                                             </span>
-                                            <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                                            <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800/50" />
                                         </div>
 
                                         <div className="rounded-3xl bg-slate-50/50 p-2 dark:bg-slate-950/30">

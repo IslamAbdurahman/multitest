@@ -79,7 +79,7 @@ export default function AttemptShow() {
                 {/* 📊 SCORE & STATS GRID */}
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 sm:gap-6">
                     {/* Main Score Card */}
-                    <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md sm:rounded-3xl sm:p-8 lg:col-span-1">
+                    <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl sm:p-8 lg:col-span-1">
                         <div className="relative z-10 flex flex-col items-center justify-center space-y-2 text-center">
                             <div className="text-xs font-black tracking-widest text-slate-400 uppercase">{t('attempt_show.final_score')}</div>
                             <div className="relative">
@@ -92,7 +92,7 @@ export default function AttemptShow() {
                                         stroke="currentColor"
                                         strokeWidth="8"
                                         fill="transparent"
-                                        className="text-slate-100"
+                                        className="text-slate-100 dark:text-slate-800"
                                     />
                                     <circle
                                         cx="64"
@@ -108,11 +108,11 @@ export default function AttemptShow() {
                                     />
                                 </svg>
                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                    <span className="text-4xl font-black text-slate-900 tabular-nums">
+                                    <span className="text-4xl font-black text-slate-900 dark:text-white tabular-nums">
                                         {attempt?.score != null
-                                            ? Number(attempt.score.toFixed(2))
+                                            ? Number(attempt.score).toFixed(2)
                                             : attempt?.ai_score_avg != null
-                                              ? Number(attempt.ai_score_avg.toFixed(2))
+                                              ? Number(attempt.ai_score_avg).toFixed(2)
                                               : '—'}
                                     </span>
                                     <span className="text-xs font-bold text-slate-400">/ 75</span>
@@ -122,7 +122,7 @@ export default function AttemptShow() {
                     </div>
 
                     {/* Timeline & Metadata Card */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:rounded-3xl sm:p-8 lg:col-span-2">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl sm:p-8 lg:col-span-2">
                         <div className="grid h-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-8">
                             <MetaItem
                                 label={t('attempt_show.started_at')}
@@ -166,10 +166,10 @@ export default function AttemptShow() {
                 {/* 🧩 DETAILED ANSWERS SECTION */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-4 px-2">
-                        <h3 className="text-xl font-bold text-slate-800">{t('attempt_show.question_breakdown')}</h3>
-                        <div className="h-[1px] flex-1 bg-slate-200" />
+                        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200">{t('attempt_show.question_breakdown')}</h3>
+                        <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
                     </div>
-                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
+                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl">
                         <AttemptPartAccordion
                             attempt_parts={attempt.attempt_parts ?? []}
                             isAdmin={isAdmin}
@@ -199,7 +199,7 @@ function MetaItem({ label, value, subValue, icon, color = 'text-slate-800' }: Me
                 <span className="text-base">{icon}</span>
                 {label}
             </div>
-            <p className={`text-lg leading-tight font-bold ${color}`}>{value}</p>
+            <p className={`text-lg leading-tight font-bold dark:text-white ${color}`}>{value}</p>
             {subValue && <p className="text-xs font-medium tracking-tight text-slate-400">{subValue}</p>}
         </div>
     );

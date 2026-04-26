@@ -13,7 +13,7 @@ class MultitestUzBotService
 
     public function __construct()
     {
-        $this->telegram = new Api(env('MultitestUzBot_TOKEN'));
+        $this->telegram = new Api(config('services.telegram.bot_token'));
     }
 
     /**

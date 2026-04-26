@@ -8,10 +8,17 @@ use App\Http\Requests\UpdateTestRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Services\FileUploadService;
 use Inertia\Inertia;
 
 class TestController extends Controller
 {
+    protected FileUploadService $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
 
     public function allJson(Request $request)
     {
@@ -121,10 +128,7 @@ class TestController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('audio_path')) {
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('tests/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'tests/audio');
             } else {
                 $data['audio_path'] = '/en/audio/test-intro.mp3';
             }
@@ -148,9 +152,7 @@ class TestController extends Controller
     {
         try {
 
-            if (!Auth::user()->hasRole(['Admin', 'Teacher'])) {
-                return back()->with('error', "You are not allowed to access this page");
-            }
+            $this->authorize('view', $test);
 
             return Inertia::render('test/show', [
                 'test' => $test->load([
@@ -185,14 +187,12 @@ class TestController extends Controller
     public function update(UpdateTestRequest $request, Test $test)
     {
         try {
+            $this->authorize('update', $test);
             $data = $request->validated();
             $oldFilePath = null;
             if ($request->hasFile('audio_path')) {
-                $oldFilePath = str_replace('/storage/', '', $test->audio_path);
-                $file = $request->file('audio_path');
-                $fileName = uniqid() . '_' . time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('tests/audio', $fileName, 'public');
-                $data['audio_path'] = '/storage/' . $filePath;
+                $oldFilePath = $test->audio_path;
+                $data['audio_path'] = $this->fileUploadService->uploadAudio($request->file('audio_path'), 'tests/audio');
             } else {
                 $data['audio_path'] = $test->audio_path;
             }
@@ -200,7 +200,7 @@ class TestController extends Controller
             $test->update($data);
 
             if ($oldFilePath) {
-                \Storage::disk('public')->delete($oldFilePath);
+                $this->fileUploadService->deleteFile($oldFilePath);
             }
 
             return redirect()->back()->with('success', 'Test updated successfully.');
@@ -219,11 +219,11 @@ class TestController extends Controller
     public function destroy(Test $test)
     {
         try {
+            $this->authorize('delete', $test);
             $test->delete();
 
             if ($test->audio_path) {
-                $filePath = str_replace('/storage/', '', $test->audio_path);
-                \Storage::disk('public')->delete($filePath);
+                $this->fileUploadService->deleteFile($test->audio_path);
             }
 
             return redirect()->back()->with('success', 'Test deleted successfully.');

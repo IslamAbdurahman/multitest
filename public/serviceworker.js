@@ -48,7 +48,9 @@ self.addEventListener("fetch", event => {
                 return response;
             })
             .catch(() => {
-                return caches.match(event.request);
+                return caches.match(event.request).then(response => {
+                    return response || new Response('Connection failed', { status: 503 });
+                });
             })
     )
 });

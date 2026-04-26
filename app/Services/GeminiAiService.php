@@ -13,13 +13,13 @@ use Gemini\Enums\ResponseMimeType;
 class GeminiAiService
 {
     protected $client;
-    // Update this to the current stable model (e.g., gemini-2.0-flash or gemini-2.5-flash)
+    // Use the model available in the environment
     protected string $model = 'gemini-2.5-flash-lite';
 
 
     public function __construct()
     {
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
         if (empty($apiKey)) {
             \Illuminate\Support\Facades\Log::error('GEMINI_API_KEY is not set in .env file');
         }

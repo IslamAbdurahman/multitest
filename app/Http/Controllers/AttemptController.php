@@ -170,6 +170,7 @@ class AttemptController extends Controller
     public function show(Attempt $attempt)
     {
         try {
+            $this->authorize('view', $attempt);
             $resAttempt = Attempt::query()
                 ->select('attempts.*')
                 ->where('id', '=', $attempt->id)
@@ -217,6 +218,7 @@ class AttemptController extends Controller
     public function evaluate(Request $request, Attempt $attempt)
     {
         try {
+            $this->authorize('update', $attempt);
             $request->validate([
                 'score' => 'required|numeric|min:0|max:75',
                 'review' => 'nullable|string',
@@ -240,6 +242,7 @@ class AttemptController extends Controller
     public function destroy(Attempt $attempt)
     {
         try {
+            $this->authorize('delete', $attempt);
             $attempt->delete();
 
             return redirect()->back()->with('success', 'Attempt deleted successfully.');
@@ -254,6 +257,7 @@ class AttemptController extends Controller
     public function reEvaluate(Attempt $attempt)
     {
         try {
+            $this->authorize('update', $attempt);
             if (!auth()->user()->hasRole('Admin')) {
                 abort(403);
             }

@@ -185,9 +185,11 @@ export default function QuestionPlayer({ attempt_part }: any) {
         fetch(route('practice.save_answers', attempt_part.id), {
             method: 'POST',
             body: form,
+            credentials: 'same-origin',
             headers: {
                 'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
                 'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
             },
         })
             .then(async response => {
@@ -226,9 +228,11 @@ export default function QuestionPlayer({ attempt_part }: any) {
         fetch(route('practice.save_answers', attempt_part.id), {
             method: 'POST',
             body: form,
+            credentials: 'same-origin',
             headers: {
                 'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
                 'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
             },
         })
             .then(async (response) => {
