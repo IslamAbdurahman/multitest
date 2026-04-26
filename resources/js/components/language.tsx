@@ -1,4 +1,5 @@
 import AppearanceTabs from '@/components/appearance-tabs';
+import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,6 +12,12 @@ const LanguageBar = () => {
         i18n.changeLanguage(lang);
         localStorage.setItem('lang', lang);
         setOpen(false);
+        router.get(`/lang/${lang}`, {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Optional: handle success
+            }
+        });
     };
 
     // Close dropdown on outside click

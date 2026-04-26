@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { useCallback, useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
@@ -48,7 +49,14 @@ export function initializeTheme() {
 }
 
 export function useAppearance() {
-    const [appearance, setAppearance] = useState<Appearance>('system');
+    const { props } = usePage();
+    const [appearance, setAppearance] = useState<Appearance>(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('appearance') as Appearance;
+            if (saved) return saved;
+        }
+        return (props.appearance as Appearance) || 'system';
+    });
 
     const updateAppearance = useCallback((mode: Appearance) => {
         setAppearance(mode);
@@ -64,10 +72,12 @@ export function useAppearance() {
 
     useEffect(() => {
         const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        if (savedAppearance && savedAppearance !== appearance) {
+            updateAppearance(savedAppearance);
+        }
 
         return () => mediaQuery()?.removeEventListener('change', handleSystemThemeChange);
-    }, [updateAppearance]);
+    }, [appearance, updateAppearance]);
 
     return { appearance, updateAppearance } as const;
 }

@@ -6,17 +6,19 @@ import CreateAttemptModal from '@/components/mock/create-attempt-modal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Mock, User } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Welcome() {
     const { mock, auth } = usePage<{
-        auth: User;
+        auth: { user: User };
         mock: Mock;
     }>().props;
 
     const { t } = useTranslation();
     const isMobile = useIsMobile();
+
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
@@ -26,6 +28,7 @@ export default function Welcome() {
         const user = tg?.initDataUnsafe?.user;
 
         if (!auth?.user && user) {
+            setIsLoggingIn(true);
             fetch('/webapp-login', {
                 method: 'POST',
                 headers: {
@@ -38,11 +41,39 @@ export default function Welcome() {
                 .then((data) => {
                     if (data.success && data.redirect) {
                         router.visit(data.redirect);
+                    } else {
+                        setIsLoggingIn(false);
                     }
                 })
-                .catch((err) => console.error('Telegram WebApp login error:', err));
+                .catch((err) => {
+                    console.error('Telegram WebApp login error:', err);
+                    setIsLoggingIn(false);
+                });
         }
     }, [auth?.user]);
+
+    if (isLoggingIn) {
+        return (
+            <div className="fixed inset-0 flex flex-col items-center justify-center bg-background z-50">
+                <div className="relative mb-8">
+                    <img 
+                        src="/images/logo/logo.png" 
+                        alt="Logo" 
+                        className="h-20 w-auto animate-pulse"
+                    />
+                    <div className="absolute -inset-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                </div>
+                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                    <div className="flex gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
+                    </div>
+                    Checking your session...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>

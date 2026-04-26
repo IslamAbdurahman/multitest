@@ -22,6 +22,13 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
+        // Sync i18n language with server-side locale...
+        if (props.initialPage.props.locale) {
+            import('./i18n').then(({ default: i18n }) => {
+                i18n.changeLanguage(props.initialPage.props.locale as string);
+            });
+        }
+
         root.render(
             <TelegramThemeProvider>
                 <App {...props} />
