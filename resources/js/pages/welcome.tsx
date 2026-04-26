@@ -59,7 +59,7 @@ export default function Welcome() {
                     <img 
                         src="/images/logo/logo.png" 
                         alt="Logo" 
-                        className="h-20 w-auto animate-pulse"
+                        className="h-24 w-24 rounded-3xl object-cover animate-pulse shadow-2xl"
                     />
                     <div className="absolute -inset-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
                 </div>
@@ -69,7 +69,7 @@ export default function Welcome() {
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
                     </div>
-                    Checking your session...
+                    {t('auth.signing_in', 'Signing you in...')}
                 </div>
             </div>
         );

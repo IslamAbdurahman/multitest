@@ -1,5 +1,5 @@
 import { Head, router, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import LoginCard from '@/components/auth/login-card';
@@ -15,8 +15,9 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword }: LoginProps) {
-    const { auth } = usePage<{ auth: User }>().props;
+    const { auth } = usePage<{ auth: { user: User } }>().props;
     const { t } = useTranslation();
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     useEffect(() => {
         // Initialize Telegram WebApp
@@ -30,6 +31,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
         // ✅ Attempt Auto-Login for Telegram WebApp users if not already authenticated
         if (!auth?.user && user) {
+            setIsLoggingIn(true);
             fetch('/webapp-login', {
                 method: 'POST',
                 headers: {
@@ -42,13 +44,39 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 .then((data) => {
                     if (data.success && data.redirect) {
                         router.visit(data.redirect);
+                    } else {
+                        setIsLoggingIn(false);
                     }
                 })
                 .catch((err) => {
                     console.error('Telegram Login Error:', err);
+                    setIsLoggingIn(false);
                 });
         }
     }, [auth?.user]);
+
+    if (isLoggingIn) {
+        return (
+            <div className="fixed inset-0 flex flex-col items-center justify-center bg-background z-50">
+                <div className="relative mb-8">
+                    <img 
+                        src="/images/logo/logo.png" 
+                        alt="Logo" 
+                        className="h-24 w-24 rounded-3xl object-cover animate-pulse shadow-2xl"
+                    />
+                    <div className="absolute -inset-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                </div>
+                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                    <div className="flex gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
+                    </div>
+                    {t('auth.signing_in', 'Signing you in...')}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <AuthLayout title={t('login.title')} description={t('login.description')}>
