@@ -47,16 +47,24 @@ export default function Mock() {
         <AppLayout breadcrumbs={breadcrumbs}>
             {/* Added translation for the Meta Title */}
             <Head title={t('sidebar.mock')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="flex items-center justify-end">
-                    <MobileSearchModal data={data} setData={setData} handleSubmit={handleSubmit} />
-                    <div className={'hidden lg:block'}>
-                        <SearchForm handleSubmit={handleSubmit} setData={setData} data={data} />
+            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
+                <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center sm:gap-4">
+                    <div>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('sidebar.mock')}</h1>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <MobileSearchModal data={data} setData={setData} handleSubmit={handleSubmit} />
+                        <div className="hidden lg:block">
+                            <SearchForm handleSubmit={handleSubmit} setData={setData} data={data} />
+                        </div>
                     </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <MockTable {...mock} searchData={data} />
+                <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                    <div className="overflow-x-auto p-2">
+                        <MockTable {...mock} searchData={data} />
+                    </div>
                 </div>
             </div>
         </AppLayout>

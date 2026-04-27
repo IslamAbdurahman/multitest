@@ -41,8 +41,11 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
 
     const isMobile = useIsMobile();
     
-    const UserCard = ({ item, globalIndex }: { item: any, globalIndex: number }) => (
-        <div className="tma-card group relative">
+    const UserCard = ({ item, globalIndex }: { item: any; globalIndex: number }) => (
+        <div
+            className="tma-card group relative cursor-pointer"
+            onClick={() => item.id && router.get(route('user.show', item.id))}
+        >
             <div className="mb-4 flex items-center justify-between">
                 <span className="font-black text-slate-300 dark:text-slate-700">
                     #{globalIndex.toString().padStart(2, '0')}
@@ -60,7 +63,7 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                 </div>
             </div>
 
-            <Link href={route('user.show', item.id)} className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
                     <UserCircle className="h-7 w-7" />
                 </div>
@@ -72,7 +75,7 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                         @{item.username}
                     </span>
                 </div>
-            </Link>
+            </div>
 
             <div className="mt-5 grid grid-cols-2 gap-4 border-y border-slate-50 py-4 dark:border-slate-800/50">
                 <div className="space-y-1">
@@ -98,7 +101,10 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                         <span className="truncate">{item.phone || '—'}</span>
                     </div>
                 </div>
-                <div className="flex items-center gap-1 rounded-2xl bg-slate-50 p-1.5 transition-colors group-hover:bg-slate-100 dark:bg-slate-800/50 dark:group-hover:bg-slate-800">
+                <div 
+                    className="flex items-center gap-1 rounded-2xl bg-slate-50 p-1.5 transition-colors group-hover:bg-slate-100 dark:bg-slate-800/50 dark:group-hover:bg-slate-800"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     <UpdateUserModal user={item} />
                     <div className="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
                     <DeleteItemModal item={item} onDelete={handleDelete} />
@@ -119,10 +125,8 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                 </div>
             ) : (
                 /* 💻 DESKTOP TABLE VIEW */
-                <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
                             <thead className="bg-slate-50/50 text-[10px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/50">
                                 <tr>
                                     <th className="px-6 py-5">#</th>
@@ -138,7 +142,11 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                 {user.data.map((item, index) => {
                                     const globalIndex = (user.current_page - 1) * user.per_page + index + 1;
                                     return (
-                                        <tr key={item.id} className="group transition-colors hover:bg-muted/30">
+                                        <tr 
+                                            key={item.id} 
+                                            className="group cursor-pointer transition-colors hover:bg-muted/30"
+                                            onClick={() => router.get(route('user.show', item.id))}
+                                        >
 
                                             <td className="px-6 py-4">
                                                 <span className="font-black text-slate-300 dark:text-slate-600">
@@ -147,7 +155,11 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                             </td>
 
                                             <td className="px-6 py-4">
-                                                <Link href={route('user.show', item.id)} className="flex items-center gap-3">
+                                                <Link 
+                                                    href={route('user.show', item.id)} 
+                                                    className="flex items-center gap-3"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
                                                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-400 transition-all group-hover:bg-indigo-600 group-hover:text-white dark:bg-slate-800">
                                                         <UserCircle className="h-6 w-6" />
                                                     </div>
@@ -228,7 +240,10 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
 
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <div className="flex items-center gap-1 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50">
+                                                    <div 
+                                                        className="flex items-center gap-1 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
 
                                                         <UpdateUserModal user={item} />
                                                         <div className="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
@@ -242,7 +257,6 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                             </tbody>
                         </table>
                     </div>
-                </div>
             )}
 
 

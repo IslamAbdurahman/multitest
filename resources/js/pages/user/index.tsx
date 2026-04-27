@@ -16,7 +16,11 @@ export default function User() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t('nav.users'), // Standardized nav key
+            title: t('sidebar.dashboard'),
+            href: route('dashboard'),
+        },
+        {
+            title: t('nav.users'),
             href: '/user',
         },
     ];
@@ -32,28 +36,40 @@ export default function User() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/user', data);
+        router.get(
+            '/user',
+            {
+                search: data.search,
+                role: data.role,
+                per_page: data.per_page,
+            },
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
     };
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        setData({
-            ...data,
+        const urlParams = new URLSearchParams(window.location.search);
+        setData((prevData) => ({
+            ...prevData,
             search: urlParams.get('search') || '',
             role: urlParams.get('role') || '',
-        });
-    }, [location.search]);
+            per_page: Number(urlParams.get('per_page')) || user.per_page,
+        }));
+    }, [window.location.search]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('nav.users')} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-8">
+            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
                 {/* Header Actions */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center sm:gap-4">
                     <div>
-                        <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">{t('user_management.title')}</h1>
-                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('user_management.title')}</h1>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
                             {t('user_management.description', { count: user.total })}
                         </p>
                     </div>
@@ -67,8 +83,8 @@ export default function User() {
                 </div>
 
                 {/* Table Container */}
-                <div className="rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                    <div className="overflow-x-auto p-2">
+                <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                    <div className="overflow-x-auto">
                         <UserTable {...user} searchData={data} />
                     </div>
                 </div>

@@ -27,7 +27,7 @@ export default function UserShow() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('user_management.user_profile')} - ${user.name}`} />
 
-            <div className="flex h-full flex-1 flex-col gap-8 p-4 md:p-8">
+            <div className="flex h-full flex-1 flex-col gap-4 p-2 sm:gap-6 sm:p-4 lg:gap-8 lg:p-8">
                 {/* Header Section */}
                 <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
@@ -67,7 +67,7 @@ export default function UserShow() {
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="overflow-hidden rounded-[2rem] border-none bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-xl shadow-blue-500/10">
+                    <Card className="overflow-hidden rounded-xl border-none bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-xl shadow-blue-500/10">
                         <CardContent className="flex items-center justify-between p-6 text-white">
                             <div>
                                 <p className="text-xs font-bold opacity-70 uppercase tracking-widest">{t('exam_attempts.title')}</p>
@@ -79,7 +79,7 @@ export default function UserShow() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <Card className="rounded-xl border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                         <CardContent className="flex items-center justify-between p-6">
                             <div>
                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Tests Created</p>
@@ -91,7 +91,7 @@ export default function UserShow() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <Card className="rounded-xl border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                         <CardContent className="flex items-center justify-between p-6">
                             <div>
                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Mocks Organized</p>
@@ -103,7 +103,7 @@ export default function UserShow() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-[2rem] border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <Card className="rounded-xl border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                         <CardContent className="flex items-center justify-between p-6">
                             <div>
                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Last Activity</p>
@@ -123,10 +123,10 @@ export default function UserShow() {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                     {/* Left Column: Profile Card */}
                     <div className="space-y-6">
-                        <div className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
                             <div className="flex flex-col items-center text-center">
                                 <div className="relative mb-6">
-                                    <div className="flex h-32 w-32 items-center justify-center rounded-[2.5rem] bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                    <div className="flex h-32 w-32 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
                                         <UserIcon size={64} />
                                     </div>
                                     <div className="absolute -right-2 -bottom-2 h-8 w-8 rounded-2xl border-4 border-white bg-emerald-500 dark:border-slate-900"></div>
@@ -180,7 +180,7 @@ export default function UserShow() {
                     {/* Right Column: Activity / Last Attempt */}
                     <div className="lg:col-span-2 space-y-6">
                         {user.last_attempt ? (
-                            <div className="rounded-[2.5rem] border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
                                 <div className="mb-6 flex items-center justify-between">
                                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Latest Exam Performance</h3>
                                     <Link 
@@ -209,7 +209,7 @@ export default function UserShow() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex h-64 flex-col items-center justify-center rounded-[2.5rem] border-2 border-dashed border-slate-200 p-12 text-center dark:border-slate-800">
+                            <div className="flex h-64 flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 p-8 text-center dark:border-slate-800 sm:p-12">
                                 <div className="mb-4 rounded-2xl bg-slate-50 p-4 dark:bg-slate-800">
                                     <Activity className="h-8 w-8 text-slate-300" />
                                 </div>

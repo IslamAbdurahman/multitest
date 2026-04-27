@@ -138,10 +138,8 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                 </div>
             ) : (
                 /* 💻 DESKTOP TABLE VIEW */
-                <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
                             <thead className="bg-slate-50/50 text-[10px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/50">
                                 <tr>
                                     <th className="px-6 py-5">#</th>
@@ -273,7 +271,6 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                             </tbody>
                         </table>
                     </div>
-                </div>
             )}
 
             {/* Pagination Component logic remains below */}

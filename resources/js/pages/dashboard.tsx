@@ -36,7 +36,7 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('sidebar.dashboard')} />
 
-            <div className="flex h-full min-w-0 flex-1 flex-col gap-6 p-4 sm:p-6 md:gap-8">
+            <div className="flex h-full min-w-0 flex-1 flex-col gap-4 p-2 sm:gap-6 sm:p-4 lg:gap-8 lg:p-8">
                 {/* 🌈 Welcome Header Section */}
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -47,8 +47,7 @@ export default function Dashboard() {
 
                 {/* 📊 Top Stats Grid */}
                 <div className="grid gap-6 md:grid-cols-3">
-                    {/* Attempts Card */}
-                    <Card className="relative overflow-hidden rounded-[2rem] border-none bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-xl shadow-blue-500/20">
+                    <Card className="relative overflow-hidden rounded-xl border-none bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-xl shadow-blue-500/20">
                         <CardContent className="flex items-center justify-between p-6 text-white">
                             <div>
                                 <p className="text-sm font-medium opacity-80">{t('exam_attempts.title')}</p>
@@ -62,7 +61,7 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Last Attempt Card */}
-                    <Card className="relative overflow-hidden rounded-[2rem] border-border bg-card shadow-sm transition-all hover:shadow-md">
+                    <Card className="rounded-xl border-border bg-card shadow-sm transition-all hover:shadow-md">
 
                         <CardContent className="flex items-center justify-between p-6">
                             <div>
@@ -82,7 +81,7 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Profile Card */}
-                    <Card className="rounded-[2rem] border-border bg-card shadow-sm">
+                    <Card className="rounded-xl border-border bg-card shadow-sm">
 
                         <CardContent className="flex h-full items-center gap-4 p-6">
                             <div className="relative">

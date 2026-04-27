@@ -26,7 +26,7 @@ export default function AttemptShow() {
 
             <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto w-full max-w-7xl space-y-6 p-4 duration-700 sm:space-y-8 sm:p-6">
                 {/* 🎨 PREMIUM HEADER SECTION */}
-                <div className="relative overflow-hidden rounded-3xl bg-slate-900 p-6 text-white shadow-2xl sm:rounded-[2.5rem] sm:p-8 lg:p-12">
+                <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-6 text-white shadow-2xl sm:p-8 lg:p-10">
                     {/* Decorative Background Glows */}
                     <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-[100px]" />
                     <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/10 blur-[100px]" />
@@ -79,7 +79,7 @@ export default function AttemptShow() {
                 {/* 📊 SCORE & STATS GRID */}
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 sm:gap-6">
                     {/* Main Score Card */}
-                    <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl sm:p-8 lg:col-span-1">
+                    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 lg:col-span-1">
                         <div className="relative z-10 flex flex-col items-center justify-center space-y-2 text-center">
                             <div className="text-xs font-black tracking-widest text-slate-400 uppercase">{t('attempt_show.final_score')}</div>
                             <div className="relative">
@@ -122,7 +122,7 @@ export default function AttemptShow() {
                     </div>
 
                     {/* Timeline & Metadata Card */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl sm:p-8 lg:col-span-2">
+                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-2">
                         <div className="grid h-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-8">
                             <MetaItem
                                 label={t('attempt_show.started_at')}
@@ -150,7 +150,7 @@ export default function AttemptShow() {
 
                 {/* 💬 FEEDBACK SECTION */}
                 {attempt.review && (
-                    <div className="group relative overflow-hidden rounded-2xl bg-indigo-600 p-6 text-white shadow-xl shadow-indigo-100 sm:rounded-3xl sm:p-8">
+                    <div className="group relative overflow-hidden rounded-xl bg-indigo-600 p-6 text-white shadow-xl shadow-indigo-100 sm:p-8">
                         <div className="absolute top-0 right-0 p-4 text-indigo-400/20 transition-transform group-hover:scale-110">
                             <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C20.1216 16 21.017 16.8954 21.017 18V21C21.017 22.1046 20.1216 23 19.017 23H16.017C14.9124 23 14.017 22.1046 14.017 21ZM14.017 11V14H21.017V11H14.017ZM14.017 1V4H21.017V1H14.017ZM3.0166 21V18C3.0166 16.8954 3.91203 16 5.0166 16H8.0166C9.12117 16 10.0166 16.8954 10.0166 18V21C10.0166 22.1046 9.12117 23 8.0166 23H5.0166C3.91203 23 3.0166 22.1046 3.0166 21ZM3.0166 11V14H10.0166V11H3.0166ZM3.0166 1V4H10.0166V1H3.0166Z" />
@@ -169,7 +169,7 @@ export default function AttemptShow() {
                         <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200">{t('attempt_show.question_breakdown')}</h3>
                         <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
                     </div>
-                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:rounded-3xl">
+                    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                         <AttemptPartAccordion
                             attempt_parts={attempt.attempt_parts ?? []}
                             isAdmin={isAdmin}
