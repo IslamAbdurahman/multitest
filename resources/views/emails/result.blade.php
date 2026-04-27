@@ -63,7 +63,7 @@
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:28px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="{{ url('/attempt/' . $attempt->id) }}"
+                                        <a href="{{ route('attempt.show', $attempt->id) }}"
                                            style="display:inline-block; padding:14px 32px; background-color:#4f46e5; color:#ffffff; text-decoration:none; font-size:14px; font-weight:700; border-radius:14px; letter-spacing:0.02em;">
                                             Natijani ko'rish →
                                         </a>

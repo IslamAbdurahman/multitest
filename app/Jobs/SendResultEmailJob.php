@@ -36,6 +36,7 @@ class SendResultEmailJob implements ShouldQueue
 
             // Reload attempt with ai_score_avg
             $attempt = Attempt::query()
+                ->select('attempts.*')
                 ->where('id', $this->attempt->id)
                 ->withAiScoreAvg()
                 ->with(['mock', 'test'])
