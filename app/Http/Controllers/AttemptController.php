@@ -258,7 +258,7 @@ class AttemptController extends Controller
     {
         try {
             $this->authorize('update', $attempt);
-            if (!auth()->user()->hasRole('Admin')) {
+            if (!auth()->user()->hasAnyRole(['Admin', 'Teacher'])) {
                 abort(403);
             }
 
