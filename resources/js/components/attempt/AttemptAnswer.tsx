@@ -18,11 +18,11 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                 return (
                     <div
                         key={item.id}
-                        className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-1 shadow-sm transition-all hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+                        className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-slate-100 bg-white p-1 shadow-sm transition-all hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
                     >
                         <div className="flex flex-col lg:flex-row">
                             {/* 📝 LEFT SIDE: THE QUESTION */}
-                            <div className="flex-1 p-8 lg:border-r lg:border-slate-100 dark:lg:border-slate-800">
+                            <div className="flex-1 p-4 sm:p-8 lg:border-r lg:border-slate-100 dark:lg:border-slate-800">
                                 <div className="mb-6 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-xs font-black text-slate-500 dark:bg-slate-800">
@@ -53,7 +53,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                             </div>
 
                             {/* 🎙️ RIGHT SIDE: THE RESPONSE */}
-                            <div className="flex-1 bg-slate-50/30 p-8 dark:bg-slate-900/40">
+                            <div className="flex-1 bg-slate-50/30 p-4 sm:p-8 dark:bg-slate-900/40">
                                 <div className="mb-6 flex items-center justify-between">
                                     <span className="flex items-center gap-2 text-[10px] font-black tracking-widest text-indigo-500 uppercase">
                                         <Volume2 className="h-3.5 w-3.5" />

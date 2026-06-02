@@ -38,11 +38,10 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                 : 'border-slate-100 bg-slate-50/50 hover:bg-white dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900'
                         }`}
                     >
-                        {/* Accordion Header */}
                         <button
                             type="button"
                             onClick={() => toggle(index)}
-                            className="group flex w-full items-center justify-between px-6 py-5 focus:outline-none"
+                            className="group flex w-full items-center justify-between px-4 py-4 sm:px-6 sm:py-5 focus:outline-none"
                         >
                             <div className="flex items-center gap-5">
                                 {/* Number Indicator */}

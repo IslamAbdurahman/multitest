@@ -24,7 +24,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                 <div
                                     className={`flex h-9 md:h-12 min-w-[2.25rem] md:min-w-[3rem] items-center justify-center gap-1 md:gap-2 rounded-lg md:rounded-[1.25rem] border md:border-4 px-2.5 md:px-4 transition-all duration-500 ease-out ${
                                         isActive
-                                            ? 'scale-105 border-indigo-100 bg-indigo-600 text-white shadow-xl shadow-indigo-200 dark:border-indigo-900/40 dark:shadow-none'
+                                            ? 'scale-105 border-primary/20 bg-primary text-primary-foreground shadow-xl shadow-primary/10 dark:border-primary/40 dark:shadow-none'
                                             : isCompleted
                                               ? 'border-slate-50 bg-slate-900 text-white dark:border-slate-800'
                                               : 'border-white bg-slate-100 text-slate-400 dark:border-slate-900 dark:bg-slate-800'
@@ -34,7 +34,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
 
                                     <span
                                         className={`text-[10px] md:text-[11px] font-black tracking-tight whitespace-nowrap uppercase ${
-                                            isActive ? 'text-white' : isCompleted ? 'text-slate-200' : 'text-slate-400'
+                                            isActive ? 'text-primary-foreground' : isCompleted ? 'text-slate-200' : 'text-slate-400'
                                         }`}
                                     >
                                         {p.part?.name}
@@ -42,7 +42,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                                 </div>
 
                                 {/* Pulse Effect for active step */}
-                                {isActive && <div className="absolute inset-0 -z-10 scale-110 animate-pulse rounded-[1rem] md:rounded-[1.25rem] bg-indigo-400/30" />}
+                                {isActive && <div className="absolute inset-0 -z-10 scale-110 animate-pulse rounded-[1rem] md:rounded-[1.25rem] bg-primary/20" />}
                             </div>
                         </div>
 
@@ -50,7 +50,7 @@ export default function StepTabs({ attempt_parts, active }: StepTabsProps) {
                         {!isLast && (
                             <div className="mx-1 md:mx-2 h-0.5 md:h-[3px] flex-1 lg:flex-none lg:w-16 rounded-full bg-slate-100 dark:bg-slate-800">
                                 <div
-                                    className="h-full bg-indigo-500 transition-all duration-1000 ease-in-out"
+                                    className="h-full bg-primary transition-all duration-1000 ease-in-out"
                                     style={{ width: isCompleted ? '100%' : '0%' }}
                                 />
                             </div>

@@ -24,9 +24,9 @@ export default function AttemptShow() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('sidebar.attempt')} - ${attempt.name ?? attempt.mock?.name ?? attempt.test?.name}`} />
 
-            <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto w-full max-w-7xl space-y-6 p-4 duration-700 sm:space-y-8 sm:p-6">
+            <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto w-full max-w-7xl space-y-4 p-1.5 duration-700 sm:space-y-8 sm:p-6">
                 {/* 🎨 PREMIUM HEADER SECTION */}
-                <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-6 text-white shadow-2xl sm:p-8 lg:p-10">
+                <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-4 text-white shadow-2xl sm:p-8 lg:p-10">
                     {/* Decorative Background Glows */}
                     <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-[100px]" />
                     <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/10 blur-[100px]" />

@@ -26,12 +26,12 @@ export default function Practice() {
             <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
                 {/* 1. Top Navigation & Progress */}
                 <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                    <div className="mx-auto max-w-5xl">
+                    <div className="mx-auto max-w-5xl px-2">
                         <StepTabs attempt_parts={attempt?.attempt_parts ?? []} active={0} />
                     </div>
                 </div>
 
-                <div className="mx-auto max-w-5xl px-6 py-12">
+                <div className="mx-auto max-w-5xl px-2.5 py-5 sm:px-8 sm:py-12">
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
                         {/* 📝 Left Side: Test Context (Col 7) */}
                         <div className="space-y-8 lg:col-span-7">
@@ -80,7 +80,7 @@ export default function Practice() {
 
                         {/* 🎙️ Right Side: Immersive Audio Card (Col 5) */}
                         <div className="lg:col-span-5">
-                            <div className="sticky top-8 overflow-hidden rounded-[2.5rem] bg-slate-900 p-10 text-white shadow-2xl shadow-indigo-500/20 dark:bg-slate-900 dark:ring-1 dark:ring-white/10">
+                            <div className="sticky top-8 overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-slate-900 p-5 sm:p-10 text-white shadow-2xl shadow-indigo-500/20 dark:bg-slate-900 dark:ring-1 dark:ring-white/10">
                                 <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-indigo-500/10 blur-[80px]"></div>
 
                                 <div className="relative space-y-8">

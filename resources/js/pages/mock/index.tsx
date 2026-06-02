@@ -47,7 +47,7 @@ export default function Mock() {
         <AppLayout breadcrumbs={breadcrumbs}>
             {/* Added translation for the Meta Title */}
             <Head title={t('sidebar.mock')} />
-            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-2 sm:gap-4 sm:p-4">
+            <div className="flex h-full flex-1 flex-col gap-3 rounded-xl p-1 sm:gap-4 sm:p-4">
                 <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center sm:gap-4">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('sidebar.mock')}</h1>
