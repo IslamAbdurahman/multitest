@@ -178,7 +178,7 @@
     --primary-foreground: var(--tg-theme-button-text-color, oklch(1 0 0));
     --secondary: var(--tg-theme-secondary-bg-color, oklch(0.97 0 0));
     --secondary-foreground: var(--tg-theme-text-color, oklch(0.15 0 0));
-    --muted: var(--tg-theme-hint-color, oklch(0.95 0.005 250));
+    --muted: var(--tg-theme-secondary-bg-color, oklch(0.95 0.005 250));
     --muted-foreground: var(--tg-theme-hint-color, oklch(0.45 0 0));
     --accent: var(--tg-theme-secondary-bg-color, oklch(0.97 0 0));
     --accent-foreground: var(--tg-theme-button-color, oklch(0.58 0.2 250));
@@ -217,7 +217,7 @@
     --primary-foreground: var(--tg-theme-button-text-color, oklch(0.985 0 0));
     --secondary: var(--tg-theme-secondary-bg-color, color-mix(in srgb, var(--tg-theme-bg-color, oklch(0.09 0.015 250)) 91%, white 9%));
     --secondary-foreground: var(--tg-theme-text-color, oklch(0.985 0 0));
-    --muted: var(--tg-theme-hint-color, color-mix(in srgb, var(--tg-theme-bg-color, oklch(0.09 0.015 250)) 95%, white 5%));
+    --muted: var(--tg-theme-secondary-bg-color, color-mix(in srgb, var(--tg-theme-bg-color, oklch(0.09 0.015 250)) 95%, white 5%));
     --muted-foreground: var(--tg-theme-hint-color, oklch(0.6 0 0));
     --accent: var(--tg-theme-secondary-bg-color, color-mix(in srgb, var(--tg-theme-bg-color, oklch(0.09 0.015 250)) 91%, white 9%));
     --accent-foreground: var(--tg-theme-text-color, oklch(0.985 0 0));

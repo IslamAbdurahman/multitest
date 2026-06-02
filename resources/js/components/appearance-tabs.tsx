@@ -21,7 +21,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
                     key={value}
                     onClick={() => updateAppearance(value)}
                     className={cn(
-                        'flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-all group-focus-visible:ring-2 group-focus-visible:ring-indigo-500 outline-none',
+                        'flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-all group-focus-visible:ring-2 group-focus-visible:ring-primary outline-none',
                         appearance === value
                             ? 'bg-card shadow-sm text-foreground'
                             : 'text-muted-foreground hover:bg-muted hover:text-foreground',
