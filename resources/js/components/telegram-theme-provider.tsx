@@ -60,3 +60,55 @@ export const useHaptic = () => {
 
     return { impact, notification, selection };
 };
+
+export function useTelegramMainButton(text: string, show: boolean, onClick: () => void, loading = false) {
+    useEffect(() => {
+        const tg = window.Telegram?.WebApp;
+        if (!tg || tg.platform === 'unknown') return;
+
+        const mainButton = tg.MainButton;
+        mainButton.setText(text);
+
+        if (show) {
+            mainButton.show();
+        } else {
+            mainButton.hide();
+        }
+
+        if (loading) {
+            mainButton.showProgress(false);
+        } else {
+            mainButton.hideProgress();
+        }
+
+        mainButton.onClick(onClick);
+
+        return () => {
+            mainButton.offClick(onClick);
+            mainButton.hide();
+        };
+    }, [text, show, onClick, loading]);
+}
+
+export function useTelegramBackButton(show: boolean, onClick: () => void) {
+    useEffect(() => {
+        const tg = window.Telegram?.WebApp;
+        if (!tg || tg.platform === 'unknown') return;
+
+        const backButton = tg.BackButton;
+
+        if (show) {
+            backButton.show();
+        } else {
+            backButton.hide();
+        }
+
+        backButton.onClick(onClick);
+
+        return () => {
+            backButton.offClick(onClick);
+            backButton.hide();
+        };
+    }, [show, onClick]);
+}
+

@@ -3,7 +3,9 @@ import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import LanguageBar from '@/components/language';
+import { useTelegramBackButton } from '@/components/telegram-theme-provider';
 import { type BreadcrumbItem } from '@/types';
+import { usePage, router } from '@inertiajs/react';
 
 import { type PropsWithChildren } from 'react';
 import { AppBottomNav } from '@/components/app-bottom-nav';
@@ -13,6 +15,16 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     breadcrumbs?: BreadcrumbItem[]
 }>) {
     const isMobile = useIsMobile();
+    const { url } = usePage();
+    const isDashboard = url === '/dashboard';
+
+    useTelegramBackButton(!isDashboard, () => {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            router.visit('/dashboard');
+        }
+    });
 
     return (
         <AppShell variant="sidebar">

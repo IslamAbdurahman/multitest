@@ -1,12 +1,32 @@
 import { TelegramThemeProvider, useHaptic } from '@/components/telegram-theme-provider';
 import { router, usePage } from '@inertiajs/react';
 import { FileText, History, Home, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export function AppBottomNav() {
     const page = usePage();
     const { t } = useTranslation();
     const { impact } = useHaptic();
+    const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.visualViewport) {
+                // If visual viewport height is significantly less than window height, virtual keyboard is likely open
+                setIsKeyboardOpen(window.visualViewport.height < window.innerHeight * 0.85);
+            }
+        };
+
+        window.visualViewport?.addEventListener('resize', handleResize);
+        return () => {
+            window.visualViewport?.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    if (isKeyboardOpen) {
+        return null;
+    }
 
     const mainNavItems = [
         {

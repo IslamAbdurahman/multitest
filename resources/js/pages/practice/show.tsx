@@ -1,6 +1,7 @@
 import { AppShell } from '@/components/app-shell';
 import QuestionPlayer from '@/components/practice/QuestionPlayer';
 import StepTabs from '@/components/practice/StepTabs';
+import { useHaptic } from '@/components/telegram-theme-provider';
 import { AttemptPart } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { CloudUpload, Info, Mic, ShieldCheck } from 'lucide-react';
@@ -11,10 +12,12 @@ import { toast, Toaster } from 'sonner';
 export default function PracticeShow() {
     const { attempt_part } = usePage<{ attempt_part: AttemptPart }>().props;
     const { t } = useTranslation();
+    const { notification } = useHaptic();
 
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.hidden) {
+                notification('warning');
                 toast.warning(t('practice_show.anti_cheat_warning_title'), {
                     description: t('practice_show.anti_cheat_warning_desc'),
                     duration: 5000,

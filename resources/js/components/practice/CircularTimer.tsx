@@ -21,22 +21,22 @@ export default function CircularTimer({ timeLeft, totalTime, phase }: CircularTi
     const isUploading = phase === 'uploading';
 
     const trackColor = isRecording
-        ? '#ef4444'
+        ? 'var(--color-destructive, #ef4444)'
         : isReady
-          ? '#f59e0b'
-          : '#6366f1';
+          ? 'var(--color-warning, #f59e0b)'
+          : 'var(--primary, #6366f1)';
 
     const bgTrackColor = isRecording
-        ? '#fee2e2'
+        ? 'rgba(239, 68, 68, 0.15)'
         : isReady
-          ? '#fef3c7'
-          : '#e0e7ff';
+          ? 'rgba(245, 158, 11, 0.15)'
+          : 'rgba(99, 102, 241, 0.15)';
 
     const timeColor = isRecording
-        ? '#dc2626'
+        ? 'var(--color-destructive, #dc2626)'
         : isReady
-          ? '#d97706'
-          : '#4f46e5';
+          ? 'var(--color-warning, #d97706)'
+          : 'var(--primary, #4f46e5)';
 
     const displayTime = () => {
         if (isUploading) return '--';

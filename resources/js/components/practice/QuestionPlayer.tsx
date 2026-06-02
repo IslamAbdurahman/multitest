@@ -1,4 +1,5 @@
 import CircularTimer from '@/components/practice/CircularTimer';
+import { useTelegramBackButton, useHaptic } from '@/components/telegram-theme-provider';
 import { router } from '@inertiajs/react';
 import { CloudUpload, Info, Maximize, Mic, Minimize, Timer, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,15 @@ export default function QuestionPlayer({ attempt_part }: any) {
     const [timer, setTimer] = useState(0);
     const [totalTime, setTotalTime] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
+
+    const { impact, selection, notification } = useHaptic();
+
+    // Show native BackButton to exit test with confirmation
+    useTelegramBackButton(phase !== 'uploading', () => {
+        if (confirm(t('question_player.exit_confirm', 'Haqiqatan ham testdan chiqmoqchimisiz? Natijalaringiz saqlanmasligi mumkin.'))) {
+            router.visit('/dashboard');
+        }
+    });
 
     const playerRef = useRef<HTMLDivElement>(null);
 
@@ -166,6 +176,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
             };
 
             recorder.start();
+            impact('medium');
             setPhase('recording');
             setTimer(question.answer_second);
             setTotalTime(question.answer_second);
@@ -209,6 +220,8 @@ export default function QuestionPlayer({ attempt_part }: any) {
             submitAnswerIncremental(lastAnswer);
         }
 
+        selection();
+
         if (index + 1 < questions.length) {
             setIndex((i) => i + 1);
             setPhase('audio');
@@ -237,6 +250,7 @@ export default function QuestionPlayer({ attempt_part }: any) {
         })
             .then(async (response) => {
                 if (response.ok) {
+                    notification('success');
                     const data = await response.json().catch(() => ({}));
                     // Navigate to the next part or back to attempt page
                     if (data.redirect) {
