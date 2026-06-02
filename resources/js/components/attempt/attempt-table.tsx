@@ -37,81 +37,76 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
 
     const AttemptCard = ({ item, globalIndex }: { item: any; globalIndex: number }) => (
         <div 
-            className="tma-card group relative cursor-pointer"
+            className="group relative cursor-pointer rounded-2xl border border-slate-100 bg-white p-4 transition-all hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
             onClick={() => item.id && router.get(route('attempt.show', { attempt: item.id }))}
         >
-            <div className="mb-4 flex items-center justify-between">
-                <span className="font-black text-slate-300 dark:text-slate-700">
-                    #{globalIndex.toString().padStart(2, '0')}
-                </span>
-                <div className="flex flex-col items-end gap-2">
-                    <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-black ${
+            <div className="flex items-start justify-between gap-3">
+                {/* Left: User Avatar & Names */}
+                <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400">
+                        <User className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-black text-slate-400">
+                                #{globalIndex.toString().padStart(2, '0')}
+                            </span>
+                            <span className="truncate font-black text-sm text-slate-900 dark:text-white">
+                                {item.user?.name}
+                            </span>
+                        </div>
+                        <p className="truncate text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">
+                            {item.mock?.name || item.test?.name}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Right: Score Badge & Actions */}
+                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div className={`flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black ${
                         item.score && item.score >= 7
-                            ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400'
-                            : 'bg-slate-50 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                            ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400'
+                            : 'bg-slate-50 text-slate-500 dark:bg-slate-800/80 dark:text-slate-400'
                     }`}>
                         <Star className={`h-2.5 w-2.5 ${(item.score ?? item?.ai_score_avg) ? 'fill-current' : ''}`} />
-                        {item?.score != null
-                            ? Number(item.score).toFixed(2)
-                            : item?.ai_score_avg != null
-                              ? Number(item.ai_score_avg).toFixed(2)
-                              : t('exam_attempts.pending')}
+                        <span>
+                            {item?.score != null
+                                ? Number(item.score).toFixed(2)
+                                : item?.ai_score_avg != null
+                                  ? Number(item.ai_score_avg).toFixed(2)
+                                  : t('exam_attempts.pending')}
+                        </span>
                     </div>
                     {item.review && (
-                        <span className="text-[9px] font-black tracking-tighter text-indigo-500/60 uppercase">
+                        <span className="text-[8px] font-black tracking-widest text-blue-500 dark:text-blue-400 uppercase">
                             {t('exam_attempts.reviewed')}
                         </span>
                     )}
                 </div>
             </div>
 
-            <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-slate-800">
-                    <User className="h-6 w-6" />
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate font-black text-slate-900 dark:text-white">
-                        {item.user?.name}
+            {/* Bottom Meta Row */}
+            <div className="mt-3 flex items-center justify-between border-t border-slate-100/50 pt-3 dark:border-slate-800/40">
+                <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400">
+                    <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3 text-slate-300" />
+                        {new Date(item.started_at).toLocaleDateString()}
                     </span>
-                    <div className="flex items-center gap-2 truncate text-[10px] font-bold text-slate-400">
-                        <BookOpen className="h-3 w-3" />
-                        <span className="truncate">{item.mock?.name || item.test?.name}</span>
-                    </div>
+                    <span className="h-1 w-1 rounded-full bg-slate-200 dark:bg-slate-700" />
+                    <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-slate-300" />
+                        {new Date(item.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </span>
                 </div>
-            </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-4 border-y border-slate-50 py-4 dark:border-slate-800/50">
-                <div className="space-y-1">
-                    <span className="text-[9px] font-black tracking-widest text-slate-400 uppercase">{t('exam_attempts.timeline')}</span>
-                    <div className="flex flex-col gap-0.5">
-                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                            <Calendar className="h-3 w-3 text-slate-300" />
-                            {new Date(item.started_at).toLocaleDateString()}
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[10px] font-medium text-slate-400">
-                            <Clock className="h-2.5 w-2.5 text-slate-300" />
-                            {new Date(item.started_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                        </div>
-                    </div>
-                </div>
-                {item.mock && item.test && (
-                    <div className="space-y-1">
-                        <span className="text-[9px] font-black tracking-widest text-slate-400 uppercase">Test</span>
-                        <div className="truncate text-[10px] font-black text-indigo-500 uppercase">
-                            {item.test.name}
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            <div className="mt-4 flex items-center justify-end">
+                {/* Actions Inline */}
                 {(isAdmin || isTeacher) && (
                     <div 
-                        className="flex items-center gap-1 rounded-2xl bg-slate-50 p-1.5 dark:bg-slate-800/50"
+                        className="flex items-center gap-1 rounded-xl bg-slate-50 p-1 dark:bg-slate-800/50"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <EvaluateAttemptModal attempt={item} />
-                        <div className="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
+                        <div className="h-3.5 w-[1px] bg-slate-200 dark:bg-slate-700" />
                         <DeleteItemModal item={item} onDelete={handleDelete} />
                     </div>
                 )}
@@ -174,11 +169,11 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                         className="group/user flex items-center gap-3"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
-                                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors group-hover/user:bg-indigo-100 group-hover/user:text-indigo-600 dark:bg-slate-800 dark:text-slate-400">
+                                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors group-hover/user:bg-primary/10 group-hover/user:text-primary dark:bg-slate-800 dark:text-slate-400">
                                                             <User className="h-5 w-5" />
                                                         </div>
                                                         <div>
-                                                            <p className="font-bold text-slate-900 transition-colors group-hover/user:text-indigo-600 dark:text-white">
+                                                            <p className="font-bold text-slate-900 transition-colors group-hover/user:text-primary dark:text-white">
                                                                 {item.user?.name}
                                                             </p>
                                                             <p className="text-[10px] font-medium text-slate-400">ID: {item.user?.id}</p>
@@ -194,7 +189,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                                 {item.mock?.name || item.test?.name}
                                                             </p>
                                                             {item.mock && item.test && (
-                                                                <p className="text-[10px] font-bold text-indigo-500 uppercase">{item.test.name}</p>
+                                                                <p className="text-[10px] font-bold text-primary uppercase">{item.test.name}</p>
                                                             )}
                                                         </div>
                                                     </div>
@@ -233,7 +228,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                                   : t('exam_attempts.pending')}
                                                         </div>
                                                         {item.review && (
-                                                            <span className="text-[9px] font-black tracking-tighter text-indigo-500/60 uppercase">
+                                                            <span className="text-[9px] font-black tracking-tighter text-blue-500/60 uppercase">
                                                                 {t('exam_attempts.reviewed')}
                                                             </span>
                                                         )}
@@ -299,10 +294,10 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                             ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-3 text-xs font-black transition-all ${
                                 link.active
-                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
+                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                                     : !link.url
                                       ? 'cursor-not-allowed opacity-30'
-                                      : 'bg-white text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
+                                      : 'bg-white text-slate-600 hover:bg-primary/10 hover:text-primary dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
                             }`}
                         >
                             {link.label.includes('Previous') ? (
