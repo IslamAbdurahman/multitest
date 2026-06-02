@@ -36,14 +36,14 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('sidebar.dashboard')} />
 
-            <div className="flex h-full min-w-0 flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6 lg:gap-8 lg:p-8">
+            <div className="flex min-h-0 w-full flex-grow flex-col gap-4 p-4 sm:gap-6 sm:p-6 lg:gap-8 lg:p-8">
                 {/* 🌈 Welcome Header Section */}
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex flex-col gap-1 min-w-0">
                         <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-slate-900 dark:text-white truncate">
                             {t('welcome_back')}, {user.name.split(' ')[0]}! 👋
                         </h1>
-                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 truncate">{t('check_your_progress_and_scores')}</p>
+                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">{t('check_your_progress_and_scores')}</p>
                     </div>
                     <div className="relative shrink-0">
                         {user.avatar ? (
