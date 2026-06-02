@@ -35,8 +35,8 @@ export default function WeeklyAttemptsChart({ data, title }: Props) {
             {
                 label: title,
                 data: counts,
-                backgroundColor: 'rgba(99, 102, 241, 0.75)',
-                hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
+                backgroundColor: 'rgba(36, 129, 204, 0.75)',
+                hoverBackgroundColor: 'rgba(36, 129, 204, 1)',
                 borderRadius: 8,
                 borderSkipped: false,
             },
@@ -79,7 +79,7 @@ export default function WeeklyAttemptsChart({ data, title }: Props) {
     };
 
     return (
-        <div className="w-full rounded-[2rem] border border-border bg-card p-6 shadow-sm">
+        <div className="w-full rounded-2xl border border-border bg-card p-6 shadow-sm">
 
             <div className="h-[300px] w-full">
                 <Bar key={isDark ? 'dark' : 'light'} data={chartData} options={options} />

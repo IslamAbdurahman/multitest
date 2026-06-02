@@ -36,81 +36,72 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('sidebar.dashboard')} />
 
-            <div className="flex h-full min-w-0 flex-1 flex-col gap-3.5 p-1 sm:gap-6 sm:p-4 lg:gap-8 lg:p-8">
+            <div className="flex h-full min-w-0 flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6 lg:gap-8 lg:p-8">
                 {/* 🌈 Welcome Header Section */}
-                <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-                        {t('welcome_back')}, {user.name.split(' ')[0]}! 👋
-                    </h1>
-                    <p className="text-slate-500 dark:text-slate-400">{t('check_your_progress_and_scores')}</p>
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-col gap-1 min-w-0">
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-slate-900 dark:text-white truncate">
+                            {t('welcome_back')}, {user.name.split(' ')[0]}! 👋
+                        </h1>
+                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 truncate">{t('check_your_progress_and_scores')}</p>
+                    </div>
+                    <div className="relative shrink-0">
+                        {user.avatar ? (
+                            <img
+                                src={user.avatar}
+                                alt={user.name}
+                                className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-slate-200 dark:border-slate-800 object-cover shadow-sm"
+                            />
+                        ) : (
+                            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                <LucideUserCircle className="h-6 w-6 sm:h-8 sm:w-8" />
+                            </div>
+                        )}
+                        <span className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border border-white bg-emerald-500 dark:border-slate-900"></span>
+                    </div>
                 </div>
 
                 {/* 📊 Top Stats Grid */}
-                <div className="grid gap-6 md:grid-cols-3">
-                    <Card className="relative overflow-hidden rounded-xl border-none bg-gradient-to-br from-blue-600 to-emerald-600 p-1 shadow-xl shadow-emerald-500/20">
-                        <CardContent className="flex items-center justify-between p-6 text-white">
-                            <div>
-                                <p className="text-sm font-medium opacity-80">{t('exam_attempts.title')}</p>
-                                <div className="text-4xl font-black tracking-tighter">{user.attempts?.length ?? 0}</div>
-                                <p className="mt-1 text-xs opacity-70">{t('completedTests')}</p>
+                <div className="grid grid-cols-2 gap-3.5 sm:gap-6">
+                    {/* Exam Attempts Card */}
+                    <Card className="relative overflow-hidden rounded-2xl border-none bg-gradient-to-br from-blue-600 to-emerald-500 p-0.5 shadow-md dark:shadow-none">
+                        <CardContent className="flex flex-col justify-between h-full p-4 text-white">
+                            <div className="flex items-center justify-between w-full">
+                                <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase opacity-85">{t('exam_attempts.title')}</span>
+                                <div className="rounded-lg bg-white/20 p-1.5 backdrop-blur-md">
+                                    <LucideActivity className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
+                                </div>
                             </div>
-                            <div className="rounded-2xl bg-white/20 p-3 backdrop-blur-md">
-                                <LucideActivity className="h-8 w-8 text-white" />
+                            <div className="mt-4">
+                                <div className="text-2xl sm:text-4xl font-black tracking-tight">{user.attempts?.length ?? 0}</div>
+                                <p className="text-[9px] sm:text-xs opacity-75 mt-0.5">{t('completedTests')}</p>
                             </div>
                         </CardContent>
                     </Card>
 
                     {/* Last Attempt Card */}
-                    <Card className="rounded-xl border-border bg-card shadow-sm transition-all hover:shadow-md">
-
-                        <CardContent className="flex items-center justify-between p-6">
-                            <div>
-                                <p className="text-sm font-medium text-slate-500">{t('lastAttempt')}</p>
-                                <div className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white">
+                    <Card className="rounded-2xl border-border bg-card shadow-sm transition-all hover:shadow-md">
+                        <CardContent className="flex flex-col justify-between h-full p-4">
+                            <div className="flex items-center justify-between w-full">
+                                <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-slate-500 dark:text-slate-400">{t('lastAttempt')}</span>
+                                <div className="rounded-lg bg-amber-50 p-1.5 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                                    <LucideTrendingUp className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <div className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
                                     {user.last_attempt?.score ?? user.last_attempt?.ai_score_avg ?? 0}
                                 </div>
-                                <div className="mt-1 flex items-center gap-1 text-xs font-bold text-emerald-500">
-                                    <LucideTrendingUp className="h-3 w-3" />
+                                <div className="mt-0.5 flex items-center gap-1 text-[9px] sm:text-xs font-black text-emerald-500 uppercase">
                                     <span>{t('latest_result')}</span>
                                 </div>
-                            </div>
-                            <div className="rounded-2xl bg-amber-50 p-3 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
-                                <LucideTrendingUp className="h-8 w-8" />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Profile Card */}
-                    <Card className="rounded-xl border-border bg-card shadow-sm">
-
-                        <CardContent className="flex h-full items-center gap-4 p-6">
-                            <div className="relative">
-                                {user.avatar ? (
-                                    <img
-                                        src={user.avatar}
-                                        alt={user.name}
-                                        className="h-16 w-16 rounded-2xl border-2 border-white object-cover shadow-sm dark:border-slate-700"
-                                    />
-                                ) : (
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
-                                        <LucideUserCircle className="h-10 w-10" />
-                                    </div>
-                                )}
-                                <div className="absolute -right-1 -bottom-1 h-4 w-4 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900"></div>
-                            </div>
-                            <div className="flex flex-col overflow-hidden">
-                                <h3 className="truncate font-bold text-slate-900 dark:text-white">{user.name}</h3>
-                                <p className="truncate text-xs text-slate-500">{user.email}</p>
-                                <span className="mt-1 w-fit rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-slate-600 uppercase dark:bg-slate-800 dark:text-slate-400">
-                                    {t('common.student')}
-                                </span>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
 
                 {/* 📈 Attempts + Skills Charts */}
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12">
                     <div className="min-w-0 lg:col-span-8">
                         <AttemptsChart attempts={user.attempts ?? []} className="h-full" />
                     </div>
@@ -128,7 +119,7 @@ export default function Dashboard() {
 
                 {/* ⏰ Hourly Charts */}
                 {(today_hourly_attempts?.length > 0 || hourly_attempts?.length > 0) && (
-                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                         <div className="min-w-0">
                             <HourlyAttemptsChart
                                 data={today_hourly_attempts ?? []}

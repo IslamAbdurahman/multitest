@@ -47,7 +47,7 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
         <>
             <button
                 onClick={() => setOpen(true)}
-                className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-indigo-600 px-4 py-4 font-black text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 dark:shadow-none"
+                className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-4 py-4 font-black text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-95 dark:shadow-none"
             >
                 <CirclePlay className="h-5 w-5 transition-transform group-hover:scale-110" />
                 <span className="text-xs tracking-widest uppercase">{label || t('attempt_modal.start_practice')}</span>
@@ -58,7 +58,7 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
                     {/* 🌑 Header: Micro-Compact */}
                     <div className="bg-slate-900 p-4 text-white md:p-6 dark:bg-slate-900/50">
                         <DialogHeader>
-                            <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-500/20 text-indigo-400">
+                            <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg border border-blue-500/30 bg-blue-500/20 text-blue-400">
                                 <Headphones className="h-4 w-4" />
                             </div>
                             <DialogTitle className="text-lg md:text-xl leading-snug font-black tracking-tight">{t('attempt_modal.ready_title')}</DialogTitle>
@@ -82,16 +82,16 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
                                                 key={part.id}
                                                 className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition-all ${
                                                     data.part_ids.includes(part.id)
-                                                        ? 'border-indigo-500/50 bg-indigo-50/50 dark:border-indigo-500/30 dark:bg-indigo-500/10'
+                                                        ? 'border-blue-500/50 bg-blue-50/50 dark:border-blue-500/30 dark:bg-blue-500/10'
                                                         : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/50'
                                                 }`}
                                             >
                                                 <div className="flex flex-col">
-                                                    <span className={`text-xs font-bold ${data.part_ids.includes(part.id) ? 'text-indigo-700 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'}`}>
+                                                    <span className={`text-xs font-bold ${data.part_ids.includes(part.id) ? 'text-blue-700 dark:text-blue-400' : 'text-slate-600 dark:text-slate-400'}`}>
                                                         {part.name}
                                                     </span>
                                                 </div>
-                                                <div className={`flex h-4 w-4 items-center justify-center rounded-md border ${data.part_ids.includes(part.id) ? 'border-indigo-500 bg-indigo-500' : 'border-slate-300 dark:border-slate-700'}`}>
+                                                <div className={`flex h-4 w-4 items-center justify-center rounded-md border ${data.part_ids.includes(part.id) ? 'border-blue-500 bg-blue-500' : 'border-slate-300 dark:border-slate-700'}`}>
                                                     {data.part_ids.includes(part.id) && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
                                                 </div>
                                                 <input
@@ -118,7 +118,7 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
                                 disabled={processing || !hasCheckedMic}
                                 className={`group h-12 w-full rounded-xl text-xs font-black transition-all md:h-14 ${
                                     hasCheckedMic
-                                        ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 active:scale-[0.98]'
+                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700 active:scale-[0.98]'
                                         : 'bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 border border-transparent dark:border-slate-800 cursor-not-allowed'
                                 }`}
                             >
@@ -148,7 +148,7 @@ export default function CreateAttemptModal({ mock, test, label }: Props) {
                         <div className="space-y-3 pt-2 border-t border-slate-50 dark:border-slate-900">
                             <div className="flex items-center justify-between px-1">
                                 <span className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.1em] text-slate-400 dark:text-slate-500 uppercase">
-                                    <Mic2 className="h-3 w-3 text-indigo-500" />
+                                    <Mic2 className="h-3 w-3 text-blue-500" />
                                     {t('attempt_modal.mic_check')}
                                 </span>
                                 {hasCheckedMic && (

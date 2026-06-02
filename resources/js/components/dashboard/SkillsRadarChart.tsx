@@ -47,15 +47,15 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
         },
         stroke: {
             width: 2,
-            colors: ['#6366f1'],
+            colors: ['#2481cc'],
         },
         fill: {
             opacity: isDark ? 0.4 : 0.2,
-            colors: ['#6366f1'],
+            colors: ['#2481cc'],
         },
         markers: {
             size: isMobile ? 3 : 4,
-            colors: ['#6366f1'],
+            colors: ['#2481cc'],
             strokeColor: isDark ? '#1e293b' : '#fff',
             strokeWidth: 2,
         },
@@ -91,7 +91,7 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
                 },
             },
         },
-        colors: ['#6366f1'],
+        colors: ['#2481cc'],
         legend: { show: false },
         grid: { show: false },
     };
@@ -104,7 +104,7 @@ export default function SkillsRadarChart({ skills, className }: SkillsRadarChart
     ];
 
     return (
-        <Card className={cn("rounded-[2rem] border-border bg-card shadow-sm flex flex-col", className)}>
+        <Card className={cn("rounded-2xl border-border bg-card shadow-sm flex flex-col", className)}>
 
             <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">

@@ -14,7 +14,7 @@ export default function AudioWaveform({
     audioUrl,
     height = 60,
     waveColor = '#cbd5e1',
-    progressColor = '#6366f1'
+    progressColor = '#2481cc'
 }: AudioWaveformProps) {
     const waveformRef = useRef<HTMLDivElement>(null);
     const wavesurfer = useRef<WaveSurfer | null>(null);
@@ -62,7 +62,7 @@ export default function AudioWaveform({
                 variant="outline"
                 size="icon"
                 onClick={handleTogglePlay}
-                className="h-10 w-10 shrink-0 rounded-full border-indigo-100 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400"
+                className="h-10 w-10 shrink-0 rounded-full border-blue-100 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400"
             >
                 {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current ml-0.5" />}
             </Button>

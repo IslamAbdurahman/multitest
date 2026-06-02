@@ -39,10 +39,10 @@ export default function AttemptsChart({ attempts, className }: { attempts: Attem
                 label: t('exam_attempts.score', 'Score'),
                 data: scores,
                 fill: true,
-                borderColor: 'rgb(99, 102, 241)',
-                backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                borderColor: '#2481cc',
+                backgroundColor: 'rgba(36, 129, 204, 0.12)',
                 tension: 0.4,
-                pointBackgroundColor: 'rgb(99, 102, 241)',
+                pointBackgroundColor: '#2481cc',
                 pointBorderColor: '#fff',
                 pointBorderWidth: 2,
                 pointRadius: 5,
@@ -84,7 +84,7 @@ export default function AttemptsChart({ attempts, className }: { attempts: Attem
     };
 
     return (
-        <Card className={cn("rounded-[2rem] border-border bg-card shadow-sm", className)}>
+        <Card className={cn("rounded-2xl border-border bg-card shadow-sm", className)}>
 
             <CardHeader>
                 <CardTitle className="text-lg font-black tracking-tight text-slate-800 dark:text-white">

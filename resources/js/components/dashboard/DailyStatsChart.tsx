@@ -83,8 +83,8 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
             {
                 label: t('stats.new_users', 'New Users'),
                 data: newUsersData,
-                backgroundColor: 'rgba(99, 102, 241, 0.8)',
-                hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
+                backgroundColor: 'rgba(36, 129, 204, 0.8)',
+                hoverBackgroundColor: 'rgba(36, 129, 204, 1)',
                 borderRadius: 4,
                 stack: 'stack0',
             },
@@ -99,8 +99,8 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
             {
                 label: t('stats.repeat_attempts', 'Repeat Attempts'),
                 data: repeatAttempts,
-                backgroundColor: 'rgba(20, 184, 166, 0.6)',
-                hoverBackgroundColor: 'rgba(20, 184, 166, 0.85)',
+                backgroundColor: 'rgba(245, 158, 11, 0.8)',
+                hoverBackgroundColor: 'rgba(245, 158, 11, 1)',
                 borderRadius: 4,
                 stack: 'stack1',
             },
@@ -158,7 +158,7 @@ export default function DailyStatsChart({ daily_users, daily_attempts }: Props) 
     };
 
     return (
-        <div className="w-full rounded-[2rem] border border-border bg-card p-6 shadow-sm">
+        <div className="w-full rounded-2xl border border-border bg-card p-6 shadow-sm">
 
             <div className="mb-6">
                 <h3 className="text-lg font-bold text-slate-800 dark:text-white">

@@ -36,8 +36,8 @@ export default function HourlyAttemptsChart({ data, title, className }: Props) {
             {
                 label: title,
                 data: counts,
-                backgroundColor: 'rgba(99, 102, 241, 0.75)',
-                hoverBackgroundColor: 'rgba(99, 102, 241, 1)',
+                backgroundColor: 'rgba(36, 129, 204, 0.75)',
+                hoverBackgroundColor: 'rgba(36, 129, 204, 1)',
                 borderRadius: 6,
                 borderSkipped: false,
             },
@@ -84,7 +84,7 @@ export default function HourlyAttemptsChart({ data, title, className }: Props) {
     };
 
     return (
-        <div className={cn("w-full rounded-[2rem] border border-border bg-card p-6 shadow-sm", className)}>
+        <div className={cn("w-full rounded-2xl border border-border bg-card p-6 shadow-sm", className)}>
 
             <div className="h-[300px] w-full">
                 <Bar key={isDark ? 'dark' : 'light'} data={chartData} options={options} />
