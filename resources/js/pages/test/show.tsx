@@ -19,7 +19,7 @@ export default function TestShow() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t('test_table.test_library'),
+            title: t('nav.tests'),
             href: '/test',
         },
         {

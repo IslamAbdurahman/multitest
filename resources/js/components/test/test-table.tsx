@@ -1,6 +1,5 @@
 import DeleteItemModal from '@/components/delete-item-modal';
 import CreateAttemptModal from '@/components/mock/create-attempt-modal';
-import CreateTestModal from '@/components/test/create-test-modal';
 import UpdateTestModal from '@/components/test/update-test-modal';
 import { Auth, SearchData, type TestPaginate } from '@/types';
 import { Link, useForm, usePage } from '@inertiajs/react';
@@ -35,22 +34,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
     };
 
     return (
-        <div className="animate-in fade-in slide-in-from-bottom-4 space-y-8 duration-700">
-            {/* 🏷️ HEADER SECTION */}
-            <div className="flex flex-col gap-4 border-b border-slate-200/60 pb-8 sm:flex-row sm:items-end sm:justify-between dark:border-slate-800/60">
-                <div>
-                    <h2 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-slate-50">{t('test_table.test_library')}</h2>
-                    <p className="mt-2 font-medium text-slate-500 dark:text-slate-400">{t('test_table.browse_description')}</p>
-                </div>
-                <div className="flex items-center">
-                    {(isAdmin || isTeacher) && (
-                        <div className="rounded-2xl bg-slate-100/50 p-1 backdrop-blur-sm dark:bg-slate-800/50">
-                            <CreateTestModal />
-                        </div>
-                    )}
-                </div>
-            </div>
-
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* 🗃️ TEST CARDS GRID */}
             <div className="grid grid-cols-2 gap-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {test.data.map((item, index) => {

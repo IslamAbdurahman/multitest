@@ -1,14 +1,18 @@
 import MobileSearchModal from '@/components/MobileSearchModal';
+import CreateTestModal from '@/components/test/create-test-modal';
 import SearchForm from '@/components/search-form';
 import TestTable from '@/components/test/test-table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type TestPaginate, SearchData } from '@/types';
+import { type BreadcrumbItem, type TestPaginate, SearchData, Auth } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Test() {
     const { test, seoData } = usePage<{ test: TestPaginate; seoData?: { title?: string; description?: string; og_image?: string } }>().props;
+    const { auth } = usePage().props as unknown as { auth?: Auth };
+    const isAdmin = auth?.user?.roles?.some((role) => role.name === 'Admin');
+    const isTeacher = auth?.user?.roles?.some((role) => role.name === 'Teacher');
     const { t } = useTranslation();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -39,10 +43,10 @@ export default function Test() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={data.search ? `${data.search} - ${t('test_table.test_library')}` : t('test_table.test_library')}>
-                <meta name="description" content={t('test_table.browse_description')} />
-                <meta property="og:title" content={data.search ? `${data.search} - ${t('test_table.test_library')}` : t('test_table.test_library')} />
-                <meta property="og:description" content={t('test_table.browse_description')} />
+            <Head title={data.search ? `${data.search} - ${t('nav.tests')}` : t('nav.tests')}>
+                <meta name="description" content={t('nav.tests')} />
+                <meta property="og:title" content={data.search ? `${data.search} - ${t('nav.tests')}` : t('nav.tests')} />
+                <meta property="og:description" content={t('nav.tests')} />
                 <meta property="og:image" content={seoData?.og_image} />
             </Head>
 
@@ -53,6 +57,9 @@ export default function Test() {
                     </div>
 
                     <div className="flex items-center gap-2">
+                        {(isAdmin || isTeacher) && (
+                            <CreateTestModal />
+                        )}
                         <MobileSearchModal data={data} setData={setData} handleSubmit={handleSubmit} />
                         <div className="hidden lg:block">
                             <SearchForm handleSubmit={handleSubmit} setData={setData} data={data} />
