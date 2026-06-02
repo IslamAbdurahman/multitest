@@ -15,14 +15,14 @@ export default function AttemptShow() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: `${t('sidebar.attempt')} ( ${attempt.name ?? attempt.mock?.name ?? attempt.test?.name} )`,
+            title: `${t('sidebar.attempt')} ( ${attempt.name || attempt.mock?.name || attempt.test?.name || ''} )`,
             href: '/dashboard',
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`${t('sidebar.attempt')} - ${attempt.name ?? attempt.mock?.name ?? attempt.test?.name}`} />
+            <Head title={`${t('sidebar.attempt')} - ${attempt.name || attempt.mock?.name || attempt.test?.name || ''}`} />
 
             <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto w-full max-w-7xl space-y-4 p-1.5 duration-700 sm:space-y-8 sm:p-6">
                 {/* 🎨 PREMIUM HEADER SECTION */}
@@ -41,7 +41,7 @@ export default function AttemptShow() {
                                     {attempt?.mock?.name || attempt.test?.name}
                                 </h1>
                                 <p className="max-w-2xl text-base font-medium text-slate-400 italic sm:text-lg">
-                                    "{attempt.name}" — {t('attempt_show.performance_analysis')}.
+                                    "{attempt.name || attempt.mock?.name || attempt.test?.name || ''}" — {t('attempt_show.performance_analysis')}.
                                 </p>
                             </div>
 
