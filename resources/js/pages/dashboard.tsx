@@ -64,17 +64,19 @@ export default function Dashboard() {
                 {/* 📊 Top Stats Grid */}
                 <div className="grid grid-cols-2 gap-3.5 sm:gap-6">
                     {/* Exam Attempts Card */}
-                    <Card className="relative overflow-hidden rounded-2xl border-none bg-gradient-to-br from-blue-600 to-emerald-500 p-0.5 shadow-md dark:shadow-none">
-                        <CardContent className="flex flex-col justify-between h-full p-4 text-white">
+                    <Card className="rounded-2xl border-border bg-card shadow-sm transition-all hover:shadow-md">
+                        <CardContent className="flex flex-col justify-between h-full p-4">
                             <div className="flex items-center justify-between w-full">
-                                <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase opacity-85">{t('exam_attempts.title')}</span>
-                                <div className="rounded-lg bg-white/20 p-1.5 backdrop-blur-md">
-                                    <LucideActivity className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
+                                <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-slate-500 dark:text-slate-400">{t('exam_attempts.title')}</span>
+                                <div className="rounded-lg bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                                    <LucideActivity className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                                 </div>
                             </div>
                             <div className="mt-4">
-                                <div className="text-2xl sm:text-4xl font-black tracking-tight">{user.attempts?.length ?? 0}</div>
-                                <p className="text-[9px] sm:text-xs opacity-75 mt-0.5">{t('completedTests')}</p>
+                                <div className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">{user.attempts?.length ?? 0}</div>
+                                <div className="mt-0.5 flex items-center gap-1 text-[9px] sm:text-xs font-black text-blue-500 uppercase">
+                                    <span>{t('completedTests')}</span>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
