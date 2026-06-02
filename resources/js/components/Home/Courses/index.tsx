@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Star, StarHalf, BookOpen, Users } from 'lucide-react';
 import { Test } from '@/types';
-import CreateAttemptModal from '@/components/attempt/create-attempt-modal';
+import CreateAttemptModal from '@/components/mock/create-attempt-modal';
 
 const Courses: React.FC = () => {
     const { t } = useTranslation();

@@ -22,7 +22,7 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                     >
                         <div className="flex flex-col lg:flex-row">
                             {/* 📝 LEFT SIDE: THE QUESTION */}
-                            <div className="flex-1 p-4 sm:p-8 lg:border-r lg:border-slate-100 dark:lg:border-slate-800">
+                            <div className="flex-1 p-3.5 sm:p-6 lg:border-r lg:border-slate-100 dark:lg:border-slate-800">
                                 <div className="mb-6 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-xs font-black text-slate-500 dark:bg-slate-800">
@@ -53,9 +53,9 @@ const AttemptAnswerComponent = ({ attempt_answers }: QuestionTableProps) => {
                             </div>
 
                             {/* 🎙️ RIGHT SIDE: THE RESPONSE */}
-                            <div className="flex-1 bg-slate-50/30 p-4 sm:p-8 dark:bg-slate-900/40">
+                            <div className="flex-1 bg-slate-50/30 p-3.5 sm:p-6 dark:bg-slate-900/40">
                                 <div className="mb-6 flex items-center justify-between">
-                                    <span className="flex items-center gap-2 text-[10px] font-black tracking-widest text-indigo-500 uppercase">
+                                    <span className="flex items-center gap-2 text-[10px] font-black tracking-widest text-blue-500 uppercase">
                                         <Volume2 className="h-3.5 w-3.5" />
                                         {t('response_card.student_response')}
                                     </span>

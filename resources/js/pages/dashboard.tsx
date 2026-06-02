@@ -47,7 +47,7 @@ export default function Dashboard() {
 
                 {/* 📊 Top Stats Grid */}
                 <div className="grid gap-6 md:grid-cols-3">
-                    <Card className="relative overflow-hidden rounded-xl border-none bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-xl shadow-blue-500/20">
+                    <Card className="relative overflow-hidden rounded-xl border-none bg-gradient-to-br from-blue-600 to-emerald-600 p-1 shadow-xl shadow-emerald-500/20">
                         <CardContent className="flex items-center justify-between p-6 text-white">
                             <div>
                                 <p className="text-sm font-medium opacity-80">{t('exam_attempts.title')}</p>
@@ -74,7 +74,7 @@ export default function Dashboard() {
                                     <span>{t('latest_result')}</span>
                                 </div>
                             </div>
-                            <div className="rounded-2xl bg-indigo-50 p-3 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                            <div className="rounded-2xl bg-amber-50 p-3 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
                                 <LucideTrendingUp className="h-8 w-8" />
                             </div>
                         </CardContent>

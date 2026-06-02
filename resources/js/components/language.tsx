@@ -53,7 +53,7 @@ const LanguageBar = () => {
                     <button
                         onClick={() => changeLanguage('uz')}
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
-                            i18n.language === 'uz' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                            i18n.language === 'uz' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
                         }`}
                     >
                         <span className="text-lg">🇺🇿</span>
@@ -62,7 +62,7 @@ const LanguageBar = () => {
                     <button
                         onClick={() => changeLanguage('en')}
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
-                            i18n.language === 'en' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                            i18n.language === 'en' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
                         }`}
                     >
                         <span className="text-lg">🇬🇧</span>
@@ -71,7 +71,7 @@ const LanguageBar = () => {
                     <button
                         onClick={() => changeLanguage('ru')}
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
-                            i18n.language === 'ru' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                            i18n.language === 'ru' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
                         }`}
                     >
                         <span className="text-lg">🇷🇺</span>

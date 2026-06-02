@@ -1,7 +1,7 @@
 import DeleteItemModal from '@/components/delete-item-modal';
 import UpdateUserModal from '@/components/user/update-user-modal';
 import { type UserPaginate, SearchData } from '@/types';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, router } from '@inertiajs/react';
 import { Calendar, ChevronLeft, ChevronRight, Mail, Phone, ShieldCheck, UserCircle, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -35,7 +35,7 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
         const name = roleName.toLowerCase();
         if (name === 'admin') return 'bg-rose-50 text-rose-600 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-900/30';
         if (name === 'teacher')
-            return 'bg-indigo-50 text-indigo-600 border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-900/30';
+            return 'bg-primary/10 text-primary border-primary/20 dark:bg-primary/20 dark:text-primary dark:border-primary/30';
         return 'bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700';
     };
 
@@ -160,11 +160,11 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                                                     className="flex items-center gap-3"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-400 transition-all group-hover:bg-indigo-600 group-hover:text-white dark:bg-slate-800">
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-400 transition-all group-hover:bg-primary group-hover:text-white dark:bg-slate-800">
                                                         <UserCircle className="h-6 w-6" />
                                                     </div>
                                                     <div className="flex min-w-0 flex-1 flex-col">
-                                                        <span className="max-w-[150px] truncate font-bold text-slate-900 transition-colors group-hover:text-indigo-600 sm:max-w-[200px] md:max-w-[250px] dark:text-white dark:group-hover:text-indigo-400">
+                                                        <span className="max-w-[150px] truncate font-bold text-slate-900 transition-colors group-hover:text-primary sm:max-w-[200px] md:max-w-[250px] dark:text-white dark:group-hover:text-primary">
                                                             {item.name}
                                                         </span>
                                                         <span className="truncate text-[11px] font-medium text-slate-400 lowercase">{item.username}</span>
@@ -278,10 +278,10 @@ const UserTable = ({ searchData, ...user }: UserTableProps) => {
                             ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-3 text-xs font-black transition-all ${
                                 link.active
-                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
+                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                                     : !link.url
                                       ? 'cursor-not-allowed opacity-30'
-                                      : 'bg-white text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
+                                      : 'bg-white text-slate-600 hover:bg-primary/10 hover:text-primary dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
                             }`}
                         >
                             {link.label.includes('Previous') ? (

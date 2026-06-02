@@ -66,12 +66,12 @@ export function AppBottomNav() {
                             }}
                             className={`flex flex-1 flex-col items-center justify-center transition-all duration-300 py-2 px-1 rounded-[1.8rem] ${
                                 isActive 
-                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30' 
+                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30' 
                                     : 'text-slate-400 hover:text-slate-600'
                             }`}
                         >
                             <item.icon size={isActive ? 20 : 22} strokeWidth={isActive ? 2.5 : 2} />
-                            <span className={`text-[9px] font-black mt-1 tracking-tight leading-none uppercase ${isActive ? 'text-white' : 'text-slate-400'}`}>
+                            <span className={`text-[9px] font-black mt-1 tracking-tight leading-none uppercase ${isActive ? 'text-primary-foreground' : 'text-slate-400'}`}>
                                 {item.title}
                             </span>
                         </button>

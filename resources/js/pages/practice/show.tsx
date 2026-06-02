@@ -46,7 +46,7 @@ export default function PracticeShow() {
                 <main className="mx-auto flex w-full max-w-5xl flex-col items-center px-2 py-4 sm:px-6 md:py-12">
                     {/* 🎙️ The Interactive Player Instance */}
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-2xl md:rounded-[3rem] bg-white shadow-2xl ring-1 shadow-indigo-500/10 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+                        <div className="relative overflow-hidden rounded-2xl md:rounded-[3rem] bg-white shadow-2xl ring-1 shadow-blue-500/10 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
                             {/* Key forces a re-mount of QuestionPlayer logic (timers/state) for each new part */}
                             <QuestionPlayer key={attempt_part.id} attempt_part={attempt_part} />
                         </div>

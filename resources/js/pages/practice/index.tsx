@@ -56,7 +56,7 @@ export default function Practice() {
                                 <InfoCard
                                     label={t('practice.total_parts')}
                                     value={attempt.attempt_parts?.length ?? 0}
-                                    icon={<Layers className="h-5 w-5 text-indigo-500" />}
+                                    icon={<Layers className="h-5 w-5 text-blue-500" />}
                                 />
                                 <InfoCard
                                     label={t('practice.estimated_time')}
@@ -80,8 +80,8 @@ export default function Practice() {
 
                         {/* 🎙️ Right Side: Immersive Audio Card (Col 5) */}
                         <div className="lg:col-span-5">
-                            <div className="sticky top-8 overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-slate-900 p-5 sm:p-10 text-white shadow-2xl shadow-indigo-500/20 dark:bg-slate-900 dark:ring-1 dark:ring-white/10">
-                                <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-indigo-500/10 blur-[80px]"></div>
+                            <div className="sticky top-8 overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-slate-900 p-5 sm:p-10 text-white shadow-2xl shadow-blue-500/20 dark:bg-slate-900 dark:ring-1 dark:ring-white/10">
+                                <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-[80px]"></div>
 
                                 <div className="relative space-y-8">
                                     <div>
@@ -96,13 +96,13 @@ export default function Practice() {
                                         <div className="mb-6 flex items-center gap-4">
                                             <div
                                                 className={`flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-500 ${
-                                                    isPlaying ? 'scale-105 bg-indigo-600 shadow-lg shadow-indigo-500/40' : 'scale-100 bg-slate-800'
+                                                    isPlaying ? 'scale-105 bg-blue-600 shadow-lg shadow-blue-500/40' : 'scale-100 bg-slate-800'
                                                 }`}
                                             >
                                                 {isPlaying ? <Volume2 className="h-6 w-6 animate-pulse" /> : <Play className="h-6 w-6" />}
                                             </div>
                                             <div className="overflow-hidden">
-                                                <p className="text-[10px] font-black tracking-widest text-indigo-400 uppercase">
+                                                <p className="text-[10px] font-black tracking-widest text-blue-400 uppercase">
                                                     {t('practice.playing_audio')}
                                                 </p>
                                                 <p className="truncate font-bold text-slate-200">{t('practice.test_introduction')}</p>
@@ -129,7 +129,7 @@ export default function Practice() {
                                     {firstPartId && (
                                         <Link
                                             href={route('practice.show', firstPartId)}
-                                            className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-5 text-center font-black text-slate-900 transition-all hover:bg-indigo-50 active:scale-[0.98]"
+                                            className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-5 text-center font-black text-slate-900 transition-all hover:bg-blue-50 dark:hover:bg-blue-950/40 active:scale-[0.98]"
                                         >
                                             <span>{t('practice.skip_to_first_part')}</span>
                                             <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

@@ -34,7 +34,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                         key={item.id}
                         className={`overflow-hidden rounded-[2rem] border transition-all duration-500 ease-in-out ${
                             isOpen
-                                ? 'border-indigo-200 bg-white shadow-2xl shadow-indigo-500/10 dark:border-indigo-500/30 dark:bg-slate-900'
+                                ? 'border-blue-200 bg-white shadow-2xl shadow-blue-500/10 dark:border-blue-500/30 dark:bg-slate-900'
                                 : 'border-slate-100 bg-slate-50/50 hover:bg-white dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900'
                         }`}
                     >
@@ -48,7 +48,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                 <div
                                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-black transition-all duration-300 ${
                                         isOpen
-                                            ? 'scale-110 bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-none'
+                                            ? 'scale-110 bg-blue-600 text-white shadow-lg shadow-blue-200 dark:shadow-none'
                                             : 'border border-slate-100 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-500'
                                     }`}
                                 >
@@ -57,7 +57,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
 
                                 <div className="text-left">
                                     <h3
-                                        className={`text-lg font-black tracking-tight transition-colors duration-300 ${isOpen ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-900 dark:text-white'}`}
+                                        className={`text-lg font-black tracking-tight transition-colors duration-300 ${isOpen ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}
                                     >
                                         {item.part?.name}
                                     </h3>
@@ -87,7 +87,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                 </div>
 
                                 <div
-                                    className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? 'rotate-180 bg-indigo-50 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'}`}
+                                    className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? 'rotate-180 bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'}`}
                                 >
                                     <ChevronDown className="h-5 w-5" />
                                 </div>
@@ -107,7 +107,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                             });
                                         }
                                     }}
-                                    className="inline-flex items-center gap-2 rounded-xl bg-indigo-50 px-4 py-2 text-xs font-bold text-indigo-600 transition-colors hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400"
+                                    className="inline-flex items-center gap-2 rounded-xl bg-blue-50 px-4 py-2 text-xs font-bold text-blue-600 transition-colors hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400"
                                 >
                                     <Sparkles className="h-3.5 w-3.5" />
                                     {t('attempt_details.re_evaluate')}
@@ -122,13 +122,13 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                             }`}
                         >
                             <div className="overflow-hidden">
-                                <div className="space-y-8 border-t border-slate-50 p-8 dark:border-slate-800">
+                                <div className="space-y-6 border-t border-slate-50 p-3 sm:p-8 dark:border-slate-800">
                                     {/* Description/Instruction Box */}
                                     {item.part?.description && (
-                                        <div className="flex gap-4 rounded-[1.5rem] border border-indigo-100/50 bg-indigo-50/30 p-5 dark:border-indigo-500/10 dark:bg-indigo-500/5">
-                                            <Info className="mt-0.5 h-5 w-5 shrink-0 text-indigo-500" />
+                                        <div className="flex gap-4 rounded-[1.5rem] border border-blue-100/50 bg-blue-50/30 p-5 dark:border-blue-500/10 dark:bg-blue-500/5">
+                                            <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
                                             <div>
-                                                <p className="mb-1 text-[10px] font-black tracking-widest text-indigo-500 uppercase">
+                                                <p className="mb-1 text-[10px] font-black tracking-widest text-blue-500 uppercase">
                                                     {t('common.instructions')}
                                                 </p>
                                                 <p className="text-sm leading-relaxed font-medium text-slate-600 dark:text-slate-400">
@@ -147,7 +147,7 @@ export default function AttemptPartAccordion({ attempt_parts, isAdmin, isTeacher
                                             <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800/50" />
                                         </div>
 
-                                        <div className="rounded-3xl bg-slate-50/50 p-2 dark:bg-slate-950/30">
+                                        <div className="rounded-2xl bg-transparent sm:bg-slate-50/50 p-0 sm:p-2 dark:bg-transparent dark:sm:bg-slate-950/30">
                                             <AttemptAnswerComponent attempt_answers={item.attempt_answers ?? []} />
                                         </div>
                                     </div>

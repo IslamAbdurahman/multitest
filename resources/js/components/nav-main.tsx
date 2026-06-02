@@ -28,9 +28,9 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     'dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-100',
                                     // Active State
                                     isActive && [
-                                        'bg-indigo-50 text-indigo-700 shadow-sm',
-                                        'dark:bg-indigo-500/10 dark:text-indigo-400 dark:shadow-none',
-                                        'before:absolute before:left-0 before:h-5 before:w-1 before:rounded-r-full before:bg-indigo-600 dark:before:bg-indigo-500',
+                                        'bg-primary/10 text-primary shadow-sm',
+                                        'dark:bg-primary/20 dark:text-primary dark:shadow-none',
+                                        'before:absolute before:left-0 before:h-5 before:w-1 before:rounded-r-full before:bg-primary dark:before:bg-primary',
                                     ],
                                 )}
                             >
@@ -39,7 +39,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     className={cn(
                                         'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110',
                                         isActive
-                                            ? 'text-indigo-600 dark:text-indigo-400'
+                                            ? 'text-primary'
                                             : 'text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100',
                                     )}
                                 >
@@ -57,7 +57,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
                                 {/* Decorative subtle glow for active item */}
                                 {isActive && (
-                                    <span className="absolute inset-0 rounded-xl ring-1 ring-indigo-600/10 ring-inset dark:ring-indigo-400/20" />
+                                    <span className="absolute inset-0 rounded-xl ring-1 ring-primary/10 ring-inset dark:ring-primary/20" />
                                 )}
                             </SidebarMenuButton>
                         </SidebarMenuItem>
