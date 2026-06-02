@@ -60,32 +60,32 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                         return (
                             <div
                                 key={item.id}
-                                className="group relative flex flex-col justify-between rounded-2xl border border-border bg-card p-3 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(79,70,229,0.08)] sm:rounded-[2rem] sm:p-5"
-
+                                className="group relative flex flex-col justify-between rounded-xl border border-slate-100 bg-white p-3.5 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
                             >
-                                <div className="relative">
+                                <div className="min-w-0">
                                     <Link
                                         href={`/test/${item.id}`}
-                                        className="block text-sm leading-tight font-bold text-slate-800 transition-colors group-hover:text-indigo-600 sm:text-lg dark:text-slate-100 dark:group-hover:text-indigo-400"
+                                        className="block text-sm leading-tight font-black text-slate-900 transition-colors group-hover:text-primary dark:text-white"
                                     >
                                         <div className="line-clamp-2 min-h-[2.5rem] break-words">
                                             {item.name}
                                         </div>
-                                        <div className="mt-1 inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 sm:text-xs">
-                                            {item.language?.flag && <span>{item.language.flag}</span>}
+                                    </Link>
+                                    <div className="mt-1 flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
+                                        {item.language?.flag && <span>{item.language.flag}</span>}
+                                        <span>
                                             {i18n.language === 'uz'
                                                 ? item.language?.name_uz
                                                 : i18n.language === 'ru'
                                                   ? item.language?.name_ru
                                                   : item.language?.name_en}
-                                        </div>
-                                    </Link>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div className="mt-3">
                                     <div className="transform transition-transform active:scale-95">
                                         <CreateAttemptModal test={item} label="Start" />
-
                                     </div>
                                 </div>
                             </div>
@@ -95,63 +95,53 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                     return (
                         <div
                             key={item.id}
-                            className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 dark:hover:border-indigo-500/50 dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                            className="group relative flex flex-col justify-between rounded-xl border border-slate-100 bg-white p-4 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
                         >
-                            {/* Status Indicator Bar */}
-                            <div
-                                className={`absolute top-0 left-1/2 h-1 w-20 -translate-x-1/2 rounded-b-full transition-colors ${item.is_public ? 'bg-indigo-500/20 group-hover:bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'}`}
-                            />
+                            <div className="min-w-0">
+                                {/* Top bar info */}
+                                <div className="mb-2.5 flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-400">
+                                        <span>#{globalIndex.toString().padStart(2, '0')}</span>
+                                        <span className="h-1 w-1 rounded-full bg-slate-200 dark:bg-slate-700" />
+                                        {item.language?.flag && <span className="text-xs leading-none">{item.language.flag}</span>}
+                                        <span className="truncate">
+                                            {i18n.language === 'uz'
+                                                ? item.language?.name_uz
+                                                : i18n.language === 'ru'
+                                                  ? item.language?.name_ru
+                                                  : item.language?.name_en}
+                                        </span>
+                                    </div>
 
-                            {/* 📍 FLOATING STATUS BADGE */}
-                            <div className="absolute top-6 right-6 transition-transform duration-300 group-hover:scale-105">
-                                {item.is_public ? (
-                                    <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black tracking-widest text-emerald-600 uppercase ring-1 ring-emerald-500/20 dark:bg-emerald-900/20 dark:text-emerald-400">
-                                        <CheckCircle2 className="h-3 w-3" />
-                                        {t('common.public')}
-                                    </span>
-                                ) : (
-                                    <span className="flex items-center gap-1 rounded-full bg-slate-50 px-2.5 py-1 text-[10px] font-black tracking-widest text-slate-400 uppercase ring-1 ring-slate-200 dark:bg-slate-800/40 dark:text-slate-500 dark:ring-slate-700">
-                                        <CircleDashed className="h-3 w-3" />
-                                        {t('common.private')}
-                                    </span>
-                                )}
-                            </div>
-
-                            <div className="relative">
-                                <div className="mb-4 flex items-start justify-between">
-                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 font-mono text-xs font-bold text-slate-400 transition-colors group-hover:border-indigo-200 group-hover:text-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
-                                        {globalIndex}
-                                    </span>
+                                    {item.is_public ? (
+                                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-emerald-600 uppercase dark:bg-emerald-950/30 dark:text-emerald-400">
+                                            {t('common.public')}
+                                        </span>
+                                    ) : (
+                                        <span className="inline-flex items-center gap-0.5 rounded-full bg-slate-50 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-slate-400 uppercase dark:bg-slate-800/80 dark:text-slate-400">
+                                            {t('common.private')}
+                                        </span>
+                                    )}
                                 </div>
 
                                 <Link
                                     href={`/test/${item.id}`}
-                                    /* pr-20 prevents title overlap with the absolute badge */
-                                    className="block pr-20 text-xl leading-tight font-bold text-slate-800 transition-colors group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400"
+                                    className="block text-sm leading-tight font-black text-slate-900 transition-colors group-hover:text-primary dark:text-white"
                                 >
-                                    {item.name}
-                                    <span className="ml-2 inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 group-hover:text-indigo-400">
-                                        ({item.language?.flag && <span className="text-base leading-none">{item.language.flag}</span>}
-                                        {i18n.language === 'uz'
-                                            ? item.language?.name_uz
-                                            : i18n.language === 'ru'
-                                              ? item.language?.name_ru
-                                              : item.language?.name_en}
-                                        )
-                                    </span>
+                                    <span className="line-clamp-2 min-h-[2.5rem] break-words">{item.name}</span>
                                 </Link>
 
-                                <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                                <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                                     {item.description || t('common.no_description')}
                                 </p>
 
                                 {(isAdmin || isTeacher) && item.audio_path && (
-                                    <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-2 transition-colors group-hover:border-indigo-100 dark:border-slate-800 dark:bg-slate-950/50 dark:group-hover:border-indigo-900/30">
+                                    <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 p-1.5 transition-colors dark:border-slate-800 dark:bg-slate-950/50">
                                         <audio
                                             preload="none"
                                             controls
                                             controlsList="nodownload"
-                                            className="h-7 w-full opacity-70 invert transition-opacity group-hover:opacity-100 dark:invert-0"
+                                            className="h-6 w-full opacity-70 invert transition-opacity group-hover:opacity-100 dark:invert-0"
                                         >
                                             <source src={item.audio_path} />
                                         </audio>
@@ -159,16 +149,15 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                                 )}
                             </div>
 
-                            <div className="mt-8 space-y-4">
+                            <div className="mt-4 pt-3 border-t border-slate-100/50 dark:border-slate-800/40 flex flex-col gap-2">
                                 <div className="transform transition-transform active:scale-95">
                                     <CreateAttemptModal test={item} label="Start" />
                                 </div>
 
-
                                 {(isAdmin || auth?.user.id == item.user_id) && (
-                                    <div className="flex items-center justify-center gap-2 border-t border-slate-50 pt-4 dark:border-slate-800/60">
+                                    <div className="flex items-center justify-center gap-2 mt-1">
                                         <UpdateTestModal test={item} />
-                                        <div className="h-1.5 w-1.5 rounded-full bg-slate-200 dark:bg-slate-700" />
+                                        <span className="h-1 w-1 rounded-full bg-slate-200 dark:bg-slate-700" />
                                         <DeleteItemModal item={item} onDelete={handleDelete} />
                                     </div>
                                 )}
@@ -182,7 +171,7 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
             <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-border bg-muted/30 p-6 backdrop-blur-xl md:flex-row">
 
                 <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
-                    <span className="h-2 w-2 rounded-full bg-indigo-500" />
+                    <span className="h-2 w-2 rounded-full bg-primary" />
                     {t('common.showing', { from: test.from, to: test.to, total: test.total })}
                 </div>
 
@@ -198,10 +187,10 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                             ).toString()}` : '#'}
                             className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-4 text-xs font-bold transition-all ${
                                 link.active
-                                    ? 'scale-105 bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/10'
+                                    ? 'scale-105 bg-primary text-primary-foreground shadow-lg shadow-primary/30 dark:shadow-primary/10'
                                     : !link.url
                                       ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
-                                      : 'border border-slate-100 bg-white text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+                                      : 'border border-slate-100 bg-white text-slate-600 hover:bg-primary/10 hover:text-primary dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
                             }`}
                             dangerouslySetInnerHTML={{ __html: link.label }}
                         />
