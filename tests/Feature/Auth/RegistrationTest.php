@@ -9,9 +9,12 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    $this->seed(\Database\Seeders\RoleSeeder::class);
+
     $response = $this->post('/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
+        'phone' => '998991234567',
         'password' => 'password',
         'password_confirmation' => 'password',
     ]);

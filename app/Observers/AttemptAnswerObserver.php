@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\CompressAudioJob;
 use App\Jobs\EvaluateSpeakingJob;
 use App\Models\AttemptAnswer;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +17,18 @@ class AttemptAnswerObserver
     {
         // Dispatch if audio_path is newly provided (created) or changed (updated)
         if ($attemptAnswer->audio_path && ($attemptAnswer->wasRecentlyCreated || $attemptAnswer->wasChanged('audio_path'))) {
-            // Clear previous AI results to allow Job to run again
-            $attemptAnswer->score_ai = null;
-            $attemptAnswer->transcript = null;
-            $attemptAnswer->review_ai = null;
-            $attemptAnswer->saveQuietly();
+            if (!str_ends_with(strtolower($attemptAnswer->audio_path), '.mp3')) {
+                // Dispatch compression job for uncompressed audio files
+                CompressAudioJob::dispatch($attemptAnswer->id);
+            } else {
+                // Clear previous AI results to allow Job to run again and dispatch evaluation
+                $attemptAnswer->score_ai = null;
+                $attemptAnswer->transcript = null;
+                $attemptAnswer->review_ai = null;
+                $attemptAnswer->saveQuietly();
 
-            EvaluateSpeakingJob::dispatch($attemptAnswer->id);
+                EvaluateSpeakingJob::dispatch($attemptAnswer->id);
+            }
         }
     }
 

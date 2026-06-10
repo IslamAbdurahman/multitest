@@ -19,6 +19,7 @@ test('profile information can be updated', function () {
 
     $response = $this
         ->actingAs($user)
+        ->from('/settings/profile')
         ->patch('/settings/profile', [
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -40,6 +41,7 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response = $this
         ->actingAs($user)
+        ->from('/settings/profile')
         ->patch('/settings/profile', [
             'name' => 'Test User',
             'email' => $user->email,
@@ -66,7 +68,7 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+    expect($user->fresh()->deleted_at)->not->toBeNull();
 });
 
 test('correct password must be provided to delete account', function () {
