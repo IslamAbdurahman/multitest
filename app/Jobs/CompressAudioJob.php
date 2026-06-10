@@ -17,12 +17,14 @@ class CompressAudioJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $answerId;
+    protected $shouldEvaluate;
     
     public $tries = 3;
 
-    public function __construct($answerId)
+    public function __construct($answerId, $shouldEvaluate = true)
     {
         $this->answerId = $answerId;
+        $this->shouldEvaluate = $shouldEvaluate;
     }
 
     public function handle()
@@ -32,6 +34,9 @@ class CompressAudioJob implements ShouldQueue
 
         // Skip if already MP3
         if (str_ends_with(strtolower($answer->audio_path), '.mp3')) {
+            if ($this->shouldEvaluate) {
+                EvaluateSpeakingJob::dispatch($answer->id);
+            }
             return;
         }
 
@@ -41,8 +46,10 @@ class CompressAudioJob implements ShouldQueue
 
             if (!file_exists($physicalInputPath)) {
                 Log::error("Compression failed: Original file not found at {$physicalInputPath}");
-                // Fallback: Dispatch evaluation directly even if original file is missing (might be handled by observer/API)
-                EvaluateSpeakingJob::dispatch($answer->id);
+                // Fallback: Dispatch evaluation directly even if original file is missing
+                if ($this->shouldEvaluate) {
+                    EvaluateSpeakingJob::dispatch($answer->id);
+                }
                 return;
             }
 
@@ -61,11 +68,16 @@ class CompressAudioJob implements ShouldQueue
                     unlink($physicalInputPath);
                 }
 
-                // Update model, which will trigger AttemptAnswerObserver's saved method for evaluation
+                // Update model quietly to prevent firing the observer saved event again
                 $answer->audio_path = '/storage/' . $outputFilePath;
-                $answer->save();
+                $answer->saveQuietly();
                 
                 Log::info("Audio file successfully compressed to MP3 for Answer #{$answer->id}");
+
+                // Dispatch evaluation job only if requested
+                if ($this->shouldEvaluate) {
+                    EvaluateSpeakingJob::dispatch($answer->id);
+                }
             } else {
                 throw new \Exception("FFmpeg failed with exit code {$returnVar}. Output: " . implode("\n", $output));
             }
@@ -74,8 +86,10 @@ class CompressAudioJob implements ShouldQueue
             Log::error("CompressAudioJob fatal error for Answer #{$this->answerId}: " . $e->getMessage());
             
             if ($this->attempts() >= $this->tries) {
-                Log::warning("Fallback: Evaluating speaking with uncompressed audio for Answer #{$answer->id}");
-                EvaluateSpeakingJob::dispatch($answer->id);
+                if ($this->shouldEvaluate) {
+                    Log::warning("Fallback: Evaluating speaking with uncompressed audio for Answer #{$answer->id}");
+                    EvaluateSpeakingJob::dispatch($answer->id);
+                }
             } else {
                 $this->release(15);
             }

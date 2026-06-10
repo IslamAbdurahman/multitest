@@ -90,5 +90,7 @@ class CompressAudioJobTest extends TestCase
         $cleanPath = str_replace('/storage/', '', $answer->audio_path);
         Storage::disk('public')->assertExists($cleanPath);
         Storage::disk('public')->assertMissing('attempt_answers_audio/test-audio.webm');
+
+        Queue::assertPushed(EvaluateSpeakingJob::class);
     }
 }

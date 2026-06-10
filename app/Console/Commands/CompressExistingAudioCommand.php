@@ -46,7 +46,7 @@ class CompressExistingAudioCommand extends Command
 
         foreach ($answers as $answer) {
             try {
-                CompressAudioJob::dispatchSync($answer->id);
+                CompressAudioJob::dispatchSync($answer->id, false);
             } catch (\Throwable $e) {
                 $this->error("\nError compressing Answer #{$answer->id}: " . $e->getMessage());
             }

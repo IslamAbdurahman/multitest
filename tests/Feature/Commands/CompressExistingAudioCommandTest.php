@@ -10,7 +10,9 @@ use App\Models\Part;
 use App\Models\Question;
 use App\Models\Test as ModelTest;
 use App\Models\User\User;
+use App\Jobs\EvaluateSpeakingJob;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -20,6 +22,7 @@ class CompressExistingAudioCommandTest extends TestCase
 
     public function test_command_compresses_all_existing_uncompressed_audio_files()
     {
+        Queue::fake([EvaluateSpeakingJob::class]);
         Storage::fake('public');
 
         // Setup models
@@ -96,5 +99,7 @@ class CompressExistingAudioCommandTest extends TestCase
         
         Storage::disk('public')->assertExists(str_replace('/storage/', '', $answer1->audio_path));
         Storage::disk('public')->assertExists(str_replace('/storage/', '', $answer2->audio_path));
+
+        Queue::assertNotPushed(EvaluateSpeakingJob::class);
     }
 }
