@@ -3,9 +3,11 @@ import CreateAttemptModal from '@/components/mock/create-attempt-modal';
 import UpdateTestModal from '@/components/test/update-test-modal';
 import { Auth, SearchData, type TestPaginate } from '@/types';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { CheckCircle2, CircleDashed } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 interface TestTableProps extends TestPaginate {
     searchData: SearchData;
@@ -18,8 +20,71 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
     const isTeacher = auth?.user?.roles?.some((role) => role.name === 'Teacher');
     const isStudent = auth?.user?.roles?.some((role) => role.name === 'Student');
 
-
     const { delete: deleteTest, reset, clearErrors } = useForm();
+
+    const [items, setItems] = useState(test.data);
+    const [currentPage, setCurrentPage] = useState(test.current_page);
+    const [hasMore, setHasMore] = useState(test.current_page < test.last_page);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        setItems(test.data);
+        setCurrentPage(test.current_page);
+        setHasMore(test.current_page < test.last_page);
+    }, [test.data, test.current_page, test.last_page]);
+
+    const loadMore = async () => {
+        if (isLoading || !hasMore) return;
+        setIsLoading(true);
+        try {
+            const nextPage = currentPage + 1;
+            const params = new URLSearchParams(window.location.search);
+            params.set('page', String(nextPage));
+
+            const response = await axios.get(`${window.location.pathname}?${params.toString()}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const newData = response.data;
+            setItems((prev) => [...prev, ...newData.data]);
+            setCurrentPage(newData.current_page);
+            setHasMore(newData.current_page < newData.last_page);
+        } catch (error) {
+            console.error('Failed to load more tests:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoading) {
+                    loadMore();
+                }
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '150px',
+            }
+        );
+
+        const currentSentinel = sentinelRef.current;
+        if (currentSentinel) {
+            observer.observe(currentSentinel);
+        }
+
+        return () => {
+            if (currentSentinel) {
+                observer.unobserve(currentSentinel);
+            }
+        };
+    }, [hasMore, isLoading, currentPage]);
 
     const handleDelete = (id: number) => {
         deleteTest(route('test.destroy', id), {
@@ -37,8 +102,8 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* 🗃️ TEST CARDS GRID */}
             <div className="grid grid-cols-2 gap-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-                {test.data.map((item, index) => {
-                    const globalIndex = (test.current_page - 1) * test.per_page + index + 1;
+                {items.map((item, index) => {
+                    const globalIndex = index + 1;
 
                     if (isStudent) {
                         return (
@@ -151,35 +216,19 @@ const TestTable = ({ searchData, ...test }: TestTableProps) => {
                 })}
             </div>
 
-
-            <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-border bg-muted/30 p-6 backdrop-blur-xl md:flex-row">
-
-                <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
-                    <span className="h-2 w-2 rounded-full bg-primary" />
-                    {t('common.showing', { from: test.from, to: test.to, total: test.total })}
-                </div>
-
-                <nav className="flex flex-wrap items-center justify-center gap-1.5">
-                    {test.links.map((link, idx) => (
-                        <Link
-                            key={idx}
-                            href={link.url ? `${link.url}&${new URLSearchParams(
-                                Object.entries(searchData).reduce((acc, [k, v]) => {
-                                    if (k !== 'page' && k !== 'total' && v !== '' && v !== null && v !== undefined) acc[k] = String(v);
-                                    return acc;
-                                }, {} as Record<string, string>)
-                            ).toString()}` : '#'}
-                            className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-4 text-xs font-bold transition-all ${
-                                link.active
-                                    ? 'scale-105 bg-primary text-primary-foreground shadow-lg shadow-primary/30 dark:shadow-primary/10'
-                                    : !link.url
-                                      ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
-                                      : 'border border-slate-100 bg-white text-slate-600 hover:bg-primary/10 hover:text-primary dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-                            }`}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                        />
-                    ))}
-                </nav>
+            {/* Infinite Scroll Sentinel & Loading Indicator */}
+            <div ref={sentinelRef} className="py-6 flex flex-col items-center justify-center gap-2">
+                {isLoading && (
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                        <span>{t('common.loading') || 'Loading...'}</span>
+                    </div>
+                )}
+                {!hasMore && items.length > 0 && (
+                    <div className="text-[10px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-widest py-2">
+                        {t('common.no_more_items') || 'No more items'}
+                    </div>
+                )}
             </div>
         </div>
     );

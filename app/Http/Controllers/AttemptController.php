@@ -90,6 +90,10 @@ class AttemptController extends Controller
 
             $attempt = $attempt->paginate($per_page);
 
+            if ($request->wantsJson()) {
+                return response()->json($attempt);
+            }
+
             return Inertia::render('attempt/index', [
                 'attempt' => $attempt
             ]);

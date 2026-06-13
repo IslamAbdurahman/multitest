@@ -82,6 +82,10 @@ class TestController extends Controller
 
             $test = $testQuery->paginate($per_page);
 
+            if ($request->wantsJson()) {
+                return response()->json($test);
+            }
+
             $seoData = [
                 'og_image' => url('/images/og-image.png'), // Replace with actual OG image if available
             ];

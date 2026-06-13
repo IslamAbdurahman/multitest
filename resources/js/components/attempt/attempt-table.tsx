@@ -2,10 +2,12 @@ import EvaluateAttemptModal from '@/components/attempt/evaluate-attempt-modal';
 import DeleteItemModal from '@/components/delete-item-modal';
 import { type AttemptPaginate, Auth, SearchData } from '@/types';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
-import { BookOpen, Calendar, ChevronLeft, ChevronRight, Clock, Info, Star, User } from 'lucide-react';
+import { BookOpen, Calendar, Clock, Info, Star, User, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 interface AttemptTableProps extends AttemptPaginate {
     searchData: SearchData;
@@ -20,6 +22,70 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
     const isTeacher = auth?.user?.roles?.some((role) => role.name === 'Teacher');
 
     const { delete: deleteAttempt, reset, clearErrors } = useForm();
+
+    const [items, setItems] = useState(attempt.data);
+    const [currentPage, setCurrentPage] = useState(attempt.current_page);
+    const [hasMore, setHasMore] = useState(attempt.current_page < attempt.last_page);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        setItems(attempt.data);
+        setCurrentPage(attempt.current_page);
+        setHasMore(attempt.current_page < attempt.last_page);
+    }, [attempt.data, attempt.current_page, attempt.last_page]);
+
+    const loadMore = async () => {
+        if (isLoading || !hasMore) return;
+        setIsLoading(true);
+        try {
+            const nextPage = currentPage + 1;
+            const params = new URLSearchParams(window.location.search);
+            params.set('page', String(nextPage));
+
+            const response = await axios.get(`${window.location.pathname}?${params.toString()}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const newData = response.data;
+            setItems((prev) => [...prev, ...newData.data]);
+            setCurrentPage(newData.current_page);
+            setHasMore(newData.current_page < newData.last_page);
+        } catch (error) {
+            console.error('Failed to load more attempts:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoading) {
+                    loadMore();
+                }
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '150px',
+            }
+        );
+
+        const currentSentinel = sentinelRef.current;
+        if (currentSentinel) {
+            observer.observe(currentSentinel);
+        }
+
+        return () => {
+            if (currentSentinel) {
+                observer.unobserve(currentSentinel);
+            }
+        };
+    }, [hasMore, isLoading, currentPage]);
 
     const handleDelete = (id: number) => {
         deleteAttempt(route('attempt.destroy', { attempt: id }), {
@@ -119,9 +185,9 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
             {isMobile ? (
                 /* 📱 MOBILE CARD VIEW */
                 <div className="space-y-4">
-                    {attempt.data.length > 0 ? (
-                        attempt.data.map((item, index) => {
-                            const globalIndex = (attempt.current_page - 1) * attempt.per_page + index + 1;
+                    {items.length > 0 ? (
+                        items.map((item, index) => {
+                            const globalIndex = index + 1;
                             return <AttemptCard key={item.id} item={item} globalIndex={globalIndex} />;
                         })
                     ) : (
@@ -146,9 +212,9 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
-                                {attempt.data.length > 0 ? (
-                                    attempt.data.map((item, index) => {
-                                        const globalIndex = (attempt.current_page - 1) * attempt.per_page + index + 1;
+                                {items.length > 0 ? (
+                                    items.map((item, index) => {
+                                        const globalIndex = index + 1;
 
                                         return (
                                             <tr 
@@ -239,7 +305,7 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                                                     <div className="flex items-center justify-end gap-2">
                                                         {(isAdmin || isTeacher) && (
                                                             <div 
-                                                                className="flex items-center gap-2 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50"
+                                                                 className="flex items-center gap-2 rounded-2xl bg-muted/50 p-1.5 transition-colors group-hover:bg-muted dark:bg-slate-800/50"
 
                                                                 onClick={(e) => e.stopPropagation()}
                                                             >
@@ -268,48 +334,19 @@ const AttemptTable = ({ searchData, ...attempt }: AttemptTableProps) => {
                     </div>
             )}
 
-            {/* Pagination Component logic remains below */}
-
-
-
-            {/* 📟 PAGINATION */}
-            <div className="flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-muted/30 p-4 md:flex-row">
-
-                <div className="pl-4 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                    {t('common.showing', {
-                        from: attempt.from || 0,
-                        to: attempt.to || 0,
-                        total: attempt.total,
-                    })}
-                </div>
-                <div className="flex items-center gap-1">
-                    {attempt.links.map((link, idx) => (
-                        <Link
-                            key={idx}
-                            href={link.url ? `${link.url}&${new URLSearchParams(
-                                Object.entries(searchData).reduce((acc, [k, v]) => {
-                                    if (k !== 'page' && k !== 'total' && v !== '' && v !== null && v !== undefined) acc[k] = String(v);
-                                    return acc;
-                                }, {} as Record<string, string>)
-                            ).toString()}` : '#'}
-                            className={`flex h-10 min-w-[40px] items-center justify-center rounded-xl px-3 text-xs font-black transition-all ${
-                                link.active
-                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
-                                    : !link.url
-                                      ? 'cursor-not-allowed opacity-30'
-                                      : 'bg-white text-slate-600 hover:bg-primary/10 hover:text-primary dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
-                            }`}
-                        >
-                            {link.label.includes('Previous') ? (
-                                <ChevronLeft className="h-4 w-4" />
-                            ) : link.label.includes('Next') ? (
-                                <ChevronRight className="h-4 w-4" />
-                            ) : (
-                                <span dangerouslySetInnerHTML={{ __html: link.label }} />
-                            )}
-                        </Link>
-                    ))}
-                </div>
+            {/* Infinite Scroll Sentinel & Loading Indicator */}
+            <div ref={sentinelRef} className="py-6 flex flex-col items-center justify-center gap-2">
+                {isLoading && (
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                        <span>{t('common.loading') || 'Loading...'}</span>
+                    </div>
+                )}
+                {!hasMore && items.length > 0 && (
+                    <div className="text-[10px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-widest py-2">
+                        {t('common.no_more_items') || 'No more items'}
+                    </div>
+                )}
             </div>
         </div>
     );

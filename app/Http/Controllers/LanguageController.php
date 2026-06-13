@@ -123,6 +123,10 @@ class LanguageController extends Controller
 
             $test = $testQuery->paginate($per_page);
 
+            if ($request->wantsJson()) {
+                return response()->json($test);
+            }
+
             return Inertia::render('language/index', [
                 'test' => $test,
                 'language' => $language
