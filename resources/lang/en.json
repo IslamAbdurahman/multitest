@@ -72,6 +72,7 @@
         "student": "Student",
         "no_data": "No data available",
         "loading": "Loading...",
+        "no_more_items": "No more items",
         "exit_fullscreen": "Exit Fullscreen",
         "fullscreen": "Fullscreen",
         "language": "Language",
